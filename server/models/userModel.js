@@ -9,6 +9,11 @@ const userScheema = new mongoose.Schema({
         enum: ['admin', 'teacher', 'student'],
         default: 'student'
     },
+    approvalStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+    },
     verifyOtp: { type: String, default: '' },
     verifyOtpExpireAt: { type: Number, default: 0 },
     isAccountVerified: { type: Boolean, default: false },

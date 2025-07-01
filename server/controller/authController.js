@@ -53,6 +53,12 @@ export const login = async (req, res) => {
             return res.json({ success: false, message: "Invalid password" })
         }
 
+
+        if (user.role !== 'admin' && user.approvalStatus !== 'approved') {
+         return res.json({success: false, message: "Account not approved by admin."})   
+        }
+
+
         //Here we are generating Token
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
         res.cookie("token", token, {    //Here we are storing token in cookie
