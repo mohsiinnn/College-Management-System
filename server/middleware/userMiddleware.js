@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js";
 
 export const isAuthenticated = async (req, res, next) => {
     const { token } = req.cookies;
-    console.log("Token received:", token); // Debug: log the token
+    // console.log("Token received:", token); // Debug: log the token
 
     if (!token) {
         return res.json({ success: false, message: "Not authorized. Login again" })
