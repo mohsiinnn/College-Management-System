@@ -6,13 +6,22 @@ const userScheema = new mongoose.Schema({
     password: { type: String, required: true },
     role: {
         type: String,
-        enum: ['admin', 'teacher', 'student'],
+        enum: ['superAdmin', 'admin', 'teacher', 'student'],
         default: 'student'
     },
     approvalStatus: {
+        //for student and teachers
         type: String,
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending'
+    },
+    adminApprovalStatus: {
+        //for admins only
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: function() {
+            return this.role === 'admin' ? 'pending' : undefined;
+        }
     },
     verifyOtp: { type: String, default: '' },
     verifyOtpExpireAt: { type: Number, default: 0 },

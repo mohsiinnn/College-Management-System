@@ -54,8 +54,14 @@ export const login = async (req, res) => {
         }
 
 
-        if (user.role !== 'admin' && user.approvalStatus !== 'approved') {
-         return res.json({success: false, message: "Account not approved by admin."})   
+        // Admin: must be approved by superAdmin
+        if (user.role === 'admin' && user.adminApprovalStatus !== 'approved') {
+            return res.json({ success: false, message: 'Admin account not yet approved by superAdmin.' });
+        }
+
+        // Teacher/Student: must be approved by admin
+        if ((user.role === 'teacher' || user.role === 'student') && user.approvalStatus !== 'approved') {
+            return res.json({ success: false, message: "Account not approved by admin." })
         }
 
 

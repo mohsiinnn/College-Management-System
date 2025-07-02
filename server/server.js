@@ -6,6 +6,7 @@ import connectDB from './config/mongodb.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRouter.js';
 import adminRouter from './routes/adminRouter.js';
+import superAdminRouter from './routes/superAdminRouter.js';
 
 const app = express();
 const port = 3000;
@@ -21,7 +22,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter)
-app.use('/api/admin', adminRouter)
+app.use('/api/admin', adminRouter);
+app.use('/api/super-admin', superAdminRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
