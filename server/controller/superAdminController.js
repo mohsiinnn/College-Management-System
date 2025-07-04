@@ -4,11 +4,11 @@ import userModel from "../models/userModel.js";
 export const pendingAdmins = async (req, res) => {
     try {
         const admins = await userModel.find({ adminApprovalStatus: 'pending' });
-        if (admins === null) {
-            return res.json({ message: "No approvals are prending" });
+        if (admins > 0) {
+            return res.json(admins);
         }
         else {
-            return res.json(admins);
+            return res.json({ message: "No approvals are prending" });
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -34,7 +34,7 @@ export const approveAdmin = async (req, res) => {
 
 export const rejectAdmin = async (req, res) => {
     const { id } = req.params;
-    
+
     try {
         const admin = await userModel.findByIdAndUpdate(id, { adminApprovalStatus: 'rejected' });
         if (admin) {
