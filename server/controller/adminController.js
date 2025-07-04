@@ -2,7 +2,7 @@ import express from 'express'
 import userModel from "../models/userModel.js"
 
 
-export const pendindApprovals = async (req, res) => {
+export const pendingApprovals = async (req, res) => {
     try {
         const pendingUsers = await userModel.find({ approvalStatus: 'pending' });
         if (pendingUsers === '') {
