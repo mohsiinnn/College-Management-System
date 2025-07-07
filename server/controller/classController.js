@@ -20,7 +20,58 @@ export const createClass = async (req, res) => {
     }
 }
 
-export const updateClass = async (req, res) => {
-    const { id } = req.params;
-    
+//Students List
+export const studentList = async (req, res) => {
+    const { classId } = req.params;
+    const { studentId } = req.body;
+
+    try {
+
+    } catch (error) {
+
+    }
+}
+
+
+//Adding new Students and Teachers
+export const addTeacherAndStudent = async (req, res) => {
+    const { classId } = req.params;
+    const { teacherId, studentId } = req.body;
+
+    // Validate at least one ID is provided
+    if (!teacherId && !studentId) {
+        return res.json({ success: false, message: 'Please provide either teacherId or studentId' });
+    }
+
+    try {
+        const update = { $addToSet: {} };
+        if (teacherId) {
+            update.$addToSet.teachers = teacherId;   // Safely add teacher (no duplicates)
+        }
+        if (studentId) {
+            update.$addToSet.students = studentId;   // Safely add student (no duplicates)
+        }
+
+        const updateClass = await classModel.findByIdAndUpdate(
+            classId,
+            update,
+            { new: true, runValidators: true, }
+        ).populate({
+            path: 'students',
+            match: { role: 'student' },
+            select: 'name email'
+        }).populate({
+            path: 'teachers',
+            match: { role: 'teacher' },
+            select: 'name email'
+        })
+
+        if (!updateClass) {
+            return res.json({ success: false, message: 'Class not found' });
+        }
+
+        return res.json({ success: true, data: updateClass })
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
 }
