@@ -1,4 +1,5 @@
 import classModel from "../models/classModel.js";
+import userModel from "../models/userModel.js";
 
 
 export const createClass = async (req, res) => {
@@ -20,36 +21,29 @@ export const createClass = async (req, res) => {
     }
 }
 
-//Students List
-export const studentList = async (req, res) => {
-    const { classId } = req.params;
-    const { studentId } = req.body;
-
-    try {
-
-    } catch (error) {
-
-    }
-}
 
 
 //Adding new Students and Teachers
-export const addTeacherAndStudent = async (req, res) => {
+export const addTeacher = async (req, res) => {
     const { classId } = req.params;
-    const { teacherId, studentId } = req.body;
+    const { teacherEmail } = req.body;
 
-    // Validate at least one ID is provided
-    if (!teacherId && !studentId) {
-        return res.json({ success: false, message: 'Please provide either teacherId or studentId' });
+    // Validate at least one Email is provided
+    if (!teacherEmail) {
+        return res.json({ success: false, message: 'Please provide teacher Email' });
     }
 
     try {
-        const update = { $addToSet: {} };
-        if (teacherId) {
-            update.$addToSet.teachers = teacherId;   // Safely add teacher (no duplicates)
+
+        const teacher = await userModel.findOne({ email: teacherEmail, role: 'teacher' });
+
+        if (teacherEmail && !teacher) {
+            return res.json({ success: false, message: "Teacher not found with the provided email" })
         }
-        if (studentId) {
-            update.$addToSet.students = studentId;   // Safely add student (no duplicates)
+
+        const update = { $addToSet: {} };
+        if (teacher) {
+            update.$addToSet.teachers = teacher._id;   // Safely add teacher (no duplicates)
         }
 
         const updateClass = await classModel.findByIdAndUpdate(
@@ -57,10 +51,6 @@ export const addTeacherAndStudent = async (req, res) => {
             update,
             { new: true, runValidators: true, }
         ).populate({
-            path: 'students',
-            match: { role: 'student' },
-            select: 'name email'
-        }).populate({
             path: 'teachers',
             match: { role: 'teacher' },
             select: 'name email'
@@ -73,5 +63,45 @@ export const addTeacherAndStudent = async (req, res) => {
         return res.json({ success: true, data: updateClass })
     } catch (error) {
         return res.json({ success: false, message: error.message });
+    }
+}
+
+export const addStudent = async (req, res) => {
+    const { classId } = req.params;
+    const { studentEmail } = req.body;
+
+    if (!studentEmail) {
+        return res.json({ success: false, message: "Enter Student Email" });
+    }
+
+    try {
+        const student = await userModel.findOne({ email: studentEmail, role: 'student' });
+
+        if (studentEmail && !student) {
+            return res.json({ success: false, message: "student not found with the provided email" })
+        }
+
+        const update = { $addToSet: {} };
+        if (student) {
+            update.$addToSet.students = student._id;   // Safely add student (no duplicates)
+        }
+        const updateClass = await classModel.findByIdAndUpdate(
+            classId,
+            update,
+            {new: true, runValidators: true}
+        ).populate({
+            path: 'students',
+            match: { role: 'student' },
+            select: 'name email'
+        })
+
+        if (!updateClass) {
+            return res.json({ success: false, message: "Class not found" })
+        }
+
+        return res.json({ success: false, data: updateClass });
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
     }
 }
