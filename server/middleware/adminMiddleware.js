@@ -5,7 +5,7 @@ export const restrictAdmin = async (req, res, next) => {
             next()
         }
         else {
-            return res.json({ success: false, message: "SuperAdmin access required." });
+            return res.json({ success: false, message: "Admin access required." });
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });

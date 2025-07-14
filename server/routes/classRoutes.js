@@ -1,12 +1,12 @@
 import express from 'express'
-import { isAuthenticated } from '../middleware/userMiddleware';
-import { restrictAdmin } from '../middleware/adminMiddleware';
-import { addStudent, addTeacher, createClass } from '../controller/classController';
+import { isAuthenticated } from '../middleware/userMiddleware.js';
+import { restrictAdmin } from '../middleware/adminMiddleware.js';
+import { createClass, getAllClasses, getSingleClass } from '../controller/classController.js';
 
 export const classRouter = express.Router();
 
-classRouter.post('/:name', isAuthenticated, restrictAdmin, createClass);
-classRouter.post('/add-teacher', isAuthenticated, restrictAdmin, addTeacher);
-classRouter.post('/add-student', isAuthenticated, restrictAdmin, addStudent);
+classRouter.post('/registerClass/:className', isAuthenticated, restrictAdmin, createClass);
+classRouter.get('/all-classes', isAuthenticated, restrictAdmin, getAllClasses);
+classRouter.get('/:id', isAuthenticated, restrictAdmin, getSingleClass);
 
 export default classRouter;

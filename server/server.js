@@ -7,6 +7,7 @@ import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRouter.js';
 import adminRouter from './routes/adminRouter.js';
 import superAdminRouter from './routes/superAdminRouter.js';
+import classRouter from './routes/classRoutes.js';
 
 const app = express();
 const port = 3000;
@@ -24,6 +25,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter);
 app.use('/api/super-admin', superAdminRouter);
+app.use('/api/class', classRouter)
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
