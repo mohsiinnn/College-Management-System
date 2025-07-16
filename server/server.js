@@ -23,11 +23,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/super-admin', superAdminRouter);
 app.use('/api/class', classRouter);
-app.use('/api/subject', subjectRouter)
+app.use('/api/subject', subjectRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
