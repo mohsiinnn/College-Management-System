@@ -15,11 +15,11 @@ const subjectScheema = new mongoose.Schema({
         ref: 'class',
         required: true,
     },
-    // teacher: {
-    //     type: mongoose.Scheema.Types.ObjectId,
-    //     ref: 'teacher'
-    // }
+    teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'teacher'
+    }
 }, {timestamps: true})
 
-const subjectModel = mongoose.models.class || mongoose.model('class', subjectScheema);
+const subjectModel = mongoose.models.subject || mongoose.model('subject', subjectScheema);
 export default subjectModel;
