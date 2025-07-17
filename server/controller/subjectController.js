@@ -49,7 +49,7 @@ export const allSubjects = async (req, res) => {
 export const classSubjects = async (req, res) => {
     const classId = req.params.id;
     try {
-        const subjects = await subjectModel.find({ className: classId });
+        const subjects = await subjectModel.find({ className: classId }).populate("className", "className");
         if (subjects.length > 0) {
             return res.json({ success: true, data: subjects });
         }
