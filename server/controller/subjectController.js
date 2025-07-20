@@ -79,11 +79,15 @@ export const freeSubjectList = async (req, res) => {
 export const getSubjectDetail = async (req, res) => {
     const { id } = req.params;
     try {
-        const subject = await subjectModel.findById(id);
+        const subject = await subjectModel.findById(id).populate('className', 'className').populate({
+            path: "teacher",
+            populate: {
+                path: "teacher",
+                model: "user",
+                select: "name"
+            }
+        });
         if (subject) {
-            subject = await subject.populate('className', 'className')
-            subject = await subject.populate('teacher', 'name')
-
             return res.json({ success: true, data: subject })
         }
         else {

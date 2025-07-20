@@ -29,9 +29,9 @@ export const createTeacherProfile = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubject: subject._id })
+        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubjects: subject._id })
         if (updateTeacher) {
-            return res.json({ success: true, data: updateTeacher });
+            return res.json({ success: true, data: subject });
         } else {
             return res.json({ success: false, message: "there is an error while updating teacher" });
         }
@@ -45,7 +45,12 @@ export const createTeacherProfile = async (req, res) => {
 export const getTeachers = async (req, res) => {
     try {
         const teachers = await teacherModel.find()
-            .populate('tSubjects', 'subjectName')
+            .populate('teacher', 'name')
+            .populate({
+                path: 'tSubjects',
+                model: "subject",
+                select: "subjectName"
+            })
             .populate('tClass', 'className')
 
         if (teachers.length > 0) {
@@ -63,9 +68,13 @@ export const getTeachers = async (req, res) => {
 export const getTeacherDetail = async (req, res) => {
     const { id } = req.params;
     try {
-        const teacher = await teacherModel.findById({ id })
+        const teacher = await teacherModel.findById(id)
             .populate("teacher", "name")
-            .populate('tSubjects', 'subjectName')
+            .populate({
+                path: 'tSubjects',
+                model: "subject",
+                select: "subjectName"
+            })
             .populate("tClass", "className")
         if (teacher) {
             res.json({ success: true, data: teacher })
@@ -87,7 +96,7 @@ export const updateTeacherSubject = async (req, res) => {
         }
 
         // Add the subject to teacher's subjects array
-        await teacherModel.findByIdAndUpdate(teacherId, { $addToSet: { tSubjects: subject._id } });
+        const teach = await teacherModel.findByIdAndUpdate(teacherId, { tSubjects: subject._id });
 
         return res.json({ success: true, data: subject })
 

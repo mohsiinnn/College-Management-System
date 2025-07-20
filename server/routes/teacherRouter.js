@@ -9,3 +9,5 @@ teacherRouter.post('/add-teacher', isAuthenticated, restrictAdmin, createTeacher
 teacherRouter.get('/all-teachers', isAuthenticated, restrictAdmin, getTeachers);
 teacherRouter.get('/getTeacher/:id', isAuthenticated, restrictAdmin, getTeacherDetail);
 teacherRouter.post('/update-teacher', isAuthenticated, restrictAdmin, updateTeacherSubject)
+
+export default teacherRouter

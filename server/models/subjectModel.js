@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const subjectScheema = new mongoose.Schema({
     subjectName: {
         type: String,
-        required: true
+        required: true,
     },
     courseCode: {
         type: String,
