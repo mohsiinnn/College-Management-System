@@ -7,7 +7,7 @@ const teacherSchema = new mongoose.Schema({
     },
     tClass: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "class"
+        ref: 'class'
     },
     tSubjects: {
         type: mongoose.Schema.Types.ObjectId,
