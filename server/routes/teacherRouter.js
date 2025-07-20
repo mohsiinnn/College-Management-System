@@ -9,7 +9,7 @@ teacherRouter.post('/add-teacher', isAuthenticated, restrictAdmin, createTeacher
 teacherRouter.get('/all-teachers', isAuthenticated, restrictAdmin, getTeachers);
 teacherRouter.get('/getTeacher/:id', isAuthenticated, restrictAdmin, getTeacherDetail);
 teacherRouter.post('/update-teacher', isAuthenticated, restrictAdmin, updateTeacherSubject)
-teacherRouter.post('/delete-teachers', isAuthenticated, restrictAdmin, deleteTeacher)
-teacherRouter.post('/delete-teacher', isAuthenticated, restrictAdmin, deleteAllTeachers)
+teacherRouter.post('/delete-teacher/:id', isAuthenticated, restrictAdmin, deleteTeacher)
+teacherRouter.post('/delete-teachers', isAuthenticated, restrictAdmin, deleteAllTeachers)
 
 export default teacherRouter
