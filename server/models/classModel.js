@@ -11,11 +11,11 @@ const classScheema = new mongoose.Schema({
     // teachers: [{
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'user'
-    // }],
-    // students: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'user'
-    // }]
+    // }],  
+    student: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }]
 }, { timestamps: true });
 
 const classModel = mongoose.models.class || mongoose.model('class', classScheema);

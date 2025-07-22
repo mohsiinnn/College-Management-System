@@ -27,9 +27,9 @@ export const createTeacherProfile = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubjects: subject._id })
+        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubjects: subject._id }, { new: true })
         if (updateTeacher) {
-            return res.json({ success: true, data: subject });
+            return res.json({ success: true, data: updateTeacher });
         } else {
             return res.json({ success: false, message: "there is an error while updating teacher" });
         }
@@ -73,9 +73,11 @@ export const getTeacherDetail = async (req, res) => {
                 model: "subject",
                 select: "subjectName"
             })
-            // .populate('tClass', 'className')
+        // .populate('tClass', 'className')
         if (teacher) {
-            res.json({ success: true, data: teacher })
+            return res.json({ success: true, data: teacher });
+        } else {
+            return res.json({ success: true, message: "No teacher found" });
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -94,9 +96,9 @@ export const updateTeacherSubject = async (req, res) => {
         }
 
         // Add the subject to teacher's subject
-        const teach = await teacherModel.findByIdAndUpdate(teacherId, { tSubjects: subject._id });
+        const teach = await teacherModel.findByIdAndUpdate(teacherId, { $addToSet: { tSubjects: subject._id } }, { new: true });
 
-        return res.json({ success: true, data: subject })
+        return res.json({ success: true, data: teach })
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -146,7 +148,7 @@ export const deleteAllTeachers = async (req, res) => {
     }
 }
 
-//Delete teachers from spesefic class ( optional for me ) 
+//Delete teachers from spesefic class ( optional for me )
 // export const deleteTeachersFromClass = async (req, res) => {
 //     const classId = req.params.id;
 //     try {

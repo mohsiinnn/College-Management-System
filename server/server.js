@@ -10,6 +10,7 @@ import superAdminRouter from './routes/superAdminRouter.js';
 import classRouter from './routes/classRoutes.js';
 import subjectRouter from './routes/subjectRouter.js';
 import { teacherRouter } from './routes/teacherRouter.js';
+import studentRouter from './routes/studentRouter.js';
 
 const app = express();
 const port = 3000;
@@ -17,7 +18,7 @@ connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({credentials: true}));
+app.use(cors({ credentials: true }));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the College Management System API');
@@ -29,7 +30,8 @@ app.use('/api/admin', adminRouter);
 app.use('/api/super-admin', superAdminRouter);
 app.use('/api/class', classRouter);
 app.use('/api/subject', subjectRouter);
-app.use('/api/teacher', teacherRouter)
+app.use('/api/teacher', teacherRouter);
+app.use('/api/student', studentRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
