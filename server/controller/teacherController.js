@@ -4,7 +4,8 @@ import teacherModel from "../models/teacherModel.js";
 import userModel from "../models/userModel.js";
 
 export const createTeacherProfile = async (req, res) => {
-    const { subjectId, email } = req.body;
+    const subjectId = req.params.id;
+    const { email } = req.body;
     try {
         const user = await userModel.findOne({ email: email });
         if (!user || user.role !== 'teacher') {
@@ -27,7 +28,7 @@ export const createTeacherProfile = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubjects: subject._id }, { new: true })
+        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { tSubjects: subject._id }, { new: true }).populate("teacher", "name").populate("tSubjects", "subjectName")
         if (updateTeacher) {
             return res.json({ success: true, data: updateTeacher });
         } else {
@@ -86,7 +87,8 @@ export const getTeacherDetail = async (req, res) => {
 
 
 export const updateTeacherSubject = async (req, res) => {
-    const { subjectId, teacherId } = req.body;
+    const subjectId = req.params.id;
+    const { teacherId } = req.body;
     try {
 
         // Update the subject's teacher field 

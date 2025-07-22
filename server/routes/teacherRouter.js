@@ -5,10 +5,10 @@ import { createTeacherProfile, deleteAllTeachers, deleteTeacher, getTeacherDetai
 
 export const teacherRouter = express.Router();
 
-teacherRouter.post('/add-teacher', isAuthenticated, restrictAdmin, createTeacherProfile);
+teacherRouter.post('/add-teacher/:id', isAuthenticated, restrictAdmin, createTeacherProfile);
 teacherRouter.get('/all-teachers', isAuthenticated, restrictAdmin, getTeachers);
 teacherRouter.get('/getTeacher/:id', isAuthenticated, restrictAdmin, getTeacherDetail);
-teacherRouter.post('/update-teacher', isAuthenticated, restrictAdmin, updateTeacherSubject)
+teacherRouter.post('/update-teacher/:id', isAuthenticated, restrictAdmin, updateTeacherSubject)
 teacherRouter.post('/delete-teacher/:id', isAuthenticated, restrictAdmin, deleteTeacher)
 teacherRouter.post('/delete-teachers', isAuthenticated, restrictAdmin, deleteAllTeachers)
 
