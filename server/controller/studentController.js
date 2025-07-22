@@ -22,16 +22,12 @@ export const createStudentProfile = async (req, res) => {
         }
 
         // Update the class's student field 
-        const updateClass = await classModel.findByIdAndUpdate(classId, { $addToSet: { student: student._id } }, { new: true }).populate({
-            path: 'student',
-            model: 'user',
-            select: 'name'
-        });
+        const updateClass = await classModel.findByIdAndUpdate(classId, { $addToSet: { student: student._id } }, { new: true });
         if (!updateClass) {
             return res.json({ success: false, message: "Class not found" });
         }
 
-        const updateStudent = await studentModel.findByIdAndUpdate(student._id, { sClass: updateClass._id }, { new: true }).populate("sClass", "className")
+        const updateStudent = await studentModel.findByIdAndUpdate(student._id, { sClass: updateClass._id }, { new: true }).populate('student', 'name').populate("sClass", "className")
         if (!updateStudent) {
             return res.json({ success: false, message: "there is an error while updating student" });
         }
