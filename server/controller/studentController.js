@@ -145,3 +145,32 @@ export const deleteStudentsFromClass = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+export const addAttendance = async (req, res) => {
+    const { studentId } = req.params;
+    const { subjectName, status, date } = req.body;
+    try {
+        const student = await studentModel.findById(studentId);
+        if (!student) {
+            return res.json({ success: false, message: "Student not found" });
+        }
+
+        // const subject = await subjectModel.findById(subjectName);
+
+        const exsistingAttendance = student.attendance.find((a) => {
+            a.date.toDateString = new Date(date).toDateString && a.subjectName.toString() === subjectName
+        })
+        if (exsistingAttendance) {
+            exsistingAttendance.status = status;
+        }
+
+        student.attendance.push({ date, status, subjectName });
+
+        const newAttendance = await student.save();
+        return res.json({ success: true, data: newAttendance });
+
+
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}

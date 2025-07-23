@@ -40,7 +40,6 @@ export const createTeacherProfile = async (req, res) => {
     }
 }
 
-
 export const getTeachers = async (req, res) => {
     try {
         const teachers = await teacherModel.find()
@@ -63,7 +62,6 @@ export const getTeachers = async (req, res) => {
     }
 }
 
-
 export const getTeacherDetail = async (req, res) => {
     const { id } = req.params;
     try {
@@ -84,7 +82,6 @@ export const getTeacherDetail = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
-
 
 export const updateTeacherSubject = async (req, res) => {
     const subjectId = req.params.id;
@@ -149,6 +146,11 @@ export const deleteAllTeachers = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+// export const teacherAttendance = async (req, res) => {
+    
+// }
+
 
 //Delete teachers from spesefic class ( optional for me )
 // export const deleteTeachersFromClass = async (req, res) => {
