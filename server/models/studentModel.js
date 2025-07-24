@@ -19,7 +19,7 @@ const studentSchema = new mongoose.Schema({
             enum: ['present', 'absent'],
             required: true
         },
-        subName: {
+        subjectId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'subject',
             required: true

@@ -13,7 +13,7 @@ export const createSubjects = async (req, res) => {
         const preparedSubjects = subjects.map(subject => ({
             subjectName: subject.subjectName,
             courseCode: subject.courseCode,
-            className  // 👈 className is assigned as a reference
+            className  // className is assigned as a reference
         }))
 
         const duplicate = await subjectModel.findOne({ courseCode: subjects[0].courseCode });

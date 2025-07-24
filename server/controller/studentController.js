@@ -147,29 +147,88 @@ export const deleteStudentsFromClass = async (req, res) => {
 }
 
 export const addAttendance = async (req, res) => {
-    const { studentId } = req.params;
-    const { subjectName, status, date } = req.body;
+    const studentId = req.params.id;
+    const { subjectId, status, date } = req.body;
     try {
         const student = await studentModel.findById(studentId);
         if (!student) {
             return res.json({ success: false, message: "Student not found" });
         }
 
-        // const subject = await subjectModel.findById(subjectName);
+        if (!subjectId || !status || !date) {
+            return res.json({ success: false, message: "Enter subjectId, status and date" })
+        }
+
+        // const subject = await subjectModel.findById(subjectId);
 
         const exsistingAttendance = student.attendance.find((a) => {
-            a.date.toDateString = new Date(date).toDateString && a.subjectName.toString() === subjectName
+            a.date.toDateString = new Date(date).toDateString && a.subjectId.toString() === subjectId
         })
         if (exsistingAttendance) {
             exsistingAttendance.status = status;
         }
 
-        student.attendance.push({ date, status, subjectName });
+        student.attendance.push({ date, status, subjectId });
 
         const newAttendance = await student.save();
         return res.json({ success: true, data: newAttendance });
 
 
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const removeStudentAttendance = async (req, res) => {
+    const studentId = req.params.id;
+    try {
+        const student = await studentModel.findOne(
+            { _id: studentId }, { $set: { attendance: [] } }
+        );
+        if (student) {
+            return res.json({ success: true, data: student });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const removeAllStudentsAttendance = async (req, res) => {
+    try {
+        const allStudents = await studentModel.updateMany({}, { $set: { attendance: [] } });
+        if (allStudents) {
+            return res.json({ success: true, data: allStudents });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const removeStudentAttendanceFromSubject = async (req, res) => {
+    const studentId = req.params.id;
+    const { subjectId } = req.body;
+    try {
+        const student = await studentModel.findByIdAndUpdate(studentId,
+            { $pull: { attendance: { subjectId: subjectId } } }
+        )
+        if (student) {
+            return res.json({ success: true, data: student });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const removeAllStudentAttendanceFromSubject = async (req, res) => {
+    const subjectId = req.params.id;
+    try {
+        const allStudents = await studentModel.updateMany(
+            { 'attendance.subjectId': subjectId },
+            { $pull: { attendance: { subjectId } } }
+        )
+        if (allStudents) {
+            res.json({ success: true, data: allStudents });
+        }
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
