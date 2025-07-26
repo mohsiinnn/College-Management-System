@@ -1,4 +1,7 @@
 import classModel from "../models/classModel.js";
+import studentModel from "../models/studentModel.js";
+import subjectModel from "../models/subjectModel.js";
+import teacherModel from "../models/teacherModel.js";
 import userModel from "../models/userModel.js";
 
 
@@ -51,6 +54,39 @@ export const getSingleClass = async (req, res) => {
     }
 }
 
+export const deleteClassStudents = async (req, res) => {
+    const classId = req.params.id;
+    try {
+        const deleteStudents = await studentModel.deleteMany({ sClass: classId })
+        if (deleteStudents.length > 0) {
+            res.json({ success: true, data: deleteStudents })
+        }
+        else {
+            res.json({ success: false, message: "No student found" })
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteClass = async (req, res) => {
+    const classId = req.params.id;
+    try {
+        const deletedClass = await classModel.findByIdAndDelete(classId);
+        if (deletedClass) {
+            await studentModel.deleteMany({ sClass: classId });
+            await subjectModel.deleteMany({ className: classId });
+            await teacherModel.deleteMany({ tClass: classId });
+        }
+        else {
+            res.json({ success: false, message: "Class not found" });
+        }
+
+        res.json({ success: true, data: deletedClass });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
 
 //Adding new Teachers
 // export const addTeacher = async (req, res) => {

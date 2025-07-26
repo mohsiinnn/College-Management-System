@@ -1,4 +1,6 @@
+import studentModel from "../models/studentModel.js";
 import subjectModel from "../models/subjectModel.js";
+import teacherModel from "../models/teacherModel.js";
 
 export const createSubjects = async (req, res) => {
 
@@ -93,6 +95,74 @@ export const getSubjectDetail = async (req, res) => {
         else {
             return res.json({ success: true, message: "No subject found" })
         }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteSubject = async (req, res) => {
+    const subjectId = req.params.id;
+    try {
+        const subject = await subjectModel.findByIdAndDelete(subjectId);
+        if (subject) {
+            if (subject.teacher) {
+                await teacherModel.updateOne(
+                    { tSubjects: subject._id },
+                    { $pull: { tSubjects: subject._id } }
+                )
+            }
+
+            await studentModel.updateOne(
+                { $pull: { attendance: { subjectId: subject._id } } }
+            )
+        }
+
+        res.json({ success: true, data: subject });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteAllSubjects = async (req, res) => {
+    try {
+        const subjects = await subjectModel.find();
+
+        const ids = subjects.map(subject => subject._id);
+
+        const deletedSubject = await subjectModel.deleteMany();
+
+        if (deletedSubject) {
+            await teacherModel.updateMany(
+                { tSubjects: { $in: ids } },
+                { $pull: { tSubjects: { $in: ids } } }
+            );
+
+            await studentModel.updateMany({}, { $pull: { attendance: { subjectId: { $in: ids } } } })
+        }
+
+        res.json({ success: true, data: deletedSubject })
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+export const deleteSubjectsFromClass = async (req, res) => {
+    const classId = req.params.id;
+    try {
+        const subjects = await subjectModel.find({ className: classId });
+        const ids = subjects.map(s => s._id);
+
+        const deletedSubjects = await subjectModel.deleteMany({ className: classId });
+        if (deletedSubjects) {
+            await teacherModel.updateMany(
+                { tSubjects: { $in: ids } },
+                { $pull: { tSubjects: { $in: ids } } }
+            );
+
+            await studentModel.updateMany({}, { $pull: { attendance: { subjectId: { $in: ids } } } })
+        }
+
+        res.json({ success: true, data: deletedSubjects })
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }

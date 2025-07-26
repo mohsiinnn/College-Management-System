@@ -32,7 +32,7 @@ export const checkAdminApproval = async (req, res, next) => {
     try {
         if (req.user && req.user.role === 'admin') {
             const user = await userModel.findById(req.user.id);
-            if (!user || user.approvalStatus !== 'approved') {
+            if (!user || user.adminApprovalStatus !== 'approved') {
                 return res.json({success: false, message: "Your account is not approved by superAdmin yet."})
             }
         }
