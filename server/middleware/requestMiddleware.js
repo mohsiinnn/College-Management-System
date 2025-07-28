@@ -4,6 +4,9 @@ export const checkTeacherApproval = async (req, res, next) => {
     try {
         if (req.user && req.user.role === 'teacher') {
             const user = await userModel.findById(req.user.id);
+            if (!user || user.isAccountVerified !== true) {
+                return res.json({ success: false, message: "Your account is not verified with your Email adress" });
+            }
             if (!user || user.approvalStatus !== 'approved') {
                 return res.json({ success: false, message: "Your account is not approved by admin yet." })
             }
@@ -18,6 +21,9 @@ export const checkStudentApproval = async (req, res, next) => {
     try {
         if (req.user && req.user.role === 'student') {
             const user = await userModel.findById(req.user.id);
+            if (!user || user.isAccountVerified !== true) {
+                return res.json({ success: false, message: "Your account is not verified with your Email adress" });
+            }
             if (!user || user.approvalStatus !== 'approved') {
                 return res.json({ success: false, message: "Your account is not approved by admin yet." })
             }
@@ -32,8 +38,11 @@ export const checkAdminApproval = async (req, res, next) => {
     try {
         if (req.user && req.user.role === 'admin') {
             const user = await userModel.findById(req.user.id);
+            if (!user || user.isAccountVerified !== true) {
+                return res.json({ success: false, message: "Your account is not verified with your Email adress" });
+            }
             if (!user || user.adminApprovalStatus !== 'approved') {
-                return res.json({success: false, message: "Your account is not approved by superAdmin yet."})
+                return res.json({ success: false, message: "Your account is not approved by superAdmin yet." })
             }
         }
         next();
