@@ -1,3 +1,3 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-export const store = configureStore({});
+export const store = configureStore({}); 
