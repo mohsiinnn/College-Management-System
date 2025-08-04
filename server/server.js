@@ -16,9 +16,11 @@ const app = express();
 const port = 3000;
 connectDB();
 
+const allowedOrigins = [process.env.ORIGIN_URI]
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the College Management System API');
