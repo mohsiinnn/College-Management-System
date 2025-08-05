@@ -80,7 +80,7 @@ const resetPassword = async (userData) => {
     return response.data
 }
 
-export default authService = {
+const authService = {
     register,
     login,
     logout,
@@ -89,3 +89,5 @@ export default authService = {
     sendResetOtp,
     resetPassword
 }
+
+export default authService
