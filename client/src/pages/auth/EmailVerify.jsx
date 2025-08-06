@@ -11,7 +11,7 @@ const OTP_LENGTH = 6;
 export default function EmailVerify() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, verifySuccess, verifyError, verifyMessage, loading } = useSelector(state => state.auth);
+  const { user, success, error, message, loading } = useSelector(state => state.auth);
 
   // Local flag to trigger only on this component's submit
   const [submitted, setSubmitted] = useState(false);
@@ -22,17 +22,21 @@ export default function EmailVerify() {
   useEffect(() => {
     if (!submitted) return;
 
-    if (verifyError) {
-      toast.error(verifyMessage);
+    if (error) {
+      toast.error(message);
       dispatch(clearAuthState());
       setSubmitted(false);
     }
 
-    if (verifySuccess && user?.role) {
+    if (success && user?.role) {
       navigate(`/${user.role}/dashboard`, { replace: true });
       dispatch(clearAuthState());
     }
-  }, [verifySuccess, verifyError, verifyMessage, user, navigate, dispatch, submitted]);
+
+    // console.log(`success is:${success} and user is: ${user}`);
+    
+
+  }, [success, error, message, user, navigate, dispatch, submitted]);
 
   // Input change handler
   const handleChange = useCallback((char, index) => {
@@ -68,7 +72,7 @@ export default function EmailVerify() {
     const otp = otpValues.join('');
     if (otp.length === OTP_LENGTH) {
       setSubmitted(true);
-      dispatch(verifyAccount(otp));
+      dispatch(verifyAccount({ otp }));
     } else {
       toast.warn('Please enter all 6 digits');
     }
