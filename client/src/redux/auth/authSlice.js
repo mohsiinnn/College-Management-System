@@ -16,7 +16,11 @@ const initialState = {
 export const registerUser = createAsyncThunk("auth/registerUser",
     async (formData, thunkAPI) => {
         try {
-            return await authService.register(formData)
+            const response = await authService.register(formData)
+            if (!response.success) {
+                throw new Error(response.message || "Registration failed");
+            }
+            return response
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -28,7 +32,11 @@ export const registerUser = createAsyncThunk("auth/registerUser",
 export const loginUser = createAsyncThunk("auth/loginUser",
     async (formData, thunkAPI) => {
         try {
-            return await authService.login(formData)
+            const response = await authService.login(formData)
+            if (!response.success) {
+                throw new Error(response.message || "Login failed");
+            }
+            return response;
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -64,7 +72,11 @@ export const sendVerifyOtp = createAsyncThunk("auth/sendVerifyOtp",
 export const verifyAccount = createAsyncThunk("auth/verifyAccount",
     async (formData, thunkAPI) => {
         try {
-            return await authService.verifyAccount(formData)
+            const response = await authService.verifyAccount(formData)
+            if (!response.success) {
+                throw new Error(response.message || "Somthing failed");
+            }
+            return response
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -117,7 +129,7 @@ const authSlice = createSlice({
         const fulfilledCase = (state, action) => {
             state.loading = false;
             state.success = true
-            state.user = action.payload
+            state.user = action.payload.user
         };
         const rejectedCase = (state, action) => {
             state.loading = false

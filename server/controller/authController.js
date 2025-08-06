@@ -46,7 +46,7 @@ export const register = async (req, res) => {
             console.error('Error sending email:', err);
         }
 
-        return res.json({ success: true });
+        return res.json({ success: true, user: user });
 
     } catch (error) {
         res.json({ success: false, message: error.message })
@@ -96,7 +96,7 @@ export const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
-        return res.json({ success: true });
+        return res.json({ success: true, user: user });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
