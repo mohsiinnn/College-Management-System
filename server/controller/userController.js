@@ -1,32 +1,32 @@
 import userModel from "../models/userModel.js";
 
-export const superAdminDashBoard = async(req, res) => {
+export const superAdminDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({success: true, message: "this is super admin Dashboard"})
+    res.json({ success: true, message: "this is super admin Dashboard" })
   }
 }
 
-export const adminDashBoard = async(req, res) => {
+export const adminDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({success: true, message: "this is Admin Dashboard"})
+    res.json({ success: true, user: user, message: "this is Admin Dashboard" })
   }
 }
 
-export const teacherDashBoard = async(req, res) => {
+export const teacherDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({success: true, message: "this is Teaacher Dashboard"})
+    res.json({ success: true, user: user, message: "this is Teaacher Dashboard" })
   }
 }
-export const studentDashBoard = async(req, res) => {
+export const studentDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({success: true, message: "this is Student Dashboard"})
+    res.json({ success: true, user: user, message: "this is Student Dashboard" })
   }
 }
