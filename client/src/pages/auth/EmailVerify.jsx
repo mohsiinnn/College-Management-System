@@ -13,7 +13,7 @@ export default function EmailVerify() {
   const dispatch = useDispatch();
   const { user, success, error, message, loading } = useSelector(state => state.auth);
 
-  // Local flag to trigger only on this component's submit
+
   const [submitted, setSubmitted] = useState(false);
   const [otpValues, setOtpValues] = useState(Array(OTP_LENGTH).fill(''));
   const inputRefs = useRef([]);
@@ -38,7 +38,7 @@ export default function EmailVerify() {
 
   }, [success, error, message, user, navigate, dispatch, submitted]);
 
-  // Input change handler
+
   const handleChange = useCallback((char, index) => {
     if (/^[0-9]?$/.test(char)) {
       const newOtp = [...otpValues];
