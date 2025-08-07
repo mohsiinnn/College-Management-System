@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 
+const dashboardData = JSON.parse(localStorage.getItem('user'));
+
 const initialState = {
-    user: user ? user : null,
+    dashboardData: dashboardData ? dashboardData : null,
     success: false,
     error: false,
     loading: false,
@@ -12,7 +14,13 @@ const initialState = {
 export const adminDashboard = createAsyncThunk("user/adminDashboard",
     async (_, thunkAPI) => {
         try {
-            return await userService.admin()
+            const response = await userService.admin()
+            if (!response.success) {
+                throw new Error(response.message || "Registration failed");
+            }
+
+            return response;
+
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -23,7 +31,11 @@ export const adminDashboard = createAsyncThunk("user/adminDashboard",
 export const studentDashboard = createAsyncThunk("user/studentDashboard",
     async (_, thunkAPI) => {
         try {
-            return await userService.student()
+            const response = await userService.student()
+            if (!response.success) {
+                throw new Error(response.message || "Registration failed");
+            }
+            return response;
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -34,7 +46,11 @@ export const studentDashboard = createAsyncThunk("user/studentDashboard",
 export const teacherDashboard = createAsyncThunk("user/teacherDashboard",
     async (_, thunkAPI) => {
         try {
-            return await userService.teacher()
+            const response = await userService.teacher()
+            if (!response.success) {
+                throw new Error(response.message || "Registration failed");
+            }
+            return response;
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -60,13 +76,13 @@ const userSlice = createSlice({
         const fulfilledCase = (state, action) => {
             state.loading = false;
             state.success = true;
-            state.user = action.payload.user
+            state.dashboardData = action.payload.user
         }
         const rejectedCase = (state, action) => {
             state.loading = false;
             state.error = true;
             state.message = action.payload;
-            state.user = null
+            state.dashboardData = null
         }
 
         builder
@@ -87,5 +103,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {clearUserState} = userSlice.actions
+export const { clearUserState } = userSlice.actions
 export default userSlice.reducer

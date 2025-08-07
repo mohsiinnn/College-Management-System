@@ -30,7 +30,7 @@ const App = () => {
             <Route path='/reset-password' element={<ResetPassword />} />
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/student/dashboard' element={<StudentDashboard />} />
-            <Route path='/teacter/dashboard' element={<TeacherDashboard />} />
+            <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
           </Routes>
         </div>
 

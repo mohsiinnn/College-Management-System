@@ -8,12 +8,12 @@ export const pendingApprovals = async (req, res) => {
             approvalStatus: 'pending',
             role: { $in: ['teacher', 'student'] }
         });
-        
+
         if (pendingUsers.length > 0) {
             return res.json(pendingUsers);
         }
         else {
-            return res.json({ message: "No approvals are prending" });
+            return res.json({ data: pendingUsers, message: "No approvals are prending" });
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });
