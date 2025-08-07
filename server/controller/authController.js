@@ -55,8 +55,8 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
         return res.json({ success: false, message: "Email and Password are required" })
     }
 
@@ -86,6 +86,11 @@ export const login = async (req, res) => {
         //     return res.json({ success: false, message: "Account not approved by admin." })
         // }
 
+
+        // portal role selection
+        if (role && user.role !== role) {
+            return res.status(403).json({ success: false, message: `Please login via the ${user.role} portal` })
+        }
 
         //Here we are generating Token
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })

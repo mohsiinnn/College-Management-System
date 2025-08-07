@@ -60,7 +60,8 @@ const Login = ({ role }) => {
     else {
       const userData = {
         email,
-        password
+        password,
+        role
       }
       dispatch(loginUser(userData))
     }
