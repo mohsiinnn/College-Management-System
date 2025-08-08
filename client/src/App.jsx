@@ -12,6 +12,10 @@ import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import ClassesListPage from './pages/admin/class/ClassList'
 import ClassCreatePage from './pages/admin/class/CreateClass'
 import ClassDetailsPage from './pages/admin/class/ClassDetail'
+import SubjectsListPage from './pages/admin/subject/SubjectsListPage'
+import SubjectCreatePage from './pages/admin/subject/SubjectCreatePage'
+import SubjectDetailsPage from './pages/admin/subject/SubjectDetailsPage'
+import ClassSubjectsPage from './pages/admin/subject/ClassSubjectsPage'
 
 
 
@@ -35,10 +39,17 @@ const App = () => {
             <Route path='/student/dashboard' element={<StudentDashboard />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
 
-
+            {/* CLASS RELATED ROUTES */}
             <Route path="/admin/dashboard/classes" element={<ClassesListPage />} />
             <Route path="/admin/dashboard/classes/new" element={<ClassCreatePage />} />
             <Route path="/admin/dashboard/classes/:id" element={<ClassDetailsPage />} />
+
+            {/* SUBJECT RELATED ROUTES */}
+            <Route path="/admin/dashboard/subjects" element={<SubjectsListPage />} />
+            <Route path="/admin/dashboard/subjects/new" element={<SubjectCreatePage />} />
+            <Route path="/admin/dashboard/subjects/:id" element={<SubjectDetailsPage />} />
+            <Route path="/admin/dashboard/classes/:id/subjects" element={<ClassSubjectsPage />} /> {/* optional */}
+
 
           </Routes>
         </div>

@@ -30,6 +30,14 @@ const AdminDashboard = () => {
                             </button>
                         </div>
                     </div>
+
+                    {/* Add more cards for other admin features here */}
+                    <button onClick={() => navigate("/admin/dashboard/subjects")} className="px-3 py-1.5 rounded bg-gray-100">
+                        All Subjects
+                    </button>
+                    <button onClick={() => navigate("/admin/dashboard/subjects/new")} className="px-3 py-1.5 rounded bg-indigo-600 text-white">
+                        Add Subjects
+                    </button>
                 </div>
             </div>
         </>

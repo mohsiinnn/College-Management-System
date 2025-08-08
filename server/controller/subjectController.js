@@ -37,12 +37,8 @@ export const createSubjects = async (req, res) => {
 export const allSubjects = async (req, res) => {
     try {
         const subjects = await subjectModel.find().populate("className", "className");
-        if (subjects.length > 0) {
-            return res.json({ success: true, data: subjects });
-        }
-        else {
-            return res.json({ success: false, message: "No subjects found" })
-        }
+        return res.json({ success: true, data: subjects });
+
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -52,12 +48,12 @@ export const classSubjects = async (req, res) => {
     const classId = req.params.id;
     try {
         const subjects = await subjectModel.find({ className: classId }).populate("className", "className");
-        if (subjects.length > 0) {
-            return res.json({ success: true, data: subjects });
-        }
-        else {
-            return res.json({ success: true, message: "No subjects found in this class" });
-        }
+        // if (subjects.length > 0) {
+        return res.json({ success: true, data: subjects });
+        // }
+        // else {
+        //     return res.json({ success: true, message: "No subjects found in this class" });
+        // }
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -67,12 +63,12 @@ export const freeSubjectList = async (req, res) => {
     const classId = req.params.id;
     try {
         const subjects = await subjectModel.find({ className: classId, teacher: { $exists: false } });
-        if (subjects.length > 0) {
-            return res.json({ success: true, data: subjects });
-        }
-        else {
-            return res.json({ success: true, message: "No subjects found with teacher" });
-        }
+        // if (subjects.length > 0) {
+        return res.json({ success: true, data: subjects });
+        // }
+        // else {
+        //     return res.json({ success: true, message: "No subjects found with teacher" });
+        // }
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -93,7 +89,7 @@ export const getSubjectDetail = async (req, res) => {
             return res.json({ success: true, data: subject })
         }
         else {
-            return res.json({ success: true, message: "No subject found" })
+            return res.json({ success: false, message: "No subject found" })
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -140,7 +136,13 @@ export const deleteAllSubjects = async (req, res) => {
             await studentModel.updateMany({}, { $pull: { attendance: { subjectId: { $in: ids } } } })
         }
 
-        res.json({ success: true, data: deletedSubject })
+        // res.json({ success: true, data: deletedSubject })
+        return res.json({
+            success: true,
+            message: `Deleted ${deletedSubject?.deletedCount || 0} subjects`,
+            deletedCount: deletedSubject?.deletedCount || 0,
+        });
+
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -162,7 +164,14 @@ export const deleteSubjectsFromClass = async (req, res) => {
             await studentModel.updateMany({}, { $pull: { attendance: { subjectId: { $in: ids } } } })
         }
 
-        res.json({ success: true, data: deletedSubjects })
+        // res.json({ success: true, data: deletedSubjects })
+        return res.json({
+            success: true,
+            message: `Deleted ${deletedSubjects?.deletedCount || 0} subjects from class`,
+            classId,
+            deletedCount: deletedSubjects?.deletedCount || 0,
+        });
+        
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }

@@ -3,12 +3,14 @@ import authReducer from './auth/authSlice'
 import userReducer from './user/userSlice';
 import adminReducer from './admin/adminSlice'
 import classReducer from './class/classSlice'
+import subjectReducer from './subject/subjectSlice'
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         user: userReducer,
         users: adminReducer,
-        class: classReducer
+        class: classReducer,
+        subject: subjectReducer
     }
 }); 

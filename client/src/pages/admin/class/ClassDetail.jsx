@@ -47,7 +47,7 @@ const ClassDetailsPage = () => {
     setBusy(true);
     try {
       await dispatch(deleteClass(id)).unwrap();
-      navigate("/classes");
+      navigate("/admin/dashboard/classes");
     } catch (e) {
       toast.error(e?.message || String(e) || "Delete failed");
     } finally {

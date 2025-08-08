@@ -13,6 +13,6 @@ subjectRouter.get('/free-subjects/:id', isAuthenticated, restrictAdmin, checkAdm
 subjectRouter.get('/subject-details/:id', isAuthenticated, restrictAdmin, checkAdminApproval, getSubjectDetail);
 subjectRouter.post('/delete-subject/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteSubject);
 subjectRouter.post('/delete-allSubjects', isAuthenticated, restrictAdmin, checkAdminApproval, deleteAllSubjects);
-subjectRouter.post('/delete-allClassSubjects/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteSubjectsFromClass);
+subjectRouter.post('/delete-allClassSubjects/', isAuthenticated, restrictAdmin, checkAdminApproval, deleteSubjectsFromClass);
 
 export default subjectRouter;

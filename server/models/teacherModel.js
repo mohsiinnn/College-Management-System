@@ -9,10 +9,10 @@ const teacherSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'class'
     },
-    tSubjects: {
+    tSubjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "subject"
-    }
+    }]
 }, { timestamps: true })
 
 const teacherModel = mongoose.models.teacher || mongoose.model('teacher', teacherSchema)
