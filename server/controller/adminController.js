@@ -10,10 +10,10 @@ export const pendingApprovals = async (req, res) => {
         });
 
         if (pendingUsers.length > 0) {
-            return res.json(pendingUsers);
+            return res.json({ success: true, user: pendingUsers });
         }
         else {
-            return res.json({ data: pendingUsers, message: "No approvals are prending" });
+            return res.json({ message: "No approvals are prending" });
         }
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -26,7 +26,7 @@ export const approveUser = async (req, res) => {
     try {
         const user = await userModel.findByIdAndUpdate(id, { approvalStatus: 'approved' })
         if (user) {
-            return res.json({ success: true, message: "User approved" });
+            return res.json({ success: true, message: "User approved", user: user });
         }
         else {
             res.json({ success: false, message: "User not found" });

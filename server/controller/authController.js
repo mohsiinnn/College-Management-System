@@ -101,6 +101,16 @@ export const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
+        //     // Build a safe user payload (never return password)
+        // const safeUser = {
+        //   id: user._id,
+        //   name: user.name,
+        //   email: user.email,
+        //   role: user.role,
+        //   // include any other non-sensitive fields you need here
+        // };
+        // return res.json({ success: true, user: safeUser });
+        
         return res.json({ success: true, user: user });
 
     } catch (error) {

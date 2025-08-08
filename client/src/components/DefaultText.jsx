@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminDashboard, studentDashboard, teacherDashboard } from "../redux/user/userSlice";
 import { assets } from "../assets/assets";
 import Spinner from "./Spinner";
+import PendingApprovals from "../pages/admin/Approvals";
 
 const roleDashboardAction = {
     admin: adminDashboard,
@@ -37,13 +38,13 @@ const DashboardLoader = () => {
     // Restriction error messages
     // we use this case for best practice for example if we want that if any string in array matches with message then we can show some special UI components 
     const isRestriction =
-        message &&          
-        [         
+        message &&
+        [
             "not verified",
             "not approved by admin",
             "not approved by superAdmin",
             "not verified with your Email adress",
-        ].some((frag) => message?.toLowerCase().includes(frag));   
+        ].some((frag) => message?.toLowerCase().includes(frag));
 
     if (loading) return <Spinner />
     return (
@@ -67,11 +68,7 @@ const DashboardLoader = () => {
             ) : (
                 // If no restriction, show the dashboard content
                 <div className="w-full">
-                    {/* Place your normal dashboard UI here */}
-                    <h2 className="text-2xl font-bold text-indigo-700 mb-4">
-                        Welcome, {user.name}
-                    </h2>
-                    
+                    <PendingApprovals />
                 </div>
             )}
         </div>
