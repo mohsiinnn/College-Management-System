@@ -18,7 +18,7 @@ export const createClass = async (req, res) => {
         const newClass = new classModel({ className, department });
         await newClass.save();
 
-        return res.json({ success: true, data: newClass });
+        return res.json({ success: true, class: newClass, message: "Class created" });
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -29,7 +29,7 @@ export const getAllClasses = async (req, res) => {
     try {
         const classList = await classModel.find();
         if (classList.length > 0) {
-            return res.json({ success: true, userData: classList });
+            return res.json({ success: true, classes: classList });
         }
         else {
             return res.json({ success: false, message: "No sclasses found" });
@@ -45,7 +45,7 @@ export const getSingleClass = async (req, res) => {
     try {
         const getClass = await classModel.findById(id)
         if (getClass) {
-            return res.json({ success: true, userData: getClass });
+            return res.json({ success: true, class: getClass });
         } else {
             return res.json({ success: false, message: "Class not found" });
         }
@@ -57,13 +57,13 @@ export const getSingleClass = async (req, res) => {
 export const deleteClassStudents = async (req, res) => {
     const classId = req.params.id;
     try {
-        const deleteStudents = await studentModel.deleteMany({ sClass: classId })
-        if (deleteStudents.length > 0) {
-            res.json({ success: true, data: deleteStudents })
-        }
-        else {
-            res.json({ success: false, message: "No student found" })
-        }
+        const result = await studentModel.deleteMany({ sClass: classId });
+        return res.json({
+            success: true,
+            message: `Removed ${result.deletedCount} students from class`,
+            classId,
+            deletedCount: result.deletedCount
+        });
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -82,7 +82,7 @@ export const deleteClass = async (req, res) => {
             res.json({ success: false, message: "Class not found" });
         }
 
-        res.json({ success: true, data: deletedClass });
+        res.json({ success: true, classId: deletedClass._id, message: "Class deleted" });
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }

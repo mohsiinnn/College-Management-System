@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import StudentDashboard from './pages/student/StudentDashboard'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
+import ClassesListPage from './pages/admin/class/ClassList'
+import ClassCreatePage from './pages/admin/class/CreateClass'
+import ClassDetailsPage from './pages/admin/class/ClassDetail'
 
 
 
@@ -31,6 +34,12 @@ const App = () => {
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/student/dashboard' element={<StudentDashboard />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
+
+
+            <Route path="/admin/dashboard/classes" element={<ClassesListPage />} />
+            <Route path="/admin/dashboard/classes/new" element={<ClassCreatePage />} />
+            <Route path="/admin/dashboard/classes/:id" element={<ClassDetailsPage />} />
+
           </Routes>
         </div>
 
