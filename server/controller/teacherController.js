@@ -28,10 +28,10 @@ export const createTeacherProfile = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { $addToSet: {tSubjects: subject._id}, tClass: classId }, { new: true })
-        .populate("teacher", "name")
-        .populate("tSubjects", "subjectName")
-        .populate("tClass", "className")
+        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { $addToSet: { tSubjects: subject._id }, tClass: classId }, { new: true })
+            .populate("teacher", "name")
+            .populate("tSubjects", "subjectName")
+            .populate("tClass", "className")
 
         if (updateTeacher) {
             return res.json({ success: true, data: updateTeacher });
@@ -90,7 +90,7 @@ export const getTeacherDetail = async (req, res) => {
 
 export const updateTeacherSubject = async (req, res) => {
     const subjectId = req.params.id;
-    const { teacherId } = req.body;
+    const { teacherId, classId } = req.body;
     try {
 
         // Update the subject's teacher field 
@@ -114,7 +114,7 @@ export const deleteTeacher = async (req, res) => {
     try {
         const deleteTeacher = await teacherModel.findByIdAndDelete(teacherId);
         if (deleteTeacher) {
-            await subjectModel.updateOne(
+            await subjectModel.updateMany(
                 { teacher: deleteTeacher._id },
                 { $unset: { teacher: "" } }     // remove the teacher field from each one
             )
@@ -130,7 +130,7 @@ export const deleteAllTeachers = async (req, res) => {
     try {
         const teachersToDelete = await teacherModel.find()
         if (teachersToDelete.length === 0) {
-            return res.json({ message: "No teacher found to delete" });
+            return res.json({ success: true, message: "No teacher found to delete" });                  
         }
 
         const ids = teachersToDelete.map(i => i._id);
