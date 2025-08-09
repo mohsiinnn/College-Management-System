@@ -24,6 +24,10 @@ import TeacherDetailsPage from './pages/admin/teacher/TeacherDetailsPage'
 import TeacherCreatePage from './pages/admin/teacher/TeacherCreatePage'
 import TeachersListPage from './pages/admin/teacher/TeachersListPage'
 
+import StudentsListPage from './pages/admin/student/StudentsListPage.jsx'
+import StudentDetailsPage from './pages/admin/student/StudentDetailsPage'
+import StudentCreatePage from './pages/admin/student/StudentCreatePage.jsx'
+
 
 
 const App = () => {
@@ -47,9 +51,14 @@ const App = () => {
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
 
             {/* TEACHER RELATED  */}
-            <Route path="/teachers" element={<TeachersListPage />} />
-            <Route path="/teachers/new" element={<TeacherCreatePage />} />
-            <Route path="/teachers/:id" element={<TeacherDetailsPage />} />
+            <Route path="/admin/dashboard/teachers" element={<TeachersListPage />} />
+            <Route path="/admin/dashboard/teachers/new" element={<TeacherCreatePage />} />
+            <Route path="/admin/dashboard/teachers/:id" element={<TeacherDetailsPage />} />
+
+            {/* STUDENT RELATED  */}
+            <Route path="/admin/dashboard/students" element={<StudentsListPage />} />
+            <Route path="/admin/dashboard/students/new" element={<StudentCreatePage />} />
+            <Route path="/admin/dashboard/students/:id" element={<StudentDetailsPage />} />
 
             {/* CLASS RELATED ROUTES */}
             <Route path="/admin/dashboard/classes" element={<ClassesListPage />} />

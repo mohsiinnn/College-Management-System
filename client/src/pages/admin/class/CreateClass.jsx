@@ -25,7 +25,7 @@ const ClassCreatePage = () => {
       toast.success(res?.message || "Class created");
       // optional: refresh list cache
       dispatch(fetchClasses());
-      navigate("/classes");
+      navigate("/admin/dashboard/classes");
     } catch (e) {
       toast.error(e?.message || String(e) || "Create failed");
     } finally {

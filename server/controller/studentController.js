@@ -43,13 +43,19 @@ export const createStudentProfile = async (req, res) => {
 
 export const getStudents = async (req, res) => {
     try {
-        const students = await studentModel.find().populate('sClass', 'className')
-        if (students.length > 0) {
-            return res.json({ success: true, data: students })
-        }
-        else {
-            return res.json({ success: false, message: "No students found" });
-        }
+        const students = await studentModel.find()
+            .populate("student", "name")
+            .populate({
+                path: 'sClass',
+                model: "class",
+                select: "className"
+            })
+        // if (students.length > 0) {
+        return res.json({ success: true, data: students })
+        // }
+        // else {
+        //     return res.json({ success: false, message: "No students found" });
+        // }
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -79,9 +85,9 @@ export const getStudentDetail = async (req, res) => {
 }
 
 export const deleteStudent = async (req, res) => {
-    const { studentId } = req.params;
+    const { id } = req.params;
     try {
-        const student = await studentModel.findOne(studentId);
+        const student = await studentModel.findById(id);
         if (!student) {
             return res.json({ success: false, message: "Student profile not found" })
         }
@@ -92,7 +98,7 @@ export const deleteStudent = async (req, res) => {
 
         await student.deleteOne();
 
-        return res.json({ success: true, message: "Student profile deleted" })
+        return res.json({ success: true, message: "Student profile deleted", studentId: id })
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }
@@ -102,7 +108,7 @@ export const deleteAllStudents = async (req, res) => {
     try {
         const students = await studentModel.find();
         if (students.length === 0) {
-            return res.json({ success: false, message: "No student found" });
+            return res.json({ success: true, message: "No student found" });
         }
 
         const ids = students.map(i => i._id)
@@ -127,7 +133,7 @@ export const deleteStudentsFromClass = async (req, res) => {
     try {
         const students = await studentModel.find({ sClass: classId });
         if (students.length === 0) {
-            return res.json({ success: false, message: "No students to delete in this class" });
+            return res.json({ success: true, message: "No students to delete in this class" });
         }
 
         const ids = students.map(i => i._id)
@@ -162,17 +168,41 @@ export const addAttendance = async (req, res) => {
         // const subject = await subjectModel.findById(subjectId);
 
         const exsistingAttendance = student.attendance.find((a) => {
-            a.date.toDateString = new Date(date).toDateString && a.subjectId.toString() === subjectId
+            a.subjectId.toString() === subjectId && a.date.toDateString() === new Date(date).toDateString()
         })
         if (exsistingAttendance) {
             exsistingAttendance.status = status;
         }
-
-        student.attendance.push({ date, status, subjectId });
-
+        else {
+            student.attendance.push({ date, status, subjectId });
+        }
         const newAttendance = await student.save();
         return res.json({ success: true, data: newAttendance });
 
+    //     const d = new Date(date);
+    // if (Number.isNaN(d.getTime())) {
+    //   return res.json({ success: false, message: "Invalid date" });
+    // }
+
+    // // ensure status is one of enum
+    // if (!["present", "absent"].includes(status)) {
+    //   return res.json({ success: false, message: "Invalid status" });
+    // }
+
+    // const idx = student.attendance.findIndex(
+    //   (a) =>
+    //     String(a.subjectId) === String(subjectId) &&
+    //     new Date(a.date).toDateString() === d.toDateString()
+    // );
+
+    // if (idx >= 0) {
+    //   student.attendance[idx].status = status; // update existing
+    // } else {
+    //   student.attendance.push({ date: d, status, subjectId }); // add new
+    // }
+
+    // const saved = await student.save();
+    // return res.json({ success: true, data: saved, message: "Attendance saved" });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -182,12 +212,13 @@ export const addAttendance = async (req, res) => {
 export const removeStudentAttendance = async (req, res) => {
     const studentId = req.params.id;
     try {
-        const student = await studentModel.findOne(
-            { _id: studentId }, { $set: { attendance: [] } }
+        const student = await studentModel.findByIdAndUpdate(
+            studentId,
+            { $set: { attendance: [] } },
+            { new: true }
         );
-        if (student) {
-            return res.json({ success: true, data: student });
-        }
+        if (!student) return res.json({ success: false, message: "Student not found" });
+        return res.json({ success: true, data: student });
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }

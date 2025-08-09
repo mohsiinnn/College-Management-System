@@ -1,86 +1,79 @@
+import DashboardLoader from "../../components/DefaultText";
 import Navbar from "../../components/Navbar"
 import { useNavigate } from "react-router-dom"
+import { Users, UserPlus, BookOpen, Layers, ClipboardList, UserCog } from "lucide-react";
 
 const AdminDashboard = () => {
     const navigate = useNavigate()
-    return (
-        <>
-            <Navbar />
-            <div className="max-w-6xl mx-auto p-6 space-y-6 py-40">
-                <div className="max-w-6xl mx-auto p-6 space-y-6">
-                    <h1 className="text-2xl font-semibold mb-4">Admin Dashboard</h1>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* Classes */}
-                        <div className="bg-white rounded-xl shadow p-5">
-                            <h2 className="font-semibold mb-2">Classes</h2>
-                            <p className="text-sm text-gray-500 mb-4">
-                                Manage all classes, create new, and view details.
-                            </p>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/classes")}
-                                    className="px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200"
-                                >
-                                    View All
-                                </button>
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/classes/new")}
-                                    className="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700"
-                                >
-                                    Create
-                                </button>
-                            </div>
-                        </div>
+    return (<>
+        <Navbar />
+        {/* <DashboardLoader /> */}
+        <div className="min-h-screen flex items-center justify-center p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
 
-                        {/* Subjects */}
-                        <div className="bg-white rounded-xl shadow p-5">
-                            <h2 className="font-semibold mb-2">Subjects</h2>
-                            <p className="text-sm text-gray-500 mb-4">
-                                Manage subjects, add to classes, and view details.
-                            </p>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/subjects")}
-                                    className="px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200"
-                                >
-                                    View All
-                                </button>
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/subjects/new")}
-                                    className="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700"
-                                >
-                                    Create
-                                </button>
-                            </div>
-                        </div>
+                {/* Classes */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/classes")}
+                    className="bg-gradient-to-b from-purple-800 to-blue-900 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <Layers size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Manage Classes</h3>
+                    <p className="text-center">View, add, and manage classes.</p>
+                </div>
 
-                        {/* Teachers */}
-                        <div className="bg-white rounded-xl shadow p-5">
-                            <h2 className="font-semibold mb-2">Teachers</h2>
-                            <p className="text-sm text-gray-500 mb-4">
-                                Manage teacher profiles, assign subjects, and view details.
-                            </p>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/teachers")}
-                                    className="px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200"
-                                >
-                                    View All
-                                </button>
-                                <button
-                                    onClick={() => navigate("/admin/dashboard/teachers/new")}
-                                    className="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700"
-                                >
-                                    Create
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                {/* Subjects */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/subjects")}
+                    className="bg-gradient-to-b from-purple-800 to-blue-900 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <BookOpen size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Manage Subjects</h3>
+                    <p className="text-center">View, add, and manage subjects.</p>
+                </div>
+
+                {/* Teachers */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/teachers")}
+                    className="bg-gradient-to-b from-purple-800 to-blue-900 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <UserCog size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Manage Teachers</h3>
+                    <p className="text-center">View, add, and manage teachers.</p>
+                </div>
+
+                {/* Students - View All */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/students")}
+                    className="bg-gradient-to-b from-green-700 to-emerald-900 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <Users size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">All Students</h3>
+                    <p className="text-center">View and manage all students.</p>
+                </div>
+
+                {/* Students - Create */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/students/new")}
+                    className="bg-gradient-to-b from-green-600 to-emerald-800 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <UserPlus size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Add Student</h3>
+                    <p className="text-center">Create a new student profile.</p>
+                </div>
+
+                {/* Attendance */}
+                <div
+                    onClick={() => navigate("/admin/dashboard/attendance")}
+                    className="bg-gradient-to-b from-amber-700 to-yellow-900 rounded-2xl p-6 flex flex-col items-center text-white shadow-xl hover:scale-105 transform transition cursor-pointer"
+                >
+                    <ClipboardList size={48} className="mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Attendance</h3>
+                    <p className="text-center">Manage attendance records.</p>
                 </div>
             </div>
-        </>
-    )
+        </div>
+    </>);
 }
 
 export default AdminDashboard
