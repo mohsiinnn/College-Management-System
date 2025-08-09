@@ -6,16 +6,23 @@ import Login from './pages/auth/Login'
 import EmailVerify from './pages/auth/EmailVerify'
 import ResetPassword from './pages/auth/ResetPassword'
 import { useSelector } from 'react-redux'
+
 import AdminDashboard from './pages/admin/AdminDashboard'
 import StudentDashboard from './pages/student/StudentDashboard'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
+
 import ClassesListPage from './pages/admin/class/ClassList'
 import ClassCreatePage from './pages/admin/class/CreateClass'
 import ClassDetailsPage from './pages/admin/class/ClassDetail'
+
 import SubjectsListPage from './pages/admin/subject/SubjectsListPage'
 import SubjectCreatePage from './pages/admin/subject/SubjectCreatePage'
 import SubjectDetailsPage from './pages/admin/subject/SubjectDetailsPage'
 import ClassSubjectsPage from './pages/admin/subject/ClassSubjectsPage'
+
+import TeacherDetailsPage from './pages/admin/teacher/TeacherDetailsPage'
+import TeacherCreatePage from './pages/admin/teacher/TeacherCreatePage'
+import TeachersListPage from './pages/admin/teacher/TeachersListPage'
 
 
 
@@ -38,6 +45,11 @@ const App = () => {
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/student/dashboard' element={<StudentDashboard />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
+
+            {/* TEACHER RELATED  */}
+            <Route path="/teachers" element={<TeachersListPage />} />
+            <Route path="/teachers/new" element={<TeacherCreatePage />} />
+            <Route path="/teachers/:id" element={<TeacherDetailsPage />} />
 
             {/* CLASS RELATED ROUTES */}
             <Route path="/admin/dashboard/classes" element={<ClassesListPage />} />
