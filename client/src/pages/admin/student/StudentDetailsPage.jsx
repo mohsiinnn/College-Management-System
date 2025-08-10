@@ -254,7 +254,7 @@ const StudentDetailsPage = () => {
                       <div>
                         <p className="font-medium">{new Date(a.date).toDateString()}</p>
                         <p className="text-xs text-gray-500">
-                          Status: {a.status} • Subject: {String(a.subjectId)}
+                          Status: {a.status} • Subject: {String(a.subjectId.subjectName)}
                         </p>
                       </div>
                     </li>

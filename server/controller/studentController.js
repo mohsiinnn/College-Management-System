@@ -73,6 +73,11 @@ export const getStudentDetail = async (req, res) => {
                 model: "class",
                 select: "className"
             })
+            .populate({
+                path: 'attendance.subjectId',
+                model: 'subject',
+                select: 'subjectName'
+            })
         if (student) {
             return res.json({ success: true, data: student });
         }
@@ -179,30 +184,30 @@ export const addAttendance = async (req, res) => {
         const newAttendance = await student.save();
         return res.json({ success: true, data: newAttendance });
 
-    //     const d = new Date(date);
-    // if (Number.isNaN(d.getTime())) {
-    //   return res.json({ success: false, message: "Invalid date" });
-    // }
+        //     const d = new Date(date);
+        // if (Number.isNaN(d.getTime())) {
+        //   return res.json({ success: false, message: "Invalid date" });
+        // }
 
-    // // ensure status is one of enum
-    // if (!["present", "absent"].includes(status)) {
-    //   return res.json({ success: false, message: "Invalid status" });
-    // }
+        // // ensure status is one of enum
+        // if (!["present", "absent"].includes(status)) {
+        //   return res.json({ success: false, message: "Invalid status" });
+        // }
 
-    // const idx = student.attendance.findIndex(
-    //   (a) =>
-    //     String(a.subjectId) === String(subjectId) &&
-    //     new Date(a.date).toDateString() === d.toDateString()
-    // );
+        // const idx = student.attendance.findIndex(
+        //   (a) =>
+        //     String(a.subjectId) === String(subjectId) &&
+        //     new Date(a.date).toDateString() === d.toDateString()
+        // );
 
-    // if (idx >= 0) {
-    //   student.attendance[idx].status = status; // update existing
-    // } else {
-    //   student.attendance.push({ date: d, status, subjectId }); // add new
-    // }
+        // if (idx >= 0) {
+        //   student.attendance[idx].status = status; // update existing
+        // } else {
+        //   student.attendance.push({ date: d, status, subjectId }); // add new
+        // }
 
-    // const saved = await student.save();
-    // return res.json({ success: true, data: saved, message: "Attendance saved" });
+        // const saved = await student.save();
+        // return res.json({ success: true, data: saved, message: "Attendance saved" });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
