@@ -1,0 +1,232 @@
+// SidebarUIOnly.Fancy.jsx
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import {
+  Menu,
+  ChevronLeft,
+  GraduationCap,
+  Home,
+  Clock4,
+  Users,
+  Monitor,
+  Layers,
+  BookOpen,
+  LogOut,
+  CircleCheck,
+  Settings,
+} from "lucide-react";
+import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
+
+/** Same items, same UI — display-only */
+const NAV = [
+  { label: "Dashboard", icon: Home },
+  { label: "Pending Approvals", icon: Clock4 },
+  { label: "Students", icon: Users },
+  { label: "Teachers", icon: Monitor },
+  { label: "Classes", icon: Layers },
+  { label: "Subjects", icon: BookOpen },
+  { label: "Settings", icon: Settings },
+];
+
+// Map labels to routes (kept separate so UI doesn’t change)
+const ROUTE_BY_LABEL = {
+  Dashboard: "/",
+  "Pending Approvals": "/approvals",
+  Students: "/students",
+  Teachers: "/teachers",
+  Classes: "/classes",
+  Subjects: "/subjects",
+  Settings: "/settings",
+};
+
+export default function SidebarUIOnlyFancy({
+  onLogout = () => {},
+  onItemClick = (label) => console.log("Clicked:", label),
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    const v = localStorage.getItem("cms_sidebar_open");
+    return v === null ? true : v === "1";
+  });
+
+  const sidebarRef = useRef(null);
+  const closeBtnRef = useRef(null);
+
+  // 🚀 Hooks for navigation
+  const navigate = useNavigate();          // performs route changes
+  // const navigation = useNavigation();      // optional: read state (idle/loading/submitting)
+
+  // Persist open/close
+  useEffect(() => {
+    localStorage.setItem("cms_sidebar_open", isSidebarOpen ? "1" : "0");
+  }, [isSidebarOpen]);
+
+  // Keyboard shortcuts: Esc to close, Ctrl/Cmd+B to toggle
+  useEffect(() => {
+    const onKey = (e) => {
+      const isMeta = e.ctrlKey || e.metaKey;
+      if (e.key === "Escape") setIsSidebarOpen(false);
+      if (isMeta && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        setIsSidebarOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Click outside on mobile closes
+  useEffect(() => {
+    const handler = (e) => {
+      if (!isSidebarOpen) return;
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      if (isDesktop) return;
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setIsSidebarOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [isSidebarOpen]);
+
+  // Focus the close button when opening (accessibility)
+  useEffect(() => {
+    if (isSidebarOpen) {
+      closeBtnRef.current?.focus({ preventScroll: true });
+    }
+  }, [isSidebarOpen]);
+
+  const duration = prefersReducedMotion ? 0 : 0.22;
+
+  const asideVariants = {
+    hidden: { x: "-100%", opacity: 0.0 },
+    visible: { x: 0, opacity: 1.0, transition: { duration } },
+    exit: { x: "-100%", opacity: 0.0, transition: { duration: duration * 0.9 } },
+  };
+
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration } },
+    exit: { opacity: 0, transition: { duration: duration * 0.8 } },
+  };
+
+  const ItemButton = ({ icon: Icon, label, onClick }) => (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-3 rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    >
+      {Icon ? <Icon className="h-5 w-5 text-slate-500" /> : null}
+      <span>{label}</span>
+    </button>
+  );
+
+  // 🔗 Handle navigation without changing UI
+  const handleNav = (label) => {
+    onItemClick(label); // keep your external callback
+    const path = ROUTE_BY_LABEL[label];
+    if (path) {
+      navigate(path);
+      // Optional: close on mobile after navigating (UI remains the same styles)
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      if (!isDesktop) setIsSidebarOpen(false);
+    }
+  };
+
+  return (
+    <>
+      {/* Floating opener when hidden */}
+      {!isSidebarOpen && (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed top-4 left-4 z-50 grid h-10 w-10 place-items-center rounded-md bg-white border shadow focus:outline-none focus:ring-2 focus:ring-blue-200"
+          aria-label="Open sidebar"
+          title="Open sidebar (Ctrl/Cmd + B)"
+        >
+          <Menu className="h-5 w-5 text-slate-700" />
+        </button>
+      )}
+
+      {/* Mobile overlay (lg:hidden) */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.button
+            key="overlay"
+            className="fixed inset-0 bg-black/30 lg:hidden z-40"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={overlayVariants}
+            aria-hidden="true"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar itself */}
+      <AnimatePresence initial={false}>
+        {isSidebarOpen && (
+          <motion.aside
+            key="aside"
+            ref={sidebarRef}
+            role="navigation"
+            aria-label="Sidebar"
+            className="fixed lg:static z-50 bg-white  min-h-screen w-72 flex flex-col"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={asideVariants}
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3 px-4 py-4">
+              <div className="h-10 w-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-blue-500 to-blue-600">
+                <GraduationCap className="h-5 w-5" />
+              </div>
+              <div className="mr-auto">
+                <p className="text-lg font-semibold leading-5">CMS</p>
+                <p className="text-xs text-slate-500 -mt-0.5">College Management</p>
+              </div>
+              <button
+                ref={closeBtnRef}
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-2 rounded hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                aria-label="Close sidebar"
+                title="Close (Esc)"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Items (no links) */}
+            <nav className="mt-1 px-2 pb-4 overflow-y-auto">
+              {NAV.map((item) => (
+                <motion.div
+                  key={item.label}
+                  className="mb-1"
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0, transition: { duration: prefersReducedMotion ? 0 : 0.18 } }}
+                >
+                  <ItemButton
+                    icon={item.icon}
+                    label={item.label}
+                    onClick={() => handleNav(item.label)}  // 👈 navigate here
+                  />
+                </motion.div>
+              ))}
+            </nav>
+
+            {/* Logout */}
+            <div className="mt-auto ">
+              <button
+                onClick={onLogout}
+                className="w-full flex items-center gap-3 px-3 py-3 text-sm text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>Logout</span>
+              </button>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

@@ -1,12 +1,12 @@
 import React from 'react'
-import DefaultText from '../../components/DefaultText'
 import Navbar from '../../components/Navbar'
+import SidebarUIOnlyFancy from '../../components/Testing'
 
 const StudentDashboard = () => {
   return (
     <div>
-        <Navbar />
-        <DefaultText />
+      {/* <Navbar /> */}
+      <SidebarUIOnlyFancy />
     </div>
   )
 }
