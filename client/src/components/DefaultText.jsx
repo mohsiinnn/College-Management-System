@@ -68,7 +68,7 @@ const DashboardLoader = () => {
             ) : (
                 // If no restriction, show the dashboard content
                 <div className="w-full">
-                    <PendingApprovals />
+                    {/* <PendingApprovals /> */}
                 </div>
             )}
         </div>

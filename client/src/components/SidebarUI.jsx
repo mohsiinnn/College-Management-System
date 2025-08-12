@@ -1,6 +1,7 @@
 // SidebarUIOnly.Fancy.jsx
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { clearAuthState, logoutUser } from '../redux/auth/authSlice'
 import {
   Menu,
   ChevronLeft,
@@ -16,6 +17,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
+import { useDispatch, useSelector } from "react-redux";
 
 /** Same items, same UI — display-only */
 const NAV = [
@@ -25,22 +27,19 @@ const NAV = [
   { label: "Teachers", icon: Monitor },
   { label: "Classes", icon: Layers },
   { label: "Subjects", icon: BookOpen },
-  { label: "Settings", icon: Settings },
 ];
 
 // Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
-  Dashboard: "/",
-  "Pending Approvals": "/approvals",
-  Students: "/students",
-  Teachers: "/teachers",
-  Classes: "/classes",
-  Subjects: "/subjects",
-  Settings: "/settings",
+  Dashboard: "/student/dashboard",
+  "Pending Approvals": "/admin/dashboard/pending-approvals",
+  Students: "/admin/dashboard/students-page",
+  Teachers: "/admin/dashboard/teachers-page",
+  Classes: "/admin/dashboard/classes-page",
+  Subjects: "/admin/dashboard/subjects-page",
 };
 
-export default function SidebarUIOnlyFancy({
-  onLogout = () => {},
+export default function SidebarUI({
   onItemClick = (label) => console.log("Clicked:", label),
 }) {
   const prefersReducedMotion = useReducedMotion();
@@ -52,9 +51,11 @@ export default function SidebarUIOnlyFancy({
   const sidebarRef = useRef(null);
   const closeBtnRef = useRef(null);
 
-  // 🚀 Hooks for navigation
-  const navigate = useNavigate();          // performs route changes
-  // const navigation = useNavigation();      // optional: read state (idle/loading/submitting)
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+  const { user } = useSelector((state) => state.auth)
 
   // Persist open/close
   useEffect(() => {
@@ -132,6 +133,12 @@ export default function SidebarUIOnlyFancy({
     }
   };
 
+  const logout = () => {
+    dispatch(logoutUser())
+    dispatch(clearAuthState())
+    navigate('/')
+  }
+
   return (
     <>
       {/* Floating opener when hidden */}
@@ -151,7 +158,7 @@ export default function SidebarUIOnlyFancy({
         {isSidebarOpen && (
           <motion.button
             key="overlay"
-            className="fixed inset-0 bg-black/30 z-40"
+            className="fixed inset-0 lg:left-72 bg-black/30 z-40"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -170,7 +177,7 @@ export default function SidebarUIOnlyFancy({
             ref={sidebarRef}
             role="navigation"
             aria-label="Sidebar"
-            className="fixed lg:relative z-50 bg-white  min-h-screen w-72 flex flex-col"
+            className="fixed left-0 top-0 z-50 bg-white min-h-screen w-72 flex flex-col"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -178,7 +185,7 @@ export default function SidebarUIOnlyFancy({
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-6 pt-10">
-              <div className="h-10 w-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-blue-500 to-blue-600">
+              <div className="h-10 w-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-sky-500 to-sky-600">
                 <GraduationCap className="h-5 w-5" />
               </div>
               <div className="mr-auto">
@@ -195,7 +202,7 @@ export default function SidebarUIOnlyFancy({
                 <ChevronLeft className="h-4 w-4" />
               </button>
             </div>
-              <hr className="text-gray-300 mx-2"/>
+            <hr className="text-gray-300 mx-2" />
 
             {/* Items (no links) */}
             <nav className="mt-1 px-2 pb-4 overflow-y-auto pt-2">
@@ -218,7 +225,7 @@ export default function SidebarUIOnlyFancy({
             {/* Logout */}
             <div className="mt-auto pb-7 px-3 ">
               <button
-                onClick={onLogout}
+                onClick={logout}
                 className="w-full flex items-center gap-3 px-3 py-3 text-sm text-red-600 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200"
               >
                 <LogOut className="h-5 w-5" />

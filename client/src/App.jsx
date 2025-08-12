@@ -27,6 +27,11 @@ import TeachersListPage from './pages/admin/teacher/TeachersListPage'
 import StudentsListPage from './pages/admin/student/StudentsListPage.jsx'
 import StudentDetailsPage from './pages/admin/student/StudentDetailsPage'
 import StudentCreatePage from './pages/admin/student/StudentCreatePage.jsx'
+import Pendings from './pages/admin/ui/Pendings.jsx'
+import StudentsPage from './pages/admin/ui/Students.jsx'
+import TeachersPage from './pages/admin/ui/TeachersPage.jsx'
+import SubjectsPage from './pages/admin/ui/SubjectsPage.jsx'
+import ClassesPage from './pages/admin/ui/ClassesPage.jsx'
 
 
 
@@ -49,6 +54,17 @@ const App = () => {
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/student/dashboard' element={<StudentDashboard />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
+
+
+
+            {/* ADMIN DASHBOARD ROUTES  */}
+            {/* <Route path='/admin/dashboard' element={<Pendings />} /> */}
+
+            <Route path='/admin/dashboard/pending-approvals' element={<Pendings />} />
+            <Route path='/admin/dashboard/students-page' element={<StudentsPage />} />
+            <Route path='/admin/dashboard/teachers-page' element={<TeachersPage />} />
+            <Route path='/admin/dashboard/subjects-page' element={<SubjectsPage />} />
+            <Route path='/admin/dashboard/classes-page' element={<ClassesPage />} />
 
             {/* TEACHER RELATED  */}
             <Route path="/admin/dashboard/teachers" element={<TeachersListPage />} />
