@@ -138,7 +138,7 @@ export default function SidebarUIOnlyFancy({
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-4 left-4 z-50 grid h-10 w-10 place-items-center rounded-md bg-white border shadow focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="fixed top-7 left-8 z-50 grid h-11 w-11 place-items-center rounded-md bg-white shadow focus:outline-none focus:ring-2 focus:ring-blue-200"
           aria-label="Open sidebar"
           title="Open sidebar (Ctrl/Cmd + B)"
         >
@@ -146,12 +146,12 @@ export default function SidebarUIOnlyFancy({
         </button>
       )}
 
-      {/* Mobile overlay (lg:hidden) */}
+      {/* Backdrop overlay (all viewports) */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.button
             key="overlay"
-            className="fixed inset-0 bg-black/30 lg:hidden z-40"
+            className="fixed inset-0 bg-black/30 z-40"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -170,14 +170,14 @@ export default function SidebarUIOnlyFancy({
             ref={sidebarRef}
             role="navigation"
             aria-label="Sidebar"
-            className="fixed lg:static z-50 bg-white  min-h-screen w-72 flex flex-col"
+            className="fixed lg:relative z-50 bg-white  min-h-screen w-72 flex flex-col"
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={asideVariants}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-4">
+            <div className="flex items-center gap-3 px-4 py-6 pt-10">
               <div className="h-10 w-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-blue-500 to-blue-600">
                 <GraduationCap className="h-5 w-5" />
               </div>
@@ -195,9 +195,10 @@ export default function SidebarUIOnlyFancy({
                 <ChevronLeft className="h-4 w-4" />
               </button>
             </div>
+              <hr className="text-gray-300 mx-2"/>
 
             {/* Items (no links) */}
-            <nav className="mt-1 px-2 pb-4 overflow-y-auto">
+            <nav className="mt-1 px-2 pb-4 overflow-y-auto pt-2">
               {NAV.map((item) => (
                 <motion.div
                   key={item.label}
@@ -215,10 +216,10 @@ export default function SidebarUIOnlyFancy({
             </nav>
 
             {/* Logout */}
-            <div className="mt-auto ">
+            <div className="mt-auto pb-7 px-3 ">
               <button
                 onClick={onLogout}
-                className="w-full flex items-center gap-3 px-3 py-3 text-sm text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200"
+                className="w-full flex items-center gap-3 px-3 py-3 text-sm text-red-600 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200"
               >
                 <LogOut className="h-5 w-5" />
                 <span>Logout</span>
