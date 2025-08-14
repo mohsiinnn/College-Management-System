@@ -1,3 +1,4 @@
+// import mongoose from "mongoose";
 import classModel from "../models/classModel.js";
 import studentModel from "../models/studentModel.js";
 import userModel from "../models/userModel.js";
@@ -62,12 +63,57 @@ export const getStudents = async (req, res) => {
     }
 }
 
+export const getStudentOnly = async (req, res) => {
+    const { id } = req.params;
+    const user = await userModel.findById(id)
+    if (!user || user.role !== 'student') {
+        return res.json({ success: false, message: "User not found or not a Student" });
+    }
+    const student = await studentModel.findOne({ student: user.id })
+        .populate("student", "name email")                 // <-- populate user (ref: 'user')
+        .populate("sClass", "className")
+    if (student) {
+        return res.json({ success: true, data: student })
+    }
+    else {
+        return res.status(404).json({ success: false, message: "Student not found with mohsin" });
+    }
+}
+
+
+//AGR UPAR WALA FUNCTION KAM NA KARY TOU YE WALA TRY KR KY DEKHO
+// export const getStudentOnly = async (req, res, next) => {
+//   try {
+//     const { id } = req.params; // this should be the USER ID (since we search by user)
+//     if (!mongoose.isValidObjectId(id)) {
+//       return res.status(400).json({ success: false, message: "Invalid user id" });
+//     }
+
+//     const user = await userModel.findById(id).select("role _id").lean();
+//     if (!user) return res.status(404).json({ success: false, message: "User not found" });
+//     if (user.role !== "student") {
+//       return res.status(403).json({ success: false, message: "User is not a student" });
+//     }
+
+//     const doc = await studentModel
+//       .findOne({ student: user._id })                    // field is "student" (user ref)
+//       .populate("student", "name email")                 // <-- populate user (ref: 'user')
+//       .populate("sClass", "className")                   // optional
+//       .lean();
+
+//     if (!doc) return res.status(404).json({ success: false, message: "Student not found" });
+
+//     return res.json({ success: true, data: doc });       // data.student.name, data.student.email
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 export const getStudentDetail = async (req, res) => {
     const { id } = req.params;
     try {
         const student = await studentModel.findById(id)
-            .populate("student", "name")
+            .populate("student", "name email")
             .populate({
                 path: 'sClass',
                 model: "class",
