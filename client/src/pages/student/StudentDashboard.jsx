@@ -5,9 +5,11 @@ import StudentProfileCard from "./ui/StudentProfileCard";
 import StudentSubjectsList from "./ui/StudentSubjectsList";
 import StudentAttendanceTable from "./ui/StudentAttendanceTable";
 import DashboardLoader from "../../components/DefaultText";
+import { useSelector } from "react-redux";
+
 
 export default function StudentDashboard() {
-
+  const { user } = useSelector((state) => state.auth)
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
@@ -55,13 +57,18 @@ export default function StudentDashboard() {
             </div>
           </div>
         </header>
+        {!user.success ? <div className="min-h-screen mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+          <p className="px-6 py-16 text-center items-center justify-center">
+            {user.message}
+          </p>
+        </div> :
+          <div>
 
-        {/* <DashboardLoader /> */}
-        {/* <Dashboard /> */}
-        <StudentProfileCard />
-        <StudentSubjectsList />
-        <StudentAttendanceTable/>
-
+            <StudentProfileCard />
+            <StudentSubjectsList />
+            <StudentAttendanceTable />
+          </div>
+        }
       </div>
     </div>
   );

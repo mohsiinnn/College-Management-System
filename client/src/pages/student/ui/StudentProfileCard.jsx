@@ -14,7 +14,7 @@ const StudentProfileCard = () => {
         error = false,
     } = useSelector((s) => s.student || {});
 
-    
+
     useEffect(() => {
         const id = user?.user?._id; // get correct _id
         // console.log("id: ", id)

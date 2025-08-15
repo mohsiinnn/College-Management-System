@@ -44,7 +44,7 @@ const DashboardLoader = () => {
             "not verified",
             "not approved by admin",
             "not approved by superAdmin",
-            "not verified with your Email adress",
+            "Your account is not verified with your Email adress",
         ].some((frag) => message?.toLowerCase().includes(frag));
 
     if (loading) return <Spinner />
