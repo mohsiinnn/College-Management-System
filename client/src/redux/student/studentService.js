@@ -17,6 +17,12 @@ const getStudents = async () => {
   return data; // { success:true, data:[...] }
 };
 
+// GET /api/student/getStudentOnly/:id
+const getStudentOnly = async (id) => {
+  const { data } = await axios.get(`${API_URL}/api/student/getStudentOnly/${id}`);
+  return data; // { success:true, data:{...} } | { success:true, message }
+};
+
 // GET /api/student/getStudent/:id
 const getStudentDetail = async (id) => {
   const { data } = await axios.get(`${API_URL}/api/student/getStudent/${id}`);
@@ -80,6 +86,7 @@ export default {
   getStudents,
   getStudentDetail,
   deleteStudent,
+  getStudentOnly,
   deleteAllStudents,
   deleteStudentsFromClass,
   addAttendance,

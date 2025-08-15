@@ -4,6 +4,7 @@ import { adminDashboard, studentDashboard, teacherDashboard } from "../redux/use
 import { assets } from "../assets/assets";
 import Spinner from "./Spinner";
 import PendingApprovals from "../pages/admin/Approvals";
+import StudentDashboard from "../pages/student/StudentDashboard";
 
 const roleDashboardAction = {
     admin: adminDashboard,
@@ -69,6 +70,7 @@ const DashboardLoader = () => {
                 // If no restriction, show the dashboard content
                 <div className="w-full">
                     {/* <PendingApprovals /> */}
+                    <StudentDashboard />
                 </div>
             )}
         </div>

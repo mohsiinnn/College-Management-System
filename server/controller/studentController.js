@@ -63,6 +63,7 @@ export const getStudents = async (req, res) => {
     }
 }
 
+
 export const getStudentOnly = async (req, res) => {
     const { id } = req.params;
     const user = await userModel.findById(id)
@@ -72,6 +73,11 @@ export const getStudentOnly = async (req, res) => {
     const student = await studentModel.findOne({ student: user.id })
         .populate("student", "name email")                 // <-- populate user (ref: 'user')
         .populate("sClass", "className")
+        .populate({
+                path: 'attendance.subjectId',
+                model: 'subject',
+                select: 'subjectName'
+            })
     if (student) {
         return res.json({ success: true, data: student })
     }

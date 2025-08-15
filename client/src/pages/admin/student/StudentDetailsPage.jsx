@@ -150,6 +150,7 @@ const StudentDetailsPage = () => {
           {/* Card: basic info */}
           <div className="bg-white rounded-xl shadow p-4">
             <p><span className="font-medium">Name:</span> {student?.student?.name || "—"}</p>
+            <p><span className="font-medium">Email:</span> {student?.student?.email || "—"}</p>
             <p><span className="font-medium">Class:</span> {student?.sClass?.className || "—"}</p>
             <p><span className="font-medium">Attendance entries:</span> {Array.isArray(student.attendance) ? student.attendance.length : 0}</p>
           </div>
@@ -166,7 +167,7 @@ const StudentDetailsPage = () => {
                   onChange={(e) => setSubjectId(e.target.value)}
                   disabled={subjLoading || !currentClassId}
                 >
-                  <option value="">{subjLoading ? "Loading…" : "-- Select Subject --"}</option>
+                  <option value="">{subjLoading ? "Loading…" : " Select Subject "}</option>
                   {classSubjects.map((s) => (
                     <option key={s._id} value={s._id}>
                       {s.subjectName} ({s.courseCode})

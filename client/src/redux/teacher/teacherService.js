@@ -21,6 +21,15 @@ const getTeachers = async () => {
   return data;
 };
 
+
+// GET /api/teacher/getOneTeacher/:id
+const getOneTeacher = async (id) => {
+  const { data } = await axios.get(`${API_URL}/api/teacher/getOneTeacher/${id}`);
+  // controller: { success:true, data:{...} } OR { success:true, message:"No teacher found" }
+  return data;
+};
+
+
 // GET /api/teacher/getTeacher/:id
 const getTeacherDetail = async (id) => {
   const { data } = await axios.get(`${API_URL}/api/teacher/getTeacher/${id}`);
@@ -57,6 +66,7 @@ const deleteAllTeachers = async () => {
 const teacherService = {
   addTeacherProfile,
   getTeachers,
+  getOneTeacher,
   getTeacherDetail,
   updateTeacherSubject,
   deleteTeacher,

@@ -1,7 +1,7 @@
 // SidebarUIOnly.Fancy.jsx
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { clearAuthState, logoutUser } from '../redux/auth/authSlice'
+import { clearAuthState, logoutUser } from '../../../redux/auth/authSlice'
 import {
   Menu,
   ChevronLeft,
@@ -15,28 +15,26 @@ import {
   LogOut,
   CircleCheck,
   Settings,
+  User,
+  Calendar,
 } from "lucide-react";
 import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
 import { useDispatch, useSelector } from "react-redux";
 
 /** Same items, same UI — display-only */
 const NAV = [
-  { label: "Dashboard", icon: Home },
-  { label: "Pending Approvals", icon: Clock4 },
-  { label: "Students", icon: Users },
-  { label: "Teachers", icon: Monitor },
-  { label: "Classes", icon: Layers },
-  { label: "Subjects", icon: BookOpen },
+    { label: "Profile", icon: User },
+    { label: "Subjects", icon: BookOpen },
+    { label: "Attendance", icon: Calendar },
+    { label: "Verify Email", icon: Calendar },
 ];
 
 // Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
-  Dashboard: "/admin/dashboard",
-  "Pending Approvals": "/admin/dashboard/pending-approvals",
-  Students: "/admin/dashboard/students-page",
-  Teachers: "/admin/dashboard/teachers-page",
-  Classes: "/admin/dashboard/classes-page",
-  Subjects: "/admin/dashboard/subjects-page",
+  Profile: "/student/dashboard",
+  Subjects: "/student/dashboard/subjects",
+  Attendance: "/student/dashboard/attendance",
+  'Verify Email': "/email-verify",
 };
 
 export default function SidebarUI({

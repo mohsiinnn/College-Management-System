@@ -66,6 +66,36 @@ export const getTeachers = async (req, res) => {
     }
 }
 
+
+export const getOneTeacher = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await userModel.findById(id)
+
+        if (!user || user.role !== 'teacher') {
+            return res.json({ success: true, message: "No User found" });
+        }
+
+        const teacher = await teacherModel.findOne({teacher: user._id})
+            .populate("teacher", "name email")
+            .populate({
+                path: 'tSubjects',
+                model: "subject",
+                select: "subjectName"
+            })
+            .populate('tClass', 'className')
+
+        if (teacher) {
+            return res.json({ success: true, data: teacher });
+        } else {
+            return res.json({ success: true, message: "No teacher found" });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
+
 export const getTeacherDetail = async (req, res) => {
     const { id } = req.params;
     try {
@@ -130,7 +160,7 @@ export const deleteAllTeachers = async (req, res) => {
     try {
         const teachersToDelete = await teacherModel.find()
         if (teachersToDelete.length === 0) {
-            return res.json({ success: true, message: "No teacher found to delete" });                  
+            return res.json({ success: true, message: "No teacher found to delete" });
         }
 
         const ids = teachersToDelete.map(i => i._id);

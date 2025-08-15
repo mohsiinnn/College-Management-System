@@ -1,8 +1,12 @@
 import { Bell, Search } from "lucide-react";
-import SidebarUI from "../../components/SidebarUI";
 import Dashboard from "../admin/ui/Dashboard";
+import SidebarUI from "./ui/SideBarUI";
+import StudentProfileCard from "./ui/StudentProfileCard";
+import StudentSubjectsList from "./ui/StudentSubjectsList";
+import StudentAttendanceTable from "./ui/StudentAttendanceTable";
+import DashboardLoader from "../../components/DefaultText";
 
-export default function AdminDashboard() {
+export default function StudentDashboard() {
 
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
@@ -17,11 +21,12 @@ export default function AdminDashboard() {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
+        {/* <Navbar /> */}
         <header className="sticky top-0 z-30 bg-white ">
           <div className="px-4 sm:px-6 lg:px-8 h-24 flex items-center gap-3">
 
             <div className="flex flex-col pl-16">
-              <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Admin Dashboard</h1>
+              <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Student Dashboard</h1>
               <p className=" text-slate-500 -mt-0.5">
                 Welcome back, manage your college efficiently
               </p>
@@ -51,9 +56,35 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        <Dashboard />
+        {/* <DashboardLoader /> */}
+        {/* <Dashboard /> */}
+        <StudentProfileCard />
+        <StudentSubjectsList />
+        <StudentAttendanceTable/>
 
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+
+// import React from 'react'
+// import Navbar from '../../components/Navbar'
+
+// import DashboardLoader from "../../components/DefaultText";
+
+// const StudentDashboard = () => {
+//   return (
+//     <div>
+//       <Navbar />
+//       <DashboardLoader />
+//     </div>
+//   )
+// }
+
+// export default StudentDashboard

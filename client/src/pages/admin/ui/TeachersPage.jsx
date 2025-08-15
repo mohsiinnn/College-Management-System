@@ -61,7 +61,7 @@ export default function TeachersPage() {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h1 className="text-2xl font-semibold text-emerald-600">Teachers</h1>
+                <h1 className="text-3xl font-semibold text-emerald-600">Teachers</h1>
                 <p className="text-slate-600 text-sm">Manage teaching staff and assignments</p>
               </div>
 

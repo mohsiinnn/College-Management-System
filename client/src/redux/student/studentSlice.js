@@ -40,6 +40,20 @@ export const fetchStudents = createAsyncThunk(
   }
 );
 
+export const fetchStudentOnly = createAsyncThunk(
+  "student/fetchStudentOne",
+  async (id, thunkAPI) => {
+    try {
+      const res = await studentService.getStudentOnly(id);
+      if (!res?.success) throw new Error(res?.message || "Failed to load student");
+      return res; // { success, data } | { success:true, message }
+    } catch (err) {
+      const m = err.response?.data?.message || err.message || String(err);
+      return thunkAPI.rejectWithValue(m);
+    }
+  }
+);
+
 export const fetchStudentDetail = createAsyncThunk(
   "student/fetchOne",
   async (id, thunkAPI) => {
@@ -220,6 +234,26 @@ const studentSlice = createSlice({
         s.error = true;
         s.message = action.payload || "Failed to load students";
         s.students = [];
+      })
+
+
+      // fetch student only
+      .addCase(fetchStudentOnly.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(fetchStudentOnly.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        s.student = action.payload?.data || null;
+        if (!s.student && action.payload?.message) s.message = action.payload.message;
+      })
+      .addCase(fetchStudentOnly.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true;
+        s.message = action.payload || "Failed to load student";
+        s.student = null;
       })
 
       // fetch one

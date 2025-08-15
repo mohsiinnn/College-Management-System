@@ -27,11 +27,13 @@ import TeachersListPage from './pages/admin/teacher/TeachersListPage'
 import StudentsListPage from './pages/admin/student/StudentsListPage.jsx'
 import StudentDetailsPage from './pages/admin/student/StudentDetailsPage'
 import StudentCreatePage from './pages/admin/student/StudentCreatePage.jsx'
+
 import Pendings from './pages/admin/ui/Pendings.jsx'
 import StudentsPage from './pages/admin/ui/Students.jsx'
 import TeachersPage from './pages/admin/ui/TeachersPage.jsx'
 import SubjectsPage from './pages/admin/ui/SubjectsPage.jsx'
 import ClassesPage from './pages/admin/ui/ClassesPage.jsx'
+import DashboardLoader from './components/DefaultText.jsx'
 
 
 
@@ -52,13 +54,14 @@ const App = () => {
             <Route path='/email-verify' element={<EmailVerify />} />
             <Route path='/reset-password' element={<ResetPassword />} />
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
-            <Route path='/student/dashboard' element={<StudentDashboard />} />
+            <Route path='/student/dashboard' element={<DashboardLoader />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
 
 
+            {/* <Route path="/dashboard/student" element={<StudentDashboard />} />
+            <Route path="/dashboard/student/:id" element={<StudentDashboard />} /> */}
 
             {/* ADMIN DASHBOARD ROUTES  */}
-            {/* <Route path='/admin/dashboard' element={<Pendings />} /> */}
 
             <Route path='/admin/dashboard/pending-approvals' element={<Pendings />} />
             <Route path='/admin/dashboard/students-page' element={<StudentsPage />} />
