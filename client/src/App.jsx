@@ -34,6 +34,8 @@ import TeachersPage from './pages/admin/ui/TeachersPage.jsx'
 import SubjectsPage from './pages/admin/ui/SubjectsPage.jsx'
 import ClassesPage from './pages/admin/ui/ClassesPage.jsx'
 import DashboardLoader from './components/DefaultText.jsx'
+import StudentAttendanceTable from './pages/student/ui/StudentAttendanceTable.jsx'
+import StudentSubjectListDashboard from './pages/student/ui/StudentSubjectListDashboard.jsx'
 
 
 
@@ -58,8 +60,11 @@ const App = () => {
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
 
 
-            {/* <Route path="/dashboard/student" element={<StudentDashboard />} />
-            <Route path="/dashboard/student/:id" element={<StudentDashboard />} /> */}
+            {/* STUDENT DASHBOARD ROUTES  */}
+            <Route path="student/dashboard" element={<StudentDashboard />} />
+            <Route path="student/dashboard/attendance" element={<StudentAttendanceTable />} />
+            <Route path="student/dashboard/subjects" element={<StudentSubjectListDashboard />} />
+
 
             {/* ADMIN DASHBOARD ROUTES  */}
 

@@ -65,8 +65,8 @@ export default function StudentDashboard() {
           <div>
 
             <StudentProfileCard />
-            <StudentSubjectsList />
-            <StudentAttendanceTable />
+            {/* <StudentSubjectsList /> */}
+            {/* <StudentAttendanceTable /> */}
           </div>
         }
       </div>
