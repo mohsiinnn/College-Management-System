@@ -19,6 +19,7 @@ const SubjectsListPage = () => {
 
     const [actingId, setActingId] = useState(null);
     const [deletingAll, setDeletingAll] = useState(false);
+    const [expandedClasses, setExpandedClasses] = useState({});
 
     useEffect(() => {
         dispatch(fetchAllSubjects());
@@ -26,7 +27,7 @@ const SubjectsListPage = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (error && message) toast.error(message);
+        if (error) toast.error(message || "Something went wrong");
         else if (message) toast.success(message);
     }, [error, message]);
 
@@ -36,7 +37,7 @@ const SubjectsListPage = () => {
         try {
             await dispatch(deleteSubject(id)).unwrap();
         } catch (e) {
-            toast.error(e?.message || String(e) || "Delete failed");
+            toast.error(e?.message || "Delete failed");
         } finally {
             setActingId(null);
         }
@@ -48,14 +49,32 @@ const SubjectsListPage = () => {
         try {
             await dispatch(deleteAllSubjects()).unwrap();
         } catch (e) {
-            toast.error(e?.message || String(e) || "Delete all failed");
+            toast.error(e?.message || "Delete all failed");
         } finally {
             setDeletingAll(false);
         }
     };
 
+    const grouped = subjects.reduce((acc, subj) => {
+        const classLabel =
+            typeof subj.className === "object" && subj.className
+                ? subj.className.className
+                : String(subj.className || "Unassigned");
+        if (!acc[classLabel]) acc[classLabel] = [];
+        acc[classLabel].push(subj);
+        return acc;
+    }, {});
+
+    const toggleClassDropdown = (classLabel) => {
+        setExpandedClasses((prev) => ({
+            ...prev,
+            [classLabel]: !prev[classLabel],
+        }));
+    };
+
     return (
         <div className="max-w-6xl mx-auto p-6">
+            {/* Top bar */}
             <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-semibold">Subjects</h1>
                 <div className="flex gap-2">
@@ -70,52 +89,95 @@ const SubjectsListPage = () => {
                         to="/admin/dashboard/subjects/new"
                         className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
                     >
-                        + New Subjects
+                        + New Subject
                     </Link>
                 </div>
             </div>
 
+            {/* Loading / Empty state */}
             {loading && <p className="text-sm text-gray-500">Loading…</p>}
-
             {!loading && (!subjects || subjects.length === 0) && (
                 <p className="text-sm text-gray-500">No subjects found.</p>
             )}
 
-            {!loading && subjects?.length > 0 && (
-                <div className="bg-white rounded-xl shadow">
-                    <ul className="divide-y">
-                        {subjects.map((s) => {
-                            const busy = actingId === s._id;
-                            return (
-                                <li key={s._id} className="p-4 flex items-center justify-between">
-                                    <div>
-                                        <p className="font-medium">{s.subjectName}</p>
-                                        <p className="text-xs text-gray-500">
-                                            Code: {s.courseCode} • Class:{" "}
-                                            {typeof s.className === "object" ? s.className?.className : String(s.className)}
-                                        </p>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => navigate(`/admin/dashboard/subjects/${s._id}`)}
-                                            className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200"
+            {/* Grouped dropdown list */}
+            {!loading &&
+                Object.keys(grouped).map((classLabel) => (
+                    <div
+                        key={classLabel}
+                        className="bg-white rounded-xl shadow mb-4 overflow-hidden"
+                    >
+                        {/* Class dropdown header */}
+                        <button
+                            onClick={() => toggleClassDropdown(classLabel)}
+                            className="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 text-left"
+                        >
+                            <span className="font-semibold text-gray-700">
+                                Class: {classLabel} ({grouped[classLabel].length})
+                            </span>
+                            <span
+                                className={`text-sm text-gray-500 transform transition-transform duration-300 ${
+                                    expandedClasses[classLabel] ? "rotate-180" : "rotate-0"
+                                }`}
+                            >
+                                ▼
+                            </span>
+                        </button>
+
+                        {/* Animated subject list */}
+                        <div
+                            className={`transition-all duration-500 overflow-hidden ${
+                                expandedClasses[classLabel]
+                                    ? "max-h-96 opacity-100"
+                                    : "max-h-0 opacity-0"
+                            }`}
+                        >
+                            <ul className="divide-y">
+                                {grouped[classLabel].map((s) => {
+                                    const busy = actingId === s._id;
+                                    return (
+                                        <li
+                                            key={s._id}
+                                            className="p-4 flex items-center justify-between"
                                         >
-                                            Details
-                                        </button>
-                                        <button
-                                            onClick={() => onDelete(s._id)}
-                                            disabled={busy}
-                                            className="px-3 py-1.5 rounded-md bg-red-600 text-white disabled:opacity-50"
-                                        >
-                                            {busy ? "Deleting…" : "Delete"}
-                                        </button>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            )}
+                                            <div>
+                                                <p className="font-medium">
+                                                    {s.subjectName}
+                                                </p>
+                                                <p className="text-xs text-gray-500">
+                                                    Code: {s.courseCode}
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/admin/dashboard/subjects/${s._id}`
+                                                        )
+                                                    }
+                                                    className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200"
+                                                >
+                                                    Details
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        onDelete(s._id)
+                                                    }
+                                                    disabled={busy}
+                                                    className="px-3 py-1.5 rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
+                                                >
+                                                    {busy
+                                                        ? "Deleting…"
+                                                        : "Delete"}
+                                                </button>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    </div>
+                ))}
         </div>
     );
 };

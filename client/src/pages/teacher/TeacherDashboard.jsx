@@ -3,10 +3,12 @@ import Dashboard from "../admin/ui/Dashboard";
 import DashboardLoader from "../../components/DefaultText";
 import { useSelector } from "react-redux";
 import TSidebarUI from "./ui/TSideBarUI";
+import TeacherProfileCard from "./ui/TeacherProfileCard";
+// import TeacherMarkAttendance from "./ui/TeacherMarkAttendance";
 
 
 const TeacherDashboard = () => {
-    const { user } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.auth)
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
@@ -60,11 +62,8 @@ const TeacherDashboard = () => {
           </p>
         </div> :
           <div>
-            {/* 
-                <StudentProfileCard />
-                <StudentSubjectsList />
-                <StudentAttendanceTable /> 
-            */}
+            <TeacherProfileCard />
+            {/* <TeacherMarkAttendance /> */}
           </div>
         }
       </div>

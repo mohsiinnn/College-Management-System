@@ -45,14 +45,14 @@ const TeacherProfileCard = () => {
         <div className="min-h-screen  bg-slate-50">
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 mt-5">
-                <h1 className="text-3xl font-semibold text-emerald-600">Student Details</h1>
+                <h1 className="text-3xl font-semibold text-emerald-600">Teacher Details</h1>
             </div>
             {/* Table */}
             <div className=" h-70 mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
 
                 <div className="px-6 py-16 text-center items-center justify-center">
                     {!loading && !teacher && (
-                        <p className="text-sm text-gray-500">Student not found.</p>
+                        <p className="text-sm text-gray-500">Teacher not found.</p>
                     )}
                     {!loading && teacher && (
                         <div>
