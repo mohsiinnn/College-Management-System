@@ -5,6 +5,7 @@ import { assets } from "../assets/assets";
 import Spinner from "./Spinner";
 import PendingApprovals from "../pages/admin/Approvals";
 import StudentDashboard from "../pages/student/StudentDashboard";
+import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 
 const roleDashboardAction = {
     admin: adminDashboard,
@@ -47,6 +48,11 @@ const DashboardLoader = () => {
             "Your account is not verified with your Email adress",
         ].some((frag) => message?.toLowerCase().includes(frag));
 
+    const doller = (user?.role === 'teacher') ?
+        <div><TeacherDashboard /></div>
+        :
+        <div><StudentDashboard /></div>
+
     if (loading) return <Spinner />
     return (
         <div className="flex flex-col min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200">
@@ -69,8 +75,7 @@ const DashboardLoader = () => {
             ) : (
                 // If no restriction, show the dashboard content
                 <div className="w-full">
-                    {/* <PendingApprovals /> */}
-                    <StudentDashboard />
+                    {doller}
                 </div>
             )}
         </div>

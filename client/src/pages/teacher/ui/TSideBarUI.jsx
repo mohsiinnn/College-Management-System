@@ -23,17 +23,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 /** Same items, same UI — display-only */
 const NAV = [
-    { label: "Profile", icon: User },
-    { label: "Subjects", icon: BookOpen },
-    { label: "Attendance", icon: Calendar },
-    { label: "Verify Email", icon: Calendar },
+  { label: "Profile", icon: User },
+  { label: "Subjects", icon: BookOpen },
+  { label: "Attendance", icon: Calendar },
+  { label: "Verify Email", icon: Calendar },
 ];
 
 // Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
-  Profile: "/student/dashboard",
-  Subjects: "/student/dashboard/subjects",
-  Attendance: "/student/dashboard/attendance",
+  Profile: "/teacher/dashboard",
+  Subjects: "/teacher/dashboard",
+  Attendance: "/teacher/dashboard",
   'Verify Email': "/email-verify",
 };
 

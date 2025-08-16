@@ -17,7 +17,7 @@ const TeacherProfileCard = () => {
 
     useEffect(() => {
         const id = user?.user?._id; // get correct _id
-        console.log("id: ", id)
+        // console.log("id: ", id)
 
         if (id) {
             dispatch(fetchOneTeacher(id));
@@ -52,7 +52,7 @@ const TeacherProfileCard = () => {
 
                 <div className="px-6 py-16 text-center items-center justify-center">
                     {!loading && !teacher && (
-                        <p className="text-sm text-gray-500">Teacher not found.</p>
+                        <p className="text-sm text-gray-500">{message}</p>
                     )}
                     {!loading && teacher && (
                         <div>
@@ -64,29 +64,6 @@ const TeacherProfileCard = () => {
                     )}
                 </div>
 
-            </div>
-
-            <div className="bg-white rounded-xl shadow p-4">
-                <h2 className="text-lg font-medium mb-3">Attendance Log</h2>
-                {Array.isArray(teacher?.tSubjects) && teacher?.tSubjects?.length > 0 ? (
-                    <ul className="divide-y">
-                        {teacher?.tSubjects
-                            .slice()
-                            .sort((a, b) => new Date(b.date) - new Date(a.date))
-                            .map((a, idx) => (
-                                <li key={idx} className="py-2 flex items-center justify-between">
-                                    <div>
-                                        <p className="font-medium">{new Date(a.date).toDateString()}</p>
-                                        <p className="text-xs text-gray-500">
-                                            Status: {a.status} • Subject: {String(a.subjectName)}
-                                        </p>
-                                    </div>
-                                </li>
-                            ))}
-                    </ul>
-                ) : (
-                    <p className="text-sm text-gray-500">No attendance yet.</p>
-                )}
             </div>
         </div>
     )

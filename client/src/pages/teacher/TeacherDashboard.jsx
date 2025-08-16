@@ -1,6 +1,4 @@
 import { Bell, Search } from "lucide-react";
-import Dashboard from "../admin/ui/Dashboard";
-import DashboardLoader from "../../components/DefaultText";
 import { useSelector } from "react-redux";
 import TSidebarUI from "./ui/TSideBarUI";
 import TeacherProfileCard from "./ui/TeacherProfileCard";
@@ -8,11 +6,12 @@ import TeacherProfileCard from "./ui/TeacherProfileCard";
 
 
 const TeacherDashboard = () => {
-  const { user } = useSelector((state) => state.auth)
+  const { user } = useSelector(state => state.auth)
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
+  // console.log(user);
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -29,7 +28,7 @@ const TeacherDashboard = () => {
             <div className="flex flex-col pl-16">
               <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Teacher Dashboard</h1>
               <p className=" text-slate-500 -mt-0.5">
-                Welcome back, manage your college efficiently
+                Welcome back
               </p>
             </div>
 
@@ -63,7 +62,6 @@ const TeacherDashboard = () => {
         </div> :
           <div>
             <TeacherProfileCard />
-            {/* <TeacherMarkAttendance /> */}
           </div>
         }
       </div>

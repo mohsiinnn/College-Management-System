@@ -143,7 +143,9 @@ const teacherSlice = createSlice({
         s.loading = false;
         s.success = true;
         const created = action.payload?.data;
-        if (created) s.teachers.unshift(created);
+        if (created) {
+          s.teachers.unshift(created);
+        }
         s.message = action.payload?.message || "Teacher profile created";
       })
       .addCase(addTeacherProfile.rejected, (s, action) => {
@@ -194,7 +196,7 @@ const teacherSlice = createSlice({
         s.teacher = null;
       })
 
-    
+
       // fetch one
       .addCase(fetchTeacherDetail.pending, (s) => {
         s.loading = true;

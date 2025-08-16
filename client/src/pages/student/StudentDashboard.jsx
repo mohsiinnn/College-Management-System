@@ -1,10 +1,6 @@
 import { Bell, Search } from "lucide-react";
-import Dashboard from "../admin/ui/Dashboard";
 import SidebarUI from "./ui/SideBarUI";
 import StudentProfileCard from "./ui/StudentProfileCard";
-import StudentSubjectsList from "./ui/StudentSubjectsList";
-import StudentAttendanceTable from "./ui/StudentAttendanceTable";
-import DashboardLoader from "../../components/DefaultText";
 import { useSelector } from "react-redux";
 
 
@@ -30,7 +26,7 @@ export default function StudentDashboard() {
             <div className="flex flex-col pl-16">
               <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Student Dashboard</h1>
               <p className=" text-slate-500 -mt-0.5">
-                Welcome back, manage your college efficiently
+                Welcome back
               </p>
             </div>
 

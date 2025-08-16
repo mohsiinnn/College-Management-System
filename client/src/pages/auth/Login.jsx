@@ -12,7 +12,7 @@ const Login = ({ role }) => {
 
   const { user, loading, error, success, message } = useSelector((state) => state.auth)
 
-  const [state, setState] = useState('Sign Up')
+  const [state, setState] = useState('Login')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
