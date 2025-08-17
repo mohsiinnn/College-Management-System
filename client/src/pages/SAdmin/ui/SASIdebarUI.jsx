@@ -9,14 +9,9 @@ import {
   Home,
   Clock4,
   Users,
-  Monitor,
-  Layers,
-  BookOpen,
   LogOut,
-  CircleCheck,
-  Settings,
 } from "lucide-react";
-import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
+import { useNavigate } from "react-router-dom"; 
 import { useDispatch, useSelector } from "react-redux";
 
 /** Same items, same UI — display-only */
@@ -30,7 +25,7 @@ const NAV = [
 const ROUTE_BY_LABEL = {
   Dashboard: "/superAdmin/dashboard",
   "Pending Approvals": "/superAdmin/dashboard/pending-approvals",
-  "All Admins": "/superAdmin/dashboard/Admins",
+  "All Admins": "/superAdmin/dashboard/admins",
 };
 
 export default function SASidebarUI({
@@ -115,7 +110,7 @@ export default function SASidebarUI({
     </button>
   );
 
-  // 🔗 Handle navigation without changing UI
+  // Handle navigation without changing UI
   const handleNav = (label) => {
     onItemClick(label); // keep your external callback
     const path = ROUTE_BY_LABEL[label];
@@ -210,7 +205,7 @@ export default function SASidebarUI({
                   <ItemButton
                     icon={item.icon}
                     label={item.label}
-                    onClick={() => handleNav(item.label)}  // 👈 navigate here
+                    onClick={() => handleNav(item.label)}  // navigate here
                   />
                 </motion.div>
               ))}

@@ -3,6 +3,12 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
+//All Admins
+const getAdmins = async () => {
+    const response = await axios.get(`${API_URL}/api/super-admin/all-admins`)
+    return response.data
+}
+
 //Pending Approvals
 const allPendingAdmins = async () => {
     const response = await axios.get(`${API_URL}/api/super-admin/pending-admins`)
@@ -18,6 +24,7 @@ const rejectAdmin = async (userId) => {
 }
 
 const SAdminService = {
+    getAdmins,
     allPendingAdmins,
     approveAdmin,
     rejectAdmin

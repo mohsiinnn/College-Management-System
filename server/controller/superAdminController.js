@@ -1,6 +1,17 @@
 import userModel from "../models/userModel.js";
 
 
+export const getAdmins = async (req, res) => {
+    try {
+        const admins = await userModel.find({ role: 'admin', adminApprovalStatus: 'approved' });
+        if (admins.length > 0) {
+            return res.json({ success: true, user: admins });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: "There is an error while geting Admins" });
+    }
+}
+
 export const pendingAdmins = async (req, res) => {
     try {
         const admins = await userModel.find({ adminApprovalStatus: 'pending' });

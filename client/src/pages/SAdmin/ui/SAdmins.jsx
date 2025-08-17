@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
     clearAdminState,
-    fetchPendingAdmin,
-    approveAdmin,
-    rejectAdmin,
-} from "../../redux/superAdmin/SAdminSlice";
-import SASidebarUI from "./ui/SASIdebarUI";
+    fetchAllAdmins,
+} from "../../../redux/superAdmin/SAdminSlice";
+import SASidebarUI from "./SASIdebarUI";
 
 
-export default function SAdminDashboard() {
+export default function SAdmins() {
 
-    const { users, loading, error, message } = useSelector((state) => state.sUsers);
+    const { admins, loading, error, message } = useSelector((state) => state.sUsers);
 
     // Function to toggle sidebar (triggers event the sidebar listens to)
     const toggleSidebar = () => {
@@ -22,11 +20,9 @@ export default function SAdminDashboard() {
 
     const dispatch = useDispatch();
 
-    const [actingId, setActingId] = useState(null);
-
     // initial fetch
     useEffect(() => {
-        dispatch(fetchPendingAdmin());
+        dispatch(fetchAllAdmins());
         return () => {
             // cleanup: clear transient messages when leaving page
             dispatch(clearAdminState());
@@ -38,31 +34,6 @@ export default function SAdminDashboard() {
         if (error) toast.error(error);
         if (message) toast.success(message);
     }, [error, message]);
-
-    const handleApprove = async (id) => {
-        setActingId(id);
-        try {
-            const res = await dispatch(approveAdmin(id)).unwrap();
-            if (res.success) { toast.success("User approved"); }
-            else { toast.error(res.message) }
-        } catch (error) {
-            toast.error(error.message || "Failed to approve");
-        } finally {
-            setActingId(null);
-        }
-    };
-
-    const handleReject = async (id) => {
-        setActingId(id);
-        try {
-            await dispatch(rejectAdmin(id)).unwrap();
-            toast.success("User rejected");
-        } catch (e) {
-            toast.error(e?.message || e || "Failed to reject");
-        } finally {
-            setActingId(null);
-        }
-    };
 
     return (
         <div className="min-h-screen bg-slate-50 flex">
@@ -109,28 +80,20 @@ export default function SAdminDashboard() {
                 <div className="min-h-screen bg-slate-50 p-6 md:p-10">
                     {/* Page header */}
                     <div className="mx-auto max-w-6xl">
+
                         <div className="flex items-start justify-between gap-4">
                             <div>
-                                <h1 className="text-3xl font-semibold text-emerald-600">Pending Approvals</h1>
-                                <p className="mt-1 text-sm text-slate-500">Review and approve user registrations</p>
-                            </div>
-
-                            <div className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm text-slate-600 shadow-sm ring-1 ring-slate-200">
-                                <Clock className="h-4 w-4" aria-hidden />
-                                <span>{users.length} users waiting for approval</span>
+                                <h1 className="text-3xl font-semibold text-emerald-600">Active Admins</h1>
                             </div>
                         </div>
 
                         {/* Content card */}
                         <div className="mt-6 rounded-xl bg-white shadow-sm ring-1 ring-slate-200">
-                            {(users.length === 0) ? (
+                            {(admins.length === 0) ? (
                                 <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50">
-                                        <Check className="h-10 w-10 text-emerald-600" aria-hidden />
-                                    </div>
                                     <h2 className="text-lg font-medium text-slate-900">All caught up!</h2>
                                     <p className="max-w-md text-sm text-slate-500">
-                                        There are no pending user approvals at this time.
+                                        There are no Admins available at this time.
                                     </p>
                                 </div>
                             ) : (
@@ -138,7 +101,7 @@ export default function SAdminDashboard() {
 
                                     {!loading && (
                                         <ul className="space-y-3">
-                                            {users.map((user) => (
+                                            {admins.map((user) => (
                                                 <li
                                                     key={user._id}
                                                     className="flex items-center justify-between bg-white rounded-lg shadow p-4"
@@ -149,23 +112,6 @@ export default function SAdminDashboard() {
                                                             <span className="text-gray-500">({user.email})</span>
                                                         </p>
                                                         <p className="text-xs text-gray-500">Role: {user.role}</p>
-                                                    </div>
-
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            onClick={() => handleApprove(user._id)}
-                                                            disabled={actingId === user._id}
-                                                            className="px-3 py-1.5 rounded-md bg-green-600 text-white disabled:opacity-50"
-                                                        >
-                                                            {actingId === user._id ? "Approving…" : "Approve"}
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleReject(user._id)}
-                                                            disabled={actingId === user._id}
-                                                            className="px-3 py-1.5 rounded-md bg-red-600 text-white disabled:opacity-50"
-                                                        >
-                                                            {actingId === user._id ? "Rejecting…" : "Reject"}
-                                                        </button>
                                                     </div>
                                                 </li>
                                             ))}

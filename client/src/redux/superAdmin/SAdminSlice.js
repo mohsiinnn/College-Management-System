@@ -5,12 +5,30 @@ import SAdminService from "./SAdminServices";
 // const users = JSON.parse(localStorage.getItem('users'));
 
 const initialState = {
+    admins: [],
     users: [],
     loading: false,
     success: false,
     error: false,
     message: ""
 }
+
+
+//Get Admins
+export const fetchAllAdmins = createAsyncThunk("admin/fetchAllAdmins",
+    async (_, thunkAPI) => {
+        try {
+            const response = await SAdminService.getAdmins()
+            if (!response.success) {
+                throw new Error(response.message || "Failed to load");
+            }
+            return response
+        } catch (error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 
 //Register user
@@ -73,6 +91,30 @@ const SAdminSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+
+
+        builder
+            .addCase(fetchAllAdmins.pending, (state) => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(fetchAllAdmins.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                const list = Array.isArray(action.payload?.user)
+                    ? action.payload.user
+                    : Array.isArray(action.payload)
+                        ? action.payload
+                        : [];
+                state.admins = list;
+            })
+            .addCase(fetchAllAdmins.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.payload;
+                state.admins = []
+            });
+
 
         builder
             .addCase(fetchPendingAdmin.pending, (state) => {

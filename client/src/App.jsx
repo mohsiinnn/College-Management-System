@@ -38,6 +38,7 @@ import StudentAttendanceTable from './pages/student/ui/StudentAttendanceTable.js
 import StudentSubjectListDashboard from './pages/student/ui/StudentSubjectListDashboard.jsx'
 import SAdminDashboard from './pages/SAdmin/SAdminDashboard.jsx'
 import LoginSAdmin from './pages/SAdmin/ui/LoginSAdmin.jsx'
+import SAdmins from './pages/SAdmin/ui/SAdmins.jsx'
 
 
 
@@ -79,6 +80,8 @@ const App = () => {
             {/* SUPER ADMIN ROUTES  */}
             <Route path='/superAdmin' element={<LoginSAdmin />} />
             <Route path='/superAdmin/dashboard' element={<SAdminDashboard />} />
+            <Route path='/superAdmin/dashboard/pending-approvals' element={<SAdminDashboard />} />
+            <Route path='/superAdmin/dashboard/admins' element={<SAdmins />} />
 
 
             {/* TEACHER RELATED  */}
