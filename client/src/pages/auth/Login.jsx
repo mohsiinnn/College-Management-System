@@ -26,6 +26,9 @@ const Login = ({ role }) => {
       // console.log(error);
 
       if (success || user) {
+        if (user.role === 'superAdmin') {
+          navigate('/superAdmin/dashboard');
+        }
         if (user.role === 'admin') {
           navigate('/admin/dashboard');
         }

@@ -4,8 +4,8 @@ import userModel from "../models/userModel.js";
 export const pendingAdmins = async (req, res) => {
     try {
         const admins = await userModel.find({ adminApprovalStatus: 'pending' });
-        if (admins.length > 0) {    
-            return res.json({ success: true, data: admins });
+        if (admins.length > 0) {
+            return res.json({ success: true, user: admins });
         }
         else {
             return res.json({ success: false, message: "No approvals are prending" });
@@ -21,7 +21,7 @@ export const approveAdmin = async (req, res) => {
     try {
         const admin = await userModel.findByIdAndUpdate(id, { adminApprovalStatus: 'approved' });
         if (admin) {
-            return res.json({ success: true, message: "Admin approved" });
+            return res.json({ success: true, message: "Admin approved", user: admin });
         }
         else {
             res.json({ success: false, message: "Admin not found" });
@@ -38,7 +38,7 @@ export const rejectAdmin = async (req, res) => {
     try {
         const admin = await userModel.findByIdAndUpdate(id, { adminApprovalStatus: 'rejected' });
         if (admin) {
-            return res.json({ success: true, message: "Admin rejected" });
+            return res.json({ success: true, message: "Admin rejected", user: admin });
         }
         else {
             res.json({ success: false, message: "Admin not found" });

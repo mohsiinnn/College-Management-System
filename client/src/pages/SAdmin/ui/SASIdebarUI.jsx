@@ -1,7 +1,7 @@
 // SidebarUIOnly.Fancy.jsx
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { clearAuthState, logoutUser } from '../redux/auth/authSlice'
+import { clearAuthState, logoutUser } from '../../../redux/auth/authSlice'
 import {
   Menu,
   ChevronLeft,
@@ -23,25 +23,17 @@ import { useDispatch, useSelector } from "react-redux";
 const NAV = [
   { label: "Dashboard", icon: Home },
   { label: "Pending Approvals", icon: Clock4 },
-  { label: "Students", icon: Users },
-  { label: "Teachers", icon: Monitor },
-  { label: "Classes", icon: Layers },
-  { label: "Subjects", icon: BookOpen },
-  { label: "Verify Email", icon: BookOpen },
+  { label: "All Admins", icon: Users },
 ];
 
 // Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
-  Dashboard: "/admin/dashboard",
-  "Pending Approvals": "/admin/dashboard/pending-approvals",
-  Students: "/admin/dashboard/students-page",
-  Teachers: "/admin/dashboard/teachers-page",
-  Classes: "/admin/dashboard/classes-page",
-  Subjects: "/admin/dashboard/subjects-page",
-  "Verify Email": "/email-verify"
+  Dashboard: "/superAdmin/dashboard",
+  "Pending Approvals": "/superAdmin/dashboard/pending-approvals",
+  "All Admins": "/superAdmin/dashboard/Admins",
 };
 
-export default function SidebarUI({
+export default function SASidebarUI({
   onItemClick = (label) => console.log("Clicked:", label),
 }) {
   const prefersReducedMotion = useReducedMotion();

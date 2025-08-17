@@ -56,7 +56,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     const { email, password, role } = req.body;
-    if (!email || !password || !role) {
+    if (!email || !password ) {
         return res.json({ success: false, message: "Email and Password are required" })
     }
 
