@@ -11,7 +11,7 @@ import {
 import SidebarUI from "../../../components/SidebarUI";
 
 
-export default function Pendings({ count = 0 }) {
+export default function Pendings() {
 
     const { users, loading, error, message } = useSelector((state) => state.users);
 
@@ -117,7 +117,7 @@ export default function Pendings({ count = 0 }) {
 
                             <div className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm text-slate-600 shadow-sm ring-1 ring-slate-200">
                                 <Clock className="h-4 w-4" aria-hidden />
-                                <span>{count} users waiting for approval</span>
+                                <span>{users.length} users waiting for approval</span>
                             </div>
                         </div>
 

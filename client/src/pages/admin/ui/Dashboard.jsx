@@ -1,11 +1,30 @@
 import { TrendingUp, Users, GraduationCap, Clock, Building2, Eye } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchPendingApprovals } from "../../../redux/admin/adminSlice"
+import { fetchStudents } from "../../../redux/student/studentSlice"
+import { fetchClasses } from "../../../redux/class/classSlice"
+import { fetchTeachers } from "../../../redux/teacher/teacherSlice"
+import { useEffect } from "react";
 
 
 const Dashboard = () => {
     const { users } = useSelector((state) => state.users);
+    const { classes } = useSelector((state) => state.class)
+    const { students } = useSelector((s) => s.student)
+    const { teachers } = useSelector((state) => state.teacher)
+
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchPendingApprovals())
+        dispatch(fetchClasses())
+        dispatch(fetchStudents())
+        dispatch(fetchTeachers())
+
+    }, [dispatch])
+
 
     return (<>
         <main className="px-4 sm:px-6 lg:px-8 py-6">
@@ -16,7 +35,7 @@ const Dashboard = () => {
                     {/* Left side: title, value, footer */}
                     <div>
                         <p className="text-sm text-slate-500">Total Students</p>
-                        <p className="text-3xl font-semibold text-slate-900 ">0</p>
+                        <p className="text-3xl font-semibold text-slate-900 ">{students?.length}</p>
                         <div className="mt-1 flex items-center gap-2">
                             <TrendingUp className="h-4 w-4 text-green-600" />
                             <p className="text-sm text-green-600">+12% from last month</p>
@@ -33,7 +52,7 @@ const Dashboard = () => {
                     {/* Left side: title, value, footer */}
                     <div>
                         <p className="text-sm text-slate-500">Total Teachers</p>
-                        <p className="text-3xl font-semibold text-slate-900">0</p>
+                        <p className="text-3xl font-semibold text-slate-900">{teachers?.length}</p>
                         <div className="mt-1 flex items-center gap-2">
                             <TrendingUp className="h-4 w-4 text-green-600" />
                             <p className="text-sm text-green-600">+3% from last month</p>
@@ -50,7 +69,7 @@ const Dashboard = () => {
                     {/* Left side: title, value, footer */}
                     <div>
                         <p className="text-sm text-slate-500">Pending Approvals</p>
-                        <p className="text-3xl font-semibold text-slate-900">0</p>
+                        <p className="text-3xl font-semibold text-slate-900">{users.length}</p>
                         <div className="mt-1 flex items-center gap-2">
                             <p className="text-sm text-red-600">Requires attention</p>
                         </div>
@@ -66,7 +85,7 @@ const Dashboard = () => {
                     {/* Left side: title, value, footer */}
                     <div>
                         <p className="text-sm text-slate-500">Active Classes</p>
-                        <p className="text-3xl font-semibold text-slate-900">2</p>
+                        <p className="text-3xl font-semibold text-slate-900">{classes?.length}</p>
                         <div className="mt-1 flex items-center gap-2">
                             <p className="text-sm text-indigo-600">Across departments</p>
                         </div>
@@ -94,7 +113,7 @@ const Dashboard = () => {
                 <div className="p-6 text-center text-slate-500">
                     {(users.length === 0) ?
                         <p>No pending approvals</p>
-                        : <p className="text-blue-600">Someone is waiting for approval tab to view</p>
+                        : <p className="text-blue-600 font-medium text-2xl">{users.length} users are waiting for approval tab to view</p>
                     }
                 </div>
             </section>
