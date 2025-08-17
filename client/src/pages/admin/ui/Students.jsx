@@ -1,16 +1,25 @@
 import { Bell, Search, Plus, Users, UserCheck, UserPlus, Building2, Eye } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SidebarUI from "../../../components/SidebarUI";
+import { fetchStudents, fetchAllStudents } from "../../../redux/student/studentSlice"
+import { useEffect } from "react";
 
 export default function StudentsPage() {
-  const { students = [] } = useSelector((s) => s.student || {});
+  const { students = [], allStudents } = useSelector((s) => s.student || {});
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
+
+  useEffect(() => {
+    dispatch(fetchStudents())
+    dispatch(fetchAllStudents())
+  }, [dispatch])
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -92,7 +101,7 @@ export default function StudentsPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Total Students</p>
-                  <p className="text-3xl font-semibold text-slate-900 mt-2">0</p>
+                  <p className="text-3xl font-semibold text-slate-900 mt-2">{allStudents?.length}</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -105,7 +114,7 @@ export default function StudentsPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Active Students</p>
-                  <p className="text-3xl font-semibold text-slate-900 mt-2">0</p>
+                  <p className="text-3xl font-semibold text-slate-900 mt-2">{students.length}</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -119,7 +128,7 @@ export default function StudentsPage() {
             {/* Table / list wrapper */}
             <div className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 px-5 py-4 justify-between flex">
-                <h2 className="text-base font-semibold text-slate-900">All Students (0)</h2>
+                <h2 className="text-base font-semibold text-slate-900">All Students ({students.length})</h2>
                 <button
                   className="flex items-center gap-1 border border-gray-300 px-4 py-2 rounded-lg text-sm text-black hover:text-slate-800"
                   onClick={() => navigate('/admin/dashboard/students')}>
@@ -137,7 +146,7 @@ export default function StudentsPage() {
                     </p>
                   </div>
                 ) :
-                  <p className="font-semibold text-xl text-blue-600">Tap to view all Students</p>
+                  <p className="font-semibold text-2xl text-blue-600">Tap to view all Students</p>
                 }
               </div>
 

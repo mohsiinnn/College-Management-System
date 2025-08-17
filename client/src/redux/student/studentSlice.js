@@ -3,6 +3,7 @@ import studentService from "./studentService";
 
 const initialState = {
   students: [],         // list
+  allStudents: [],
   student: null,        // details
   loading: false,
   success: false,
@@ -19,6 +20,20 @@ export const addStudentProfile = createAsyncThunk(
       const res = await studentService.addStudentProfile(payload);
       if (!res?.success) throw new Error(res?.message || "Failed to create student");
       return res; // { success, data }
+    } catch (err) {
+      const m = err.response?.data?.message || err.message || String(err);
+      return thunkAPI.rejectWithValue(m);
+    }
+  }
+);
+
+export const fetchAllStudents = createAsyncThunk(
+  "student/fetchAllStudents",
+  async (_, thunkAPI) => {
+    try {
+      const res = await studentService.getAllStudents();
+      if (!res?.success) throw new Error(res?.message || "Failed to load students");
+      return res; // { success, data:[...] }
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -218,7 +233,26 @@ const studentSlice = createSlice({
         s.message = action.payload || "Failed to create student";
       })
 
-      // fetch all
+
+      // fetch all students
+      .addCase(fetchAllStudents.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(fetchAllStudents.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        s.allStudents = Array.isArray(action.payload?.data) ? action.payload.data : [];
+      })
+      .addCase(fetchAllStudents.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true;
+        s.message = action.payload || "Failed to load students";
+        s.allStudents = [];
+      })
+
+      // fetch active students
       .addCase(fetchStudents.pending, (s) => {
         s.loading = true;
         s.error = false;

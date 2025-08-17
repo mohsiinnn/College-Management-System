@@ -1,13 +1,14 @@
 import express from 'express'
 import { isAuthenticated } from '../middleware/userMiddleware.js'
 import { restrictAdmin } from '../middleware/adminMiddleware.js'
-import { addAttendance, createStudentProfile, deleteAllStudents, deleteStudent, deleteStudentsFromClass, getStudentDetail, getStudentOnly, getStudents, removeAllStudentAttendanceFromSubject, removeAllStudentsAttendance, removeStudentAttendance, removeStudentAttendanceFromSubject } from '../controller/studentController.js'
+import { addAttendance, createStudentProfile, deleteAllStudents, deleteStudent, deleteStudentsFromClass, getActiveStudents, getAllStudents, getStudentDetail, getStudentOnly, removeAllStudentAttendanceFromSubject, removeAllStudentsAttendance, removeStudentAttendance, removeStudentAttendanceFromSubject } from '../controller/studentController.js'
 import { checkAdminApproval, checkStudentApproval } from '../middleware/requestMiddleware.js'
 
 export const studentRouter = express.Router()
 
 studentRouter.post('/add-student/:id', isAuthenticated, restrictAdmin, checkAdminApproval, createStudentProfile);
-studentRouter.get('/all-students', isAuthenticated, restrictAdmin, checkAdminApproval, getStudents);
+studentRouter.get('/active-students', isAuthenticated, restrictAdmin, checkAdminApproval, getActiveStudents);
+studentRouter.get('/all-students', isAuthenticated, restrictAdmin, checkAdminApproval, getAllStudents);
 studentRouter.get('/getStudent/:id', isAuthenticated, checkAdminApproval, getStudentDetail);
 studentRouter.get('/getStudentOnly/:id', isAuthenticated, checkStudentApproval, getStudentOnly);
 studentRouter.post('/delete-student/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteStudent);

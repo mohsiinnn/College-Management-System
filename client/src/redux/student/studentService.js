@@ -12,8 +12,14 @@ const addStudentProfile = async ({ classId, email }) => {
 };
 
 // GET /api/student/all-students
-const getStudents = async () => {
+const getAllStudents = async () => {
   const { data } = await axios.get(`${API_URL}/api/student/all-students`);
+  return data; // { success:true, data:[...] }
+};
+
+// GET /api/student/all-students
+const getStudents = async () => {
+  const { data } = await axios.get(`${API_URL}/api/student/active-students`);
   return data; // { success:true, data:[...] }
 };
 
@@ -83,6 +89,7 @@ const removeAllStudentAttendanceFromSubject = async (subjectId) => {
 
 export default {
   addStudentProfile,
+  getAllStudents,
   getStudents,
   getStudentDetail,
   deleteStudent,
