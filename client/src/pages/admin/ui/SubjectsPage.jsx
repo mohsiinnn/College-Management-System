@@ -1,16 +1,24 @@
 import { Bell, Search, Users, Plus, UserCheck, BookOpen, Building2, FileText, Bookmark, Eye, Pencil } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SidebarUI from "../../../components/SidebarUI";
+import { fetchAllSubjects } from "../../../redux/subject/subjectSlice"
+import { useEffect } from "react";
 
 export default function SubjectsPage() {
   const { subjects = [] } = useSelector((s) => s.subject || {});
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
+
+  useEffect(() => {
+    dispatch(fetchAllSubjects())
+  }, [])
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -93,7 +101,7 @@ export default function SubjectsPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Total Subjects</p>
-                  <p className="text-3xl font-semibold text-slate-900">2</p>
+                  <p className="text-3xl font-semibold text-slate-900">{subjects?.length}</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -106,7 +114,7 @@ export default function SubjectsPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Departments</p>
-                  <p className="text-3xl font-semibold text-slate-900">1</p>
+                  <p className="text-3xl font-semibold text-slate-900">2</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -136,7 +144,7 @@ export default function SubjectsPage() {
                     </p>
                   </div>
                 ) :
-                  <p className="font-semibold text-xl text-blue-600">Tap to view all Subjects</p>
+                  <p className="font-semibold text-2xl text-blue-600">Tap to view all Subjects</p>
                 }
               </div>
             </div>
