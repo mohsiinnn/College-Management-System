@@ -3,6 +3,7 @@ import teacherService from "./teacherService";
 
 const initialState = {
   teachers: [],      // list
+  allTeachers: [],
   teacher: null,     // details
   loading: false,
   success: false,
@@ -25,7 +26,25 @@ export const addTeacherProfile = createAsyncThunk(
   }
 );
 
+
 // Get all teachers
+export const fetchAllTeachers = createAsyncThunk(
+  "teacher/fetchAllTeachers",
+  async (_, thunkAPI) => {
+    try {
+      const res = await teacherService.getAllTeachers();
+      // Controller may return { success:true, message:"No teachers found" }
+      if (!res?.success) throw new Error(res?.message || "Failed to load teachers");
+      return res; // { success, data? , message? }
+    } catch (err) {
+      const m = err.response?.data?.message || err.message || String(err);
+      return thunkAPI.rejectWithValue(m);
+    }
+  }
+);
+
+
+// Get active teachers
 export const fetchTeachers = createAsyncThunk(
   "teacher/fetchAll",
   async (_, thunkAPI) => {
@@ -154,7 +173,28 @@ const teacherSlice = createSlice({
         s.message = action.payload || "Failed to create teacher";
       })
 
-      // fetch all
+
+      // fetch all teachers
+      .addCase(fetchAllTeachers.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(fetchAllTeachers.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        s.allTeachers = Array.isArray(action.payload?.data) ? action.payload.data : [];
+        if (!s.teachers.length && action.payload?.message) {
+          s.message = action.payload.message; // "No teachers found"
+        }
+      })
+      .addCase(fetchAllTeachers.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true; s.message = action.payload || "Failed to load teachers";
+        s.allTeachers = [];
+      })
+
+      // fetch active teachers
       .addCase(fetchTeachers.pending, (s) => {
         s.loading = true;
         s.error = false;

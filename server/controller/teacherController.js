@@ -44,6 +44,20 @@ export const createTeacherProfile = async (req, res) => {
     }
 }
 
+export const getAllTeachers = async (req, res) => {
+    try {
+        const teachers = await userModel.find({ role: "teacher" })
+        if (teachers.length > 0) {
+            return res.json({ success: true, data: teachers });
+        }
+        else {
+            return res.json({ success: true, message: "No teachers found" });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
 export const getTeachers = async (req, res) => {
     try {
         const teachers = await teacherModel.find()
@@ -76,7 +90,7 @@ export const getOneTeacher = async (req, res) => {
             return res.json({ success: true, message: "No User found" });
         }
 
-        const teacher = await teacherModel.findOne({teacher: user._id})
+        const teacher = await teacherModel.findOne({ teacher: user._id })
             .populate("teacher", "name email")
             .populate({
                 path: 'tSubjects',

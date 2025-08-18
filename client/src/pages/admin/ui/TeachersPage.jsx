@@ -1,17 +1,25 @@
-import { Bell, Search, Plus, Users, Presentation, UserCheck, UserPlus, Monitor, Eye, Building2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { Bell, Search, Plus, Presentation, UserCheck, Eye } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SidebarUI from "../../../components/SidebarUI";
+import { fetchAllTeachers, fetchTeachers } from "../../../redux/teacher/teacherSlice"
+import { useEffect } from "react";
 
 export default function TeachersPage() {
   const navigate = useNavigate()
-  const { teachers = [] } = useSelector((s) => s.teacher || {});
-
+  const { teachers = [], allTeachers } = useSelector((s) => s.teacher || {});
+  const dispatch = useDispatch()
 
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
+
+  useEffect(() => {
+    dispatch(fetchAllTeachers())
+    dispatch(fetchTeachers())
+  }, [dispatch])
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -93,7 +101,7 @@ export default function TeachersPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Total Teachers</p>
-                  <p className="text-3xl font-semibold text-slate-900 mt-2">0</p>
+                  <p className="text-3xl font-semibold text-slate-900 mt-2">{allTeachers?.length}</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -106,7 +114,7 @@ export default function TeachersPage() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Active Teachers</p>
-                  <p className="text-3xl font-semibold text-slate-900 mt-2">0</p>
+                  <p className="text-3xl font-semibold text-slate-900 mt-2">{teachers?.length}</p>
                 </div>
 
                 {/* Right side: icon vertically centered */}
@@ -120,7 +128,7 @@ export default function TeachersPage() {
             {/* Table / list wrapper */}
             <div className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 px-5 py-4 flex justify-between">
-                <h2 className="text-base font-semibold text-slate-900">All Teachers (0)</h2>
+                <h2 className="text-base font-semibold text-slate-900">Active Teachers ({teachers?.length})</h2>
                 <button
                   className="flex items-center gap-1 border border-gray-300 px-4 py-2 rounded-lg text-sm text-black hover:text-slate-800"
                   onClick={() => navigate('/admin/dashboard/teachers')}>
@@ -138,7 +146,7 @@ export default function TeachersPage() {
                     </p>
                   </div>
                 ) :
-                  <p className="font-semibold text-xl text-blue-600">Tap to view all Teachers</p>
+                  <p className="font-semibold text-2xl text-blue-600">Tap to view active Teachers</p>
                 }
               </div>
             </div>
