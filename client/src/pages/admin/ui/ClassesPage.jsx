@@ -1,16 +1,24 @@
 import { Bell, Search, Plus, Users, UserCheck, Building2, UsersRound, School, Eye, Pencil, MoreVertical } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SidebarUI from "../../../components/SidebarUI";
+import { fetchClasses } from "../../../redux/class/classSlice"
+import { useEffect } from "react";
 
 export default function AdminDashboard() {
   const { classes = [] } = useSelector((s) => s.class || {});
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   // Function to toggle sidebar (triggers event the sidebar listens to)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
+
+  useEffect(() => {
+    dispatch(fetchClasses())
+  }, [dispatch])
+  
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -92,7 +100,7 @@ export default function AdminDashboard() {
                 {/* Left side: title, value, footer */}
                 <div>
                   <p className="text-sm text-slate-500">Total Classes</p>
-                  <p className="text-3xl font-semibold text-slate-900">2</p>
+                  <p className="text-3xl font-semibold text-slate-900">{classes?.length}</p>
                   <div className="mt-1 flex items-center gap-2">
                     <p className="text-sm text-slate-500">All classes recorded</p>
                   </div>
@@ -125,7 +133,7 @@ export default function AdminDashboard() {
             {/* Table */}
             <div className="mt-6 rounded-xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 px-5 py-4 flex justify-between">
-                <h2 className="text-base font-semibold text-slate-900">All Classes (2)</h2>
+                <h2 className="text-base font-semibold text-slate-900">All Classes ({classes?.length})</h2>
                 <button
                   className="flex items-center gap-1 border border-gray-300 px-4 py-2 rounded-lg text-sm text-black hover:text-slate-800"
                   onClick={() => navigate('/admin/dashboard/classes')}>
@@ -142,7 +150,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                 ) :
-                  <p className="font-semibold text-xl text-blue-600">Tap to view all Classes</p>
+                  <p className="font-semibold text-2xl text-blue-600">Tap to view all Classes</p>
                 }
               </div>
             </div>
