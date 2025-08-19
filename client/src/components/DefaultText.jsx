@@ -16,6 +16,7 @@ const roleDashboardAction = {
 const DashboardLoader = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
+    // const { users } = useSelector((state) => state.users); 
     const { loading, message } = useSelector((state) => state.user);
 
     useEffect(() => {
