@@ -28,10 +28,20 @@ export const createTeacherProfile = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        const updateTeacher = await teacherModel.findByIdAndUpdate(teacher._id, { $addToSet: { tSubjects: subject._id }, tClass: classId }, { new: true })
+        const updateTeacher = await teacherModel.findByIdAndUpdate(
+            teacher._id,
+            {
+                $addToSet: {
+                    classes: {
+                        class: classId,
+                        subjects: [subject._id]
+                    }
+                }
+            }, { new: true }
+        )
             .populate("teacher", "name")
-            .populate("tSubjects", "subjectName")
-            .populate("tClass", "className")
+            .populate("classes.class", "className")
+            .populate("classes.subjects", "subjectName")
 
         if (updateTeacher) {
             return res.json({ success: true, data: updateTeacher });
@@ -62,12 +72,8 @@ export const getTeachers = async (req, res) => {
     try {
         const teachers = await teacherModel.find()
             .populate('teacher', 'name')
-            .populate({
-                path: 'tSubjects',
-                model: "subject",
-                select: "subjectName"
-            })
-            .populate('tClass', 'className')
+            .populate("classes.class", "className")
+            .populate("classes.subjects", "subjectName")
 
         if (teachers.length > 0) {
             return res.json({ success: true, data: teachers });
@@ -80,7 +86,6 @@ export const getTeachers = async (req, res) => {
     }
 }
 
-
 export const getOneTeacher = async (req, res) => {
     const { id } = req.params;
     try {
@@ -92,12 +97,8 @@ export const getOneTeacher = async (req, res) => {
 
         const teacher = await teacherModel.findOne({ teacher: user._id })
             .populate("teacher", "name email")
-            .populate({
-                path: 'tSubjects',
-                model: "subject",
-                select: "subjectName"
-            })
-            .populate('tClass', 'className')
+            .populate("classes.class", "className")
+            .populate("classes.subjects", "subjectName")
 
         if (teacher) {
             return res.json({ success: true, data: teacher });
@@ -109,18 +110,13 @@ export const getOneTeacher = async (req, res) => {
     }
 }
 
-
 export const getTeacherDetail = async (req, res) => {
     const { id } = req.params;
     try {
         const teacher = await teacherModel.findById(id)
             .populate("teacher", "name")
-            .populate({
-                path: 'tSubjects',
-                model: "subject",
-                select: "subjectName"
-            })
-            .populate('tClass', 'className')
+            .populate("classes.class", "className")
+            .populate("classes.subjects", "subjectName")
 
         if (teacher) {
             return res.json({ success: true, data: teacher });
@@ -143,10 +139,38 @@ export const updateTeacherSubject = async (req, res) => {
             return res.json({ success: false, message: "Subject not found" });
         }
 
-        // Add the subject to teacher's subject
-        const teach = await teacherModel.findByIdAndUpdate(teacherId, { $addToSet: { tSubjects: subject._id }, tClass: classId }, { new: true });
+        const teacher = await teacherModel.findOne({ _id: teacherId })
+        if (!teacher) {
+            return res.json({ success: false, message: "Teacher not found" })
+        }
+        
+        const check = teacher.classes.some(
+            (c) => c.class.toString() === classId
+        )
 
-        return res.json({ success: true, data: teach })
+        if (check) {
+            const teach = await teacherModel.findOneAndUpdate(
+                { _id: teacherId, "classes.class": classId },
+                { $addToSet: { "classes.$.subjects": subject._id } },
+                { new: true }
+            )
+            return res.json({ success: true, data: teach })
+        } else {
+            // Add subject to a specific class for the teacher
+            const teach = await teacherModel.findOneAndUpdate(
+                { _id: teacherId },
+                {
+                    $addToSet: {
+                        classes: {
+                            class: classId,
+                            subjects: [subject._id]
+                        }
+                    }
+                }, { new: true }
+
+            );
+            return res.json({ success: true, data: teach })
+        }
 
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -196,29 +220,28 @@ export const deleteAllTeachers = async (req, res) => {
     }
 }
 
-
 // Delete teachers from spesefic class ( optional for me )
-export const deleteTeachersFromClass = async (req, res) => {
-    const classId = req.params.id;
-    try {
-        const classTeachers = await teacherModel.find({ tClass: classId })
-        if (classTeachers.length === 0) {
-            return res.json({ success: false, message: "No teacher found to delete" });
-        }
+// export const deleteTeachersFromClass = async (req, res) => {
+//     const classId = req.params.id;
+//     try {
+//         const classTeachers = await teacherModel.find({ "classes.class": classId })
+//         if (classTeachers.length === 0) {
+//             return res.json({ success: false, message: "No teacher found to delete" });
+//         }
 
-        const ids = classTeachers.map(i => i._id);
+//         const ids = classTeachers.map(i => i._id);
 
-        const deletedTeachers = await teacherModel.deleteMany({ _id: { $in: ids } });
-        if (deletedTeachers) {
-            await subjectModel.updateMany(
-                { teacher: { $in: ids } },
-                { $unset: { teacher: "" } }
-            )
-        }
+//         const deletedTeachers = await teacherModel.deleteMany({ _id: { $in: ids } });
+//         if (deletedTeachers) {
+//             await subjectModel.updateMany(
+//                 { teacher: { $in: ids } },
+//                 { $unset: { teacher: "" } }
+//             )
+//         }
 
-        return res.json({ success: true, data: deletedTeachers })
+//         return res.json({ success: true, data: deletedTeachers })
 
-    } catch (error) {
-        return res.json({ success: false, message: error.message });
-    }
-}
+//     } catch (error) {
+//         return res.json({ success: false, message: error.message });
+//     }
+// }

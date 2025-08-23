@@ -7,8 +7,8 @@ import { checkAdminApproval, checkStudentApproval } from '../middleware/requestM
 export const studentRouter = express.Router()
 
 studentRouter.post('/add-student/:id', isAuthenticated, restrictAdmin, checkAdminApproval, createStudentProfile);
-studentRouter.get('/active-students', isAuthenticated, restrictAdmin, checkAdminApproval, getActiveStudents);
-studentRouter.get('/all-students', isAuthenticated, restrictAdmin, checkAdminApproval, getAllStudents);
+studentRouter.get('/active-students', isAuthenticated, checkAdminApproval, getActiveStudents);
+studentRouter.get('/all-students', isAuthenticated, checkAdminApproval, getAllStudents);
 studentRouter.get('/getStudent/:id', isAuthenticated, checkAdminApproval, getStudentDetail);
 studentRouter.get('/getStudentOnly/:id', isAuthenticated, checkStudentApproval, getStudentOnly);
 studentRouter.post('/delete-student/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteStudent);

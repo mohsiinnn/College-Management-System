@@ -32,7 +32,7 @@ const NAV = [
 // Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
   Profile: "/teacher/dashboard",
-  Subjects: "/teacher/dashboard",
+  Subjects: "/teacher/dashboard/subjects",
   Attendance: "/teacher/dashboard",
   'Verify Email': "/email-verify",
 };

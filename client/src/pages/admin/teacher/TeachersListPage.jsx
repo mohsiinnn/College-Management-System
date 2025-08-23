@@ -14,8 +14,7 @@ const TeachersListPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { teachers = [], loading = false, error = false, message = "" } =
-    useSelector((s) => s.teacher || {});
+  const { teachers = [], loading = false, error = false, message = "" } = useSelector((s) => s.teacher || {});
 
   const [actingId, setActingId] = useState(null);
   const [deletingAll, setDeletingAll] = useState(false);
@@ -36,7 +35,7 @@ const TeachersListPage = () => {
     try {
       await dispatch(removeTeacher(id)).unwrap();
     } catch (e) {
-      toast.error(e?.message || String(e) || "Delete failed");
+      toast.error(e?.message || "Delete failed");
     } finally {
       setActingId(null);
     }
@@ -48,7 +47,7 @@ const TeachersListPage = () => {
     try {
       await dispatch(removeAllTeachers()).unwrap();
     } catch (e) {
-      toast.error(e?.message || String(e) || "Delete all failed");
+      toast.error(e?.message || "Delete all failed");
     } finally {
       setDeletingAll(false);
     }
@@ -92,11 +91,14 @@ const TeachersListPage = () => {
                     <p className="font-medium">
                       {t?.teacher?.name || "Unnamed Teacher"}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Class: {t?.tClass?.className || "—"} • Subjects:{" "}
-                      {Array.isArray(t?.tSubjects) ? t.tSubjects.length : 0}
-                    </p>
+
+                    {Array.isArray(t?.classes) && t.classes.length > 0 ? (
+                      <p className="text-xs text-gray-500">Tap for details</p>
+                    ) : (
+                      <p className="text-xs text-gray-500">No classes assigned</p>
+                    )}
                   </div>
+
                   <div className="flex gap-2">
                     <button
                       onClick={() => navigate(`/admin/dashboard/teachers/${t._id}`)}
@@ -118,6 +120,7 @@ const TeachersListPage = () => {
           </ul>
         </div>
       )}
+
     </div>
   );
 };

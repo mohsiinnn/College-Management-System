@@ -1,12 +1,7 @@
-// src/pages/teachers/TeacherDetailsPage.jsx
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchTeacherDetail,
-  updateTeacherSubject,
-  removeTeacher,
-  clearTeacherState,
-} from "../../../redux/teacher/teacherSlice";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { fetchTeacherDetail, updateTeacherSubject, removeTeacher, clearTeacherState, } from "../../../redux/teacher/teacherSlice";
 import { fetchClasses } from "../../../redux/class/classSlice";
 import { fetchFreeSubjects, clearSubjectState } from "../../../redux/subject/subjectSlice";
 import { useParams, useNavigate, Link } from "react-router-dom";
@@ -17,20 +12,15 @@ const TeacherDetailsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { teacher = null, loading = false, message = "", error = false } =
-    useSelector((s) => s.teacher || {});
   const { classes = [] } = useSelector((s) => s.class || {});
-  const { freeSubjects = [], loading: subjLoading = false } =
-    useSelector((s) => s.subject || {});
+  const { teacher, loading = false, message = "", error = false } = useSelector((s) => s.teacher || {});
+  const { freeSubjects = [], loading: subjLoading = false } = useSelector((s) => s.subject || {});
 
   const [busy, setBusy] = useState(false);
   const [classId, setClassId] = useState("");
   const [subjectId, setSubjectId] = useState("");
+  const [openClass, setOpenClass] = useState(null); // only one open at a time
 
-  // current class id hint from teacher (if present)
-  const currentClassId = useMemo(() => {
-    return teacher?.tClass?._id || teacher?.tClass || "";
-  }, [teacher]);
 
   useEffect(() => {
     dispatch(fetchTeacherDetail(id));
@@ -41,13 +31,13 @@ const TeacherDetailsPage = () => {
     };
   }, [dispatch, id]);
 
-  // when class picker changes, fetch free subjects for that class
+  // when class changes, fetch free subjects for that class
   useEffect(() => {
-    const cid = classId || currentClassId;
+    const cid = classId;
     if (cid) {
       dispatch(fetchFreeSubjects(cid));
     }
-  }, [dispatch, classId, currentClassId]);
+  }, [dispatch, classId]);
 
   useEffect(() => {
     if (error && message) toast.error(message);
@@ -55,7 +45,7 @@ const TeacherDetailsPage = () => {
   }, [error, message]);
 
   const onAssignSubject = async () => {
-    const cid = classId || currentClassId;
+    const cid = classId
     if (!cid || !subjectId) {
       toast.error("Select class and subject to assign");
       return;
@@ -91,6 +81,10 @@ const TeacherDetailsPage = () => {
     }
   };
 
+  const toggleClass = (classId) => {
+    setOpenClass((prev) => (prev === classId ? null : classId));
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex items-center justify-between mb-4">
@@ -108,21 +102,66 @@ const TeacherDetailsPage = () => {
 
       {!loading && teacher && (
         <div className="bg-white rounded-xl shadow p-4 space-y-4">
-          <div>
-            <p>
-              <span className="font-medium">Name:</span>{" "}
+          <div className="p-4 rounded-2xl shadow-md bg-white border border-gray-200">
+
+            {/* Teacher Name */}
+            <p className="text-lg font-semibold text-gray-800 mb-3">
+              <span className="text-blue-600">Name:</span>{" "}
               {teacher?.teacher?.name || "—"}
             </p>
-            <p>
-              <span className="font-medium">Class:</span>{" "}
-              {teacher?.tClass?.className || "—"}
-            </p>
-            <p>
-              <span className="font-medium">Subjects:</span>{" "}
-              {Array.isArray(teacher?.tSubjects)
-                ? teacher.tSubjects.map((s) => s?.subjectName).join(", ") || "—"
-                : "—"}
-            </p>
+
+            {/* Classes & Subjects */}
+            <div className="text-sm text-gray-700">
+              <ul className="space-y-3">
+                {teacher?.classes?.length > 0 ? (
+                  teacher.classes.map((cls) => {
+                    const isOpen = openClass === cls.class._id;
+                    return (
+                      <li
+                        key={cls.class._id}
+                        className="p-3 rounded-lg bg-gray-50 border border-gray-100"
+                      >
+                        <button
+                          onClick={() => toggleClass(cls.class._id)}
+                          className="flex items-center w-full text-left focus:outline-none"
+                        >
+                          {isOpen ? (
+                            <ChevronDown className="w-4 h-4 mr-2 text-gray-600" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 mr-2 text-gray-600" />
+                          )}
+                          <span className="font-medium text-gray-900">
+                            Class: {cls.class.className || "_"}
+                          </span>
+                        </button>
+
+                        {/* Subjects list */}
+                        <div
+                          className={`ml-6 mt-2 overflow-hidden transition-all duration-300 ${isOpen ? "max-h-40" : "max-h-0"
+                            }`}
+                        >
+                          <ul className="list-disc list-inside text-gray-600 space-y-1">
+                            {cls?.subjects?.length > 0 ? (
+                              cls.subjects.map((subs) => (
+                                <li key={subs._id} className="pl-1">
+                                  {subs?.subjectName || "_"}
+                                </li>
+                              ))
+                            ) : (
+                              <li className="italic text-gray-400">
+                                No subjects assigned
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li className="italic text-gray-400">No subjects assigned</li>
+                )}
+              </ul>
+            </div>
           </div>
 
           {/* Assign another subject */}
@@ -132,13 +171,13 @@ const TeacherDetailsPage = () => {
             <div className="grid grid-cols-12 gap-2">
               <select
                 className="col-span-5 border rounded-lg px-3 py-2 outline-none"
-                value={classId || currentClassId}
+                value={classId}
                 onChange={(e) => {
                   setClassId(e.target.value);
                   setSubjectId("");
                 }}
               >
-                <option value="">-- Select Class --</option>
+                <option value=""> Select Class </option>
                 {classes.map((c) => (
                   <option key={c._id} value={c._id}>
                     {c.className} ({c.department || "-"})
@@ -150,10 +189,10 @@ const TeacherDetailsPage = () => {
                 className="col-span-5 border rounded-lg px-3 py-2 outline-none"
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
-                disabled={subjLoading || !(classId || currentClassId)}
+                disabled={subjLoading || !(classId)}
               >
                 <option value="">
-                  {subjLoading ? "Loading…" : "-- Select Free Subject --"}
+                  {subjLoading ? "Loading…" : " Select Free Subject "}
                 </option>
                 {freeSubjects.map((s) => (
                   <option key={s._id} value={s._id}>
@@ -170,7 +209,7 @@ const TeacherDetailsPage = () => {
                 {busy ? "Saving…" : "Assign"}
               </button>
             </div>
-            {!freeSubjects.length && (classId || currentClassId) && !subjLoading && (
+            {!freeSubjects.length && (classId) && !subjLoading && (
               <p className="text-xs text-gray-500 mt-1">No free subjects in this class.</p>
             )}
           </div>
@@ -181,12 +220,13 @@ const TeacherDetailsPage = () => {
               disabled={busy}
               className="px-3 py-1.5 rounded-md bg-red-600 text-white disabled:opacity-50"
             >
-              {busy ? "Deleting…" : "Delete Teacher"}
+              {busy ? "Deleting…" : "Remove Teacher"}
             </button>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

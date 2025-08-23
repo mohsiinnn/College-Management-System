@@ -39,7 +39,7 @@ import StudentSubjectListDashboard from './pages/student/ui/StudentSubjectListDa
 import SAdminDashboard from './pages/SAdmin/SAdminDashboard.jsx'
 import LoginSAdmin from './pages/SAdmin/ui/LoginSAdmin.jsx'
 import SAdmins from './pages/SAdmin/ui/SAdmins.jsx'
-
+import TeacherSubjectList from './pages/teacher/ui/TeacherSubjectList.jsx'
 
 
 const App = () => {
@@ -61,6 +61,9 @@ const App = () => {
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/student/dashboard' element={<DashboardLoader />} />
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
+
+
+            <Route path='/teacher/dashboard/subjects' element={<TeacherSubjectList />} />
 
 
             {/* STUDENT DASHBOARD ROUTES  */}
