@@ -59,6 +59,26 @@ export const classSubjects = async (req, res) => {
     }
 }
 
+export const teacherClassSubjects = async (req, res) => {
+    const classId = req.params.id;
+    const { teacherId } = req.body;
+    
+    if (!classId || !teacherId) {
+        return res.json({ success: false, message: "Missing classId or teacherId" });
+    }
+
+    try {
+        const subjects = await subjectModel.find({
+            className: classId,
+            teacher: teacherId
+        }).populate("className", "className");
+
+        return res.json({ success: true, data: subjects });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+}
+
 export const freeSubjectList = async (req, res) => {
     const classId = req.params.id;
     try {
@@ -171,7 +191,7 @@ export const deleteSubjectsFromClass = async (req, res) => {
             classId,
             deletedCount: deletedSubjects?.deletedCount || 0,
         });
-        
+
     } catch (error) {
         return res.json({ success: false, message: error.message });
     }

@@ -24,6 +24,16 @@ const getClassSubjects = async (classId) => {
   return data;
 };
 
+
+const getTeacherClassSubjects = async ({classId, teacherId}) => {
+  const { data } = await axios.post(
+    `${API_URL}/api/subject/teacherClass-subjects/${classId}`,
+    {teacherId}
+  );
+  // controller: { success:true, data:[...] } OR { success:true, message:"No subjects..." }
+  return data;
+};
+
 // GET /api/subject/free-subjects/:id
 const getFreeSubjects = async (classId) => {
   const { data } = await axios.get(`${API_URL}/api/subject/free-subjects/${classId}`);
@@ -72,6 +82,7 @@ const subjectService = {
   addSubjects,
   getAllSubjects,
   getClassSubjects,
+  getTeacherClassSubjects,
   getFreeSubjects,
   getSubjectDetails,
   removeSubject,

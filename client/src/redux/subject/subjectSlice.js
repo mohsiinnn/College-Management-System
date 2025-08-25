@@ -58,6 +58,22 @@ export const fetchClassSubjects = createAsyncThunk(
   }
 );
 
+// Subjects by Teacher's class
+export const fetchTeacherClassSubjects = createAsyncThunk(
+  "subject/fetchTeacherClass",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await subjectService.getTeacherClassSubjects(payload);
+      // Your controller sometimes returns { success:true, message:"No subjects..." }
+      if (!res?.success) throw new Error(res?.message || "Failed to load class subjects");
+      return { ...res, classIdArg: payload.classId };
+    } catch (err) {
+      const m = err.response?.data?.message || err.message || String(err);
+      return thunkAPI.rejectWithValue(m);
+    }
+  }
+);
+
 // Free subjects by class
 export const fetchFreeSubjects = createAsyncThunk(
   "subject/fetchFree",
@@ -148,12 +164,12 @@ const subjectSlice = createSlice({
     builder
       // addSubjects
       .addCase(addSubjects.pending, (s) => {
-        s.loading = true; 
-        s.error = false; 
+        s.loading = true;
+        s.error = false;
         s.message = "";
       })
       .addCase(addSubjects.fulfilled, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.success = true;
         const inserted = Array.isArray(action.payload?.data) ? action.payload.data : [];
         // optimistic: append to `subjects`
@@ -161,36 +177,36 @@ const subjectSlice = createSlice({
         s.message = action.payload?.message || "Subjects added";
       })
       .addCase(addSubjects.rejected, (s, action) => {
-        s.loading = false; 
-        s.error = true; 
+        s.loading = false;
+        s.error = true;
         s.message = action.payload || "Failed to add subjects";
       })
 
       // fetchAll
       .addCase(fetchAllSubjects.pending, (s) => {
-        s.loading = true; 
-        s.error = false; 
+        s.loading = true;
+        s.error = false;
         s.message = "";
       })
       .addCase(fetchAllSubjects.fulfilled, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.success = true;
         s.subjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
       })
       .addCase(fetchAllSubjects.rejected, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.error = true; s.message = action.payload || "Failed to load subjects";
         s.subjects = [];
       })
 
       // class subjects
       .addCase(fetchClassSubjects.pending, (s) => {
-        s.loading = true; 
-        s.error = false; 
+        s.loading = true;
+        s.error = false;
         s.message = "";
       })
       .addCase(fetchClassSubjects.fulfilled, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.success = true;
         // controller may return { success:true, message:"No subjects..." }
         s.classSubjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
@@ -199,20 +215,42 @@ const subjectSlice = createSlice({
         }
       })
       .addCase(fetchClassSubjects.rejected, (s, action) => {
-        s.loading = false; 
-        s.error = true; 
+        s.loading = false;
+        s.error = true;
+        s.message = action.payload || "Failed to load class subjects";
+        s.classSubjects = [];
+      })
+
+      // Class Teacher's Subjects
+      .addCase(fetchTeacherClassSubjects.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(fetchTeacherClassSubjects.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        // controller may return { success:true, message:"No subjects..." }
+        s.classSubjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
+        if (!s.classSubjects.length && action.payload?.message) {
+          s.message = action.payload.message;
+        }
+      })
+      .addCase(fetchTeacherClassSubjects.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true;
         s.message = action.payload || "Failed to load class subjects";
         s.classSubjects = [];
       })
 
       // free subjects
       .addCase(fetchFreeSubjects.pending, (s) => {
-        s.loading = true; 
-        s.error = false; 
+        s.loading = true;
+        s.error = false;
         s.message = "";
       })
       .addCase(fetchFreeSubjects.fulfilled, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.success = true;
         s.freeSubjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
         if (!s.freeSubjects.length && action.payload?.message) {
@@ -220,20 +258,20 @@ const subjectSlice = createSlice({
         }
       })
       .addCase(fetchFreeSubjects.rejected, (s, action) => {
-        s.loading = false; 
-        s.error = true; 
+        s.loading = false;
+        s.error = true;
         s.message = action.payload || "Failed to load free subjects";
         s.freeSubjects = [];
       })
 
       // subject details
       .addCase(fetchSubjectDetails.pending, (s) => {
-        s.loading = true; 
-        s.error = false; 
+        s.loading = true;
+        s.error = false;
         s.message = "";
       })
       .addCase(fetchSubjectDetails.fulfilled, (s, action) => {
-        s.loading = false; 
+        s.loading = false;
         s.success = true;
         s.subject = action.payload?.data || null;
         if (!s.subject && action.payload?.message) {
@@ -241,15 +279,15 @@ const subjectSlice = createSlice({
         }
       })
       .addCase(fetchSubjectDetails.rejected, (s, action) => {
-        s.loading = false; 
-        s.error = true; 
+        s.loading = false;
+        s.error = true;
         s.message = action.payload || "Failed to load subject";
         s.subject = null;
       })
 
       // delete one subject
       .addCase(deleteSubject.pending, (s) => {
-        s.error = false; 
+        s.error = false;
         s.message = "";
       })
       .addCase(deleteSubject.fulfilled, (s, action) => {
@@ -264,13 +302,13 @@ const subjectSlice = createSlice({
         s.message = action.payload?.message || "Subject deleted";
       })
       .addCase(deleteSubject.rejected, (s, action) => {
-        s.error = true; 
+        s.error = true;
         s.message = action.payload || "Delete failed";
       })
 
       // delete all subjects
       .addCase(deleteAllSubjects.pending, (s) => {
-        s.error = false; 
+        s.error = false;
         s.message = "";
       })
       .addCase(deleteAllSubjects.fulfilled, (s, action) => {
@@ -282,13 +320,13 @@ const subjectSlice = createSlice({
         s.message = action.payload?.message || "All subjects deleted";
       })
       .addCase(deleteAllSubjects.rejected, (s, action) => {
-        s.error = true; 
+        s.error = true;
         s.message = action.payload || "Delete all failed";
       })
 
       // delete subjects from class
       .addCase(deleteSubjectsFromClass.pending, (s) => {
-        s.error = false; 
+        s.error = false;
         s.message = "";
       })
       .addCase(deleteSubjectsFromClass.fulfilled, (s, action) => {
@@ -302,7 +340,7 @@ const subjectSlice = createSlice({
         s.message = action.payload?.message || "Class subjects deleted";
       })
       .addCase(deleteSubjectsFromClass.rejected, (s, action) => {
-        s.error = true; 
+        s.error = true;
         s.message = action.payload || "Delete class subjects failed";
       });
   },

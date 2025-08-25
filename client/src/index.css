@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+body{
+  background-color: rgb(249, 250, 251);
+}
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
