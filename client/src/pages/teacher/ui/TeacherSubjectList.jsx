@@ -68,7 +68,7 @@ const TeacherDetailsPage = () => {
                                                     onClick={() => navigate(`/teacher/dashboard/class/${cls.class._id}`)}
                                                     className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200"
                                                 >
-                                                    Take Attendance
+                                                    View
                                                 </button>
                                             </span>
                                             <ul className="list-disc list-inside ml-5 mt-1 text-gray-600 space-y-1">
