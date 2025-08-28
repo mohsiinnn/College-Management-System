@@ -8,7 +8,7 @@ export const classRouter = express.Router();
 
 classRouter.post('/register-class', isAuthenticated, restrictAdmin, checkAdminApproval, createClass);
 classRouter.get('/all-classes', isAuthenticated, restrictAdmin, checkAdminApproval, getAllClasses);
-classRouter.get('/:id', isAuthenticated, restrictAdmin, checkAdminApproval, getSingleClass);
+classRouter.get('/:id', isAuthenticated, checkAdminApproval, getSingleClass);
 classRouter.post('/delete-classStudents/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteClassStudents);
 classRouter.post('/delete-class/:id', isAuthenticated, restrictAdmin, checkAdminApproval, deleteClass)
 

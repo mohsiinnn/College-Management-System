@@ -43,7 +43,7 @@ export const createStudentProfile = async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
     try {
-        const students = await userModel.find({role: 'student'})
+        const students = await userModel.find({ role: 'student' })
         return res.json({ success: true, data: students })
     } catch (error) {
         return res.json({ success: false, message: error.message });
@@ -83,10 +83,10 @@ export const getStudentOnly = async (req, res) => {
         .populate("student", "name email")                 // <-- populate user (ref: 'user')
         .populate("sClass", "className")
         .populate({
-                path: 'attendance.subjectId',
-                model: 'subject',
-                select: 'subjectName'
-            })
+            path: 'attendance.subjectId',
+            model: 'subject',
+            select: 'subjectName'
+        })
     if (student) {
         return res.json({ success: true, data: student })
     }
@@ -140,6 +140,101 @@ export const deleteStudent = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+
+
+// GET /api/student/class/:classId/attendance?subjectId=...&date=...
+export const getClassAttendance = async (req, res) => {
+    const { classId } = req.params;
+    const { subjectId, date } = req.query;
+    try {
+        // Find all students in the class
+        const students = await studentModel.find({ sClass: classId })
+            .populate('student', 'name email')
+            .populate('sClass', 'className');
+
+        // For each student, filter attendance for the given subject/date
+        const result = students.map(stu => {
+            const attendance = stu.attendance.find(a =>
+                (!subjectId || String(a.subjectId) === String(subjectId)) &&
+                (!date || new Date(a.date).toDateString() === new Date(date).toDateString())
+            );
+            return {
+                _id: stu._id,
+                student: stu.student,
+                sClass: stu.sClass,
+                attendance: attendance || null
+            };
+        });
+
+        return res.json({ success: true, data: result });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+
+export const addBatchAttendance = async (req, res) => {
+    const { classId } = req.params;
+    const { subjectId, date, attendance } = req.body;
+    try {
+        if (!subjectId || !date || !Array.isArray(attendance)) {
+            return res.json({ success: false, message: "Missing data" });
+        }
+        for (const entry of attendance) {
+            const stu = await studentModel.findById(entry.studentId);
+            if (!stu) continue;
+            const idx = stu.attendance.findIndex(a =>
+                String(a.subjectId) === String(subjectId) &&
+                new Date(a.date).toDateString() === new Date(date).toDateString()
+            );
+            if (idx >= 0) {
+                stu.attendance[idx].status = entry.status;
+            } else {
+                stu.attendance.push({ subjectId, status: entry.status, date });
+            }
+            await stu.save();
+        }
+        return res.json({ success: true, message: "Attendance marked for all students" });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+
+// POST /api/student/class/:classId/attendance
+// body: { subjectId, status, date }
+// export const addBatchAttendance = async (req, res) => {
+//     const { classId } = req.params;
+//     const { subjectId, status, date } = req.body;
+//     try {
+//         if (!subjectId || !status || !date) {
+//             return res.json({ success: false, message: "Enter subjectId, status and date" });
+//         }
+
+//         // Find all students in the class
+//         const students = await studentModel.find({ sClass: classId });
+
+//         //We used Loop For each student, add or update attendance
+//         for (const stu of students) {
+//             const idx = stu.attendance.findIndex(a =>
+//                 String(a.subjectId) === String(subjectId) &&
+//                 new Date(a.date).toDateString() === new Date(date).toDateString()
+//             );
+//             if (idx >= 0) {
+//                 stu.attendance[idx].status = status;
+//             } else {
+//                 stu.attendance.push({ subjectId, status, date });
+//             }
+//             await stu.save();
+//         }
+
+//         return res.json({ success: true, message: "Attendance marked for all students" });
+//     } catch (error) {
+//         return res.json({ success: false, message: error.message });
+//     }
+// };
+
 
 export const deleteAllStudents = async (req, res) => {
     try {
@@ -204,9 +299,10 @@ export const addAttendance = async (req, res) => {
 
         // const subject = await subjectModel.findById(subjectId);
 
-        const exsistingAttendance = student.attendance.find((a) => {
-            a.subjectId.toString() === subjectId && a.date.toDateString() === new Date(date).toDateString()
-        })
+        const exsistingAttendance = student.attendance.find(a =>
+            a.subjectId.toString() === subjectId &&
+            new Date(a.date).toDateString() === new Date(date).toDateString()
+        )
         if (exsistingAttendance) {
             exsistingAttendance.status = status;
         }

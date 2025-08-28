@@ -142,6 +142,50 @@ export const addStudentAttendance = createAsyncThunk(
   }
 );
 
+
+// Thunk to fetch class attendance
+export const fetchClassAttendance = createAsyncThunk(
+  "student/fetchClassAttendance",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await studentService.getClassAttendance(payload);
+      if (!res?.success) throw new Error(res?.message || "Failed to fetch attendance");
+      return res.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message || "Failed to fetch attendance");
+    }
+  }
+);
+
+// Thunk to batch add attendance
+export const batchAddAttendance = createAsyncThunk(
+  "student/batchAddAttendance",
+  async ({ classId, subjectId, date, attendance }, thunkAPI) => {
+    try {
+      const res = await studentService.batchAddAttendance({ classId, subjectId, date, attendance });
+      return res;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+
+// export const batchAddAttendance = createAsyncThunk(
+//   "student/batchAddAttendance",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const res = await studentService.addBatchAttendance(payload);
+//       if (!res?.success) throw new Error(res?.message || "Failed to add attendance");
+//       return res.message;
+//     } catch (err) {
+//       return thunkAPI.rejectWithValue(err.message || "Failed to add attendance");
+//     }
+//   }
+// );
+
+
+
 export const clearStudentAttendance = createAsyncThunk(
   "student/clearAttendance",
   async (studentId, thunkAPI) => {
@@ -380,6 +424,42 @@ const studentSlice = createSlice({
         s.error = true;
         s.message = action.payload || "Failed to add attendance";
       })
+
+
+      .addCase(fetchClassAttendance.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(fetchClassAttendance.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        s.students = action.payload || [];
+        s.message = action.payload?.message;
+      })
+      .addCase(fetchClassAttendance.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true;
+        s.message = action.payload || "Failed to fetch attendance";
+        s.students = [];
+      })
+      .addCase(batchAddAttendance.pending, (s) => {
+        s.loading = true;
+        s.error = false;
+        s.message = "";
+      })
+      .addCase(batchAddAttendance.fulfilled, (s, action) => {
+        s.loading = false;
+        s.success = true;
+        s.message = action.payload || "Attendance marked for all students";
+        s.message = action.payload?.message || "Students Attendance Submitted";
+      })
+      .addCase(batchAddAttendance.rejected, (s, action) => {
+        s.loading = false;
+        s.error = true;
+        s.message = action.payload || "Failed to add attendance";
+      })
+
 
       // attendance: clear one student
       .addCase(clearStudentAttendance.pending, (s) => {

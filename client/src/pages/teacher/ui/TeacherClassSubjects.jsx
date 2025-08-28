@@ -28,13 +28,13 @@ const TeacherClassSubjects = () => {
 
 
     const teacherId = teacher?._id;
-    try {
-        if (teacherId) {
-            console.log("TeacherId missing: ", teacherId);
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
+    // try {
+    //     if (teacherId) {
+    //         console.log("TeacherId: ", teacherId);
+    //     }
+    // } catch (error) {
+    //     console.log(error.message);
+    // }
 
     useEffect(() => {
         if (teacherId) {
