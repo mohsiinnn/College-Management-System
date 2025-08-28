@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 
 const StudentProfileCard = () => {
     const dispatch = useDispatch()
-    const { user } = useSelector((state) => state.auth)
+    const { dashboardData } = useSelector((state) => state.user)
     const {
         student = null,
         loading = false,
@@ -14,15 +14,15 @@ const StudentProfileCard = () => {
     } = useSelector((s) => s.student || {});
 
     useEffect(() => {
-        const id = user?.user?._id;
+        const id = dashboardData?.data?._id;
         if (id) {
             dispatch(fetchStudentOnly(id));
         } else {
-            console.error("User _id is missing!", user);
+            console.error("User _id is missing!", dashboardData);
         }
 
         return () => dispatch(clearStudentState())
-    }, [dispatch, user])
+    }, [dispatch, dashboardData])
 
     useEffect(() => {
         if (error) {

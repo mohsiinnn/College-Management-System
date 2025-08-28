@@ -12,7 +12,7 @@ export const adminDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({ success: true, user: user, message: "this is Admin Dashboard" })
+    res.json({ success: true, data: user, message: "this is Admin Dashboard" })
   }
 }
 
@@ -20,13 +20,13 @@ export const teacherDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({ success: true, user: user, message: "this is Teaacher Dashboard" })
+    res.json({ success: true, data: user, message: "this is Teaacher Dashboard" })
   }
 }
 export const studentDashBoard = async (req, res) => {
   const userId = req.user.id;
   const user = await userModel.findById(userId)
   if (user) {
-    res.json({ success: true, user: user, message: "this is Student Dashboard" })
+    res.json({ success: true, data: user, message: "this is Student Dashboard" })
   }
 }

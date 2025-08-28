@@ -4,6 +4,7 @@ import { fetchStudentOnly, clearStudentState } from '../../../redux/student/stud
 import { useEffect, useState } from 'react'
 import SidebarUI from "./SideBarUI";
 import { toast } from 'react-toastify'
+import { studentDashboard } from "../../../redux/user/userSlice";
 
 export default function StudentAttendanceTable() {
   // Function to toggle sidebar (triggers event the sidebar listens to)
@@ -12,7 +13,7 @@ export default function StudentAttendanceTable() {
   };
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const { dashboardData } = useSelector((state) => state.user);
   const {
     student = null,
     loading = false,
@@ -23,14 +24,20 @@ export default function StudentAttendanceTable() {
   const [openSubject, setOpenSubject] = useState(null);
 
   useEffect(() => {
-    const id = user?.user?._id;
+    if (!dashboardData) {
+      dispatch(studentDashboard())
+    }
+  }, [dispatch, dashboardData])
+
+  useEffect(() => {
+    const id = dashboardData?.data?._id;
     if (id) {
       dispatch(fetchStudentOnly(id));
     } else {
-      console.error("User _id is missing!", user);
+      console.error("User _id is missing!", dashboardData);
     }
     return () => dispatch(clearStudentState());
-  }, [dispatch, user]);
+  }, [dispatch, dashboardData]);
 
   useEffect(() => {
     if (error) {
@@ -94,9 +101,9 @@ export default function StudentAttendanceTable() {
             </div>
           </div>
         </header>
-        {!user.success ? <div className="min-h-screen mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        {!dashboardData?.success ? <div className="min-h-screen mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
           <p className="px-6 py-16 text-center items-center justify-center">
-            {user.message}
+            {dashboardData?.message}
           </p>
         </div> :
           <div>

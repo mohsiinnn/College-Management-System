@@ -8,9 +8,9 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 const admin = async () => {
     const response = await axios.get(`${API_URL}/api/user/admin-dashboard`)
 
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    // if (response.data) {
+    //     localStorage.setItem('user', JSON.stringify(response.data))
+    // }
 
     return response.data
 }
@@ -19,9 +19,9 @@ const admin = async () => {
 const student = async () => {
     const response = await axios.get(`${API_URL}/api/user/student-dashboard`)
 
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    // if (response.data) {
+    //     localStorage.setItem('user', JSON.stringify(response.data))
+    // }
 
     return response.data
 }
@@ -30,9 +30,9 @@ const student = async () => {
 const teacher = async () => {
     const response = await axios.get(`${API_URL}/api/user/teacher-dashboard`)
 
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    // if (response.data) {
+    //     localStorage.setItem('user', JSON.stringify(response.data))
+    // }
 
     return response.data
 }

@@ -1,15 +1,25 @@
 import { Bell, Search } from "lucide-react";
 import SidebarUI from "./SideBarUI";
 import StudentSubjectsList from "./StudentSubjectsList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { studentDashboard } from "../../../redux/user/userSlice";
+import { useEffect } from "react";
 
 
 export default function StudentSubjectListDashboard() {
-    const { user } = useSelector((state) => state.auth)
+    const { dashboardData } = useSelector((state) => state.user)
+    const dispatch = useDispatch()
     // Function to toggle sidebar (triggers event the sidebar listens to)
     const toggleSidebar = () => {
         window.dispatchEvent(new Event("cms:toggle-sidebar"));
     };
+
+    useEffect(() => {
+        if (!dashboardData) {
+            dispatch(studentDashboard())
+        }
+    }, [dispatch, dashboardData])
+
 
     return (
         <div className="min-h-screen bg-slate-50 flex">
@@ -53,9 +63,9 @@ export default function StudentSubjectListDashboard() {
                         </div>
                     </div>
                 </header>
-                {!user.success ? <div className="min-h-screen mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                {!dashboardData?.success ? <div className="min-h-screen mt-0 mx-16 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
                     <p className="px-6 py-16 text-center items-center justify-center">
-                        {user.message}
+                        {dashboardData?.message}
                     </p>
                 </div> :
                     <div>

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 
-const dashboardData = JSON.parse(localStorage.getItem('user'));
+
 
 const initialState = {
-    dashboardData: dashboardData ? dashboardData : null,
+    dashboardData: null,
     success: false,
     error: false,
     loading: false,
@@ -76,7 +76,7 @@ const userSlice = createSlice({
         const fulfilledCase = (state, action) => {
             state.loading = false;
             state.success = true;
-            state.dashboardData = action.payload.user
+            state.dashboardData = action.payload
         }
         const rejectedCase = (state, action) => {
             state.loading = false;

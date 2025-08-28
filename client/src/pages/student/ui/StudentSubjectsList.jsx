@@ -1,11 +1,25 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchClassSubjects } from "../../../redux/subject/subjectSlice";
+import { clearStudentState, fetchStudentOnly } from "../../../redux/student/studentSlice";
 
-export default function StudentSubjectsList({ subjects = [] }) {
+export default function StudentSubjectsList() {
   const dispatch = useDispatch();
+  const { dashboardData } = useSelector((state) => state.user)
   const { student } = useSelector((s) => s.student || {});
   const { classSubjects = [] } = useSelector((s) => s.subject || {});
+
+  useEffect(() => {
+    const id = dashboardData?.data?._id;
+    if (id) {
+      dispatch(fetchStudentOnly(id));
+    } else {
+      console.error("User _id is missing!", dashboardData);
+    }
+
+    return () => dispatch(clearStudentState())
+  }, [dispatch, dashboardData])
+
 
   const currentClassId = useMemo(
     () => student?.sClass?._id || student?.sClass || "",
