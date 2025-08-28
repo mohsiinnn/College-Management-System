@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { clearSubjectState, fetchSubjectDetails } from '../../../redux/subject/subjectSlice'
 import { fetchClassAttendance, batchAddAttendance } from "../../../redux/student/studentSlice";
 import { toast } from 'react-toastify'
 
 const TeacherMarkAttendance = () => {
     const { id } = useParams()  //SubjectId
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { subject } = useSelector((s) => s.subject || {});
     const { students, loading, message = "", error } = useSelector((s) => s.student);
     const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-    
+
     const [statuses, setStatuses] = useState({});
 
     useEffect(() => {
@@ -92,6 +93,13 @@ const TeacherMarkAttendance = () => {
                             className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
                         >
                             Mark Attendance
+                        </button>
+                        <button
+                            onClick={() => navigate('/teacher/dashboard/subjects')}
+                            disabled={loading}
+                            className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                        >
+                            Back to list
                         </button>
                     </div>
                 </div>

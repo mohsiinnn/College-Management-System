@@ -42,6 +42,7 @@ import SAdmins from './pages/SAdmin/ui/SAdmins.jsx'
 import TeacherSubjectList from './pages/teacher/ui/TeacherSubjectList.jsx'
 import TeacherMarkAttendance from './pages/teacher/ui/TeacherMarkAttendance.jsx'
 import TeacherClassSubjects from './pages/teacher/ui/TeacherClassSubjects.jsx'
+import TeacherDashboardSubjects from './pages/teacher/TeacherDashboardSubjects.jsx'
 
 
 const App = () => {
@@ -65,7 +66,7 @@ const App = () => {
             <Route path='/teacher/dashboard' element={<TeacherDashboard />} />
 
 
-            <Route path='/teacher/dashboard/subjects' element={<TeacherSubjectList />} />
+            <Route path='/teacher/dashboard/subjects' element={<TeacherDashboardSubjects />} />
             <Route path="/teacher/dashboard/class/:id" element={<TeacherClassSubjects />} />
             <Route path="/teacher/dashboard/class/subjects/:id" element={<TeacherMarkAttendance />} />
 

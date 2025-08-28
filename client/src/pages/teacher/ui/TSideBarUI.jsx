@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from "react-redux";
 const NAV = [
   { label: "Profile", icon: User },
   { label: "Subjects", icon: BookOpen },
-  { label: "Attendance", icon: Calendar },
   { label: "Verify Email", icon: Calendar },
 ];
 
@@ -33,7 +32,6 @@ const NAV = [
 const ROUTE_BY_LABEL = {
   Profile: "/teacher/dashboard",
   Subjects: "/teacher/dashboard/subjects",
-  Attendance: "/teacher/dashboard",
   'Verify Email': "/email-verify",
 };
 

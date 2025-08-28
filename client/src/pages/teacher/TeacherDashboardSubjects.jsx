@@ -1,13 +1,13 @@
 import { Bell, Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import TSidebarUI from "./ui/TSideBarUI";
-import TeacherProfileCard from "./ui/TeacherProfileCard";
 import { teacherDashboard } from "../../redux/user/userSlice";
 import { useEffect } from "react";
+import TeacherDetailsPage from "./ui/TeacherSubjectList";
 // import TeacherMarkAttendance from "./ui/TeacherMarkAttendance";
 
 
-const TeacherDashboard = () => {
+const TeacherDashboardSubjects = () => {
   const { dashboardData } = useSelector(state => state.user)
   const dispatch = useDispatch()
   // Function to toggle sidebar (triggers event the sidebar listens to)
@@ -69,7 +69,7 @@ const TeacherDashboard = () => {
           </p>
         </div> :
           <div>
-            <TeacherProfileCard />
+            <TeacherDetailsPage />
           </div>
         }
       </div>
@@ -77,4 +77,4 @@ const TeacherDashboard = () => {
   );
 }
 
-export default TeacherDashboard
+export default TeacherDashboardSubjects
