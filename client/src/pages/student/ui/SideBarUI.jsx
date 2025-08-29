@@ -1,4 +1,3 @@
-// SidebarUIOnly.Fancy.jsx
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { clearAuthState, logoutUser } from '../../../redux/auth/authSlice'
@@ -18,18 +17,16 @@ import {
   User,
   Calendar,
 } from "lucide-react";
-import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
+import { useNavigate, useNavigation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-/** Same items, same UI — display-only */
 const NAV = [
-    { label: "Profile", icon: User },
-    { label: "Subjects", icon: BookOpen },
-    { label: "Attendance", icon: Calendar },
-    { label: "Verify Email", icon: Calendar },
+  { label: "Profile", icon: User },
+  { label: "Subjects", icon: BookOpen },
+  { label: "Attendance", icon: Calendar },
+  { label: "Verify Email", icon: Calendar },
 ];
 
-// Map labels to routes (kept separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
   Profile: "/student/dashboard",
   Subjects: "/student/dashboard/subjects",
@@ -60,7 +57,6 @@ export default function SidebarUI({
     localStorage.setItem("cms_sidebar_open", isSidebarOpen ? "1" : "0");
   }, [isSidebarOpen]);
 
-  // Keyboard shortcuts: Esc to close, Ctrl/Cmd+B to toggle
   useEffect(() => {
     const onKey = (e) => {
       const isMeta = e.ctrlKey || e.metaKey;
@@ -74,7 +70,6 @@ export default function SidebarUI({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside on mobile closes
   useEffect(() => {
     const handler = (e) => {
       if (!isSidebarOpen) return;
@@ -88,7 +83,6 @@ export default function SidebarUI({
     return () => document.removeEventListener("mousedown", handler);
   }, [isSidebarOpen]);
 
-  // Focus the close button when opening (accessibility)
   useEffect(() => {
     if (isSidebarOpen) {
       closeBtnRef.current?.focus({ preventScroll: true });
@@ -119,13 +113,11 @@ export default function SidebarUI({
     </button>
   );
 
-  // 🔗 Handle navigation without changing UI
   const handleNav = (label) => {
     onItemClick(label); // keep your external callback
     const path = ROUTE_BY_LABEL[label];
     if (path) {
       navigate(path);
-      // Optional: close on mobile after navigating (UI remains the same styles)
       const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
       if (!isDesktop) setIsSidebarOpen(false);
     }
@@ -139,7 +131,6 @@ export default function SidebarUI({
 
   return (
     <>
-      {/* Floating opener when hidden */}
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
@@ -151,7 +142,6 @@ export default function SidebarUI({
         </button>
       )}
 
-      {/* Backdrop overlay (all viewports) */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.button
@@ -167,7 +157,6 @@ export default function SidebarUI({
         )}
       </AnimatePresence>
 
-      {/* Sidebar itself */}
       <AnimatePresence initial={false}>
         {isSidebarOpen && (
           <motion.aside
@@ -181,7 +170,7 @@ export default function SidebarUI({
             exit="exit"
             variants={asideVariants}
           >
-            {/* Header */}
+
             <div className="flex items-center gap-3 px-4 py-6 pt-10">
               <div className="h-10 w-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-sky-500 to-sky-600">
                 <GraduationCap className="h-5 w-5" />
@@ -202,7 +191,6 @@ export default function SidebarUI({
             </div>
             <hr className="text-gray-300 mx-2" />
 
-            {/* Items (no links) */}
             <nav className="mt-1 px-2 pb-4 overflow-y-auto pt-2">
               {NAV.map((item) => (
                 <motion.div
@@ -214,7 +202,7 @@ export default function SidebarUI({
                   <ItemButton
                     icon={item.icon}
                     label={item.label}
-                    onClick={() => handleNav(item.label)}  // 👈 navigate here
+                    onClick={() => handleNav(item.label)}
                   />
                 </motion.div>
               ))}

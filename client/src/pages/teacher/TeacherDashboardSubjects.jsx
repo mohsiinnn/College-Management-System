@@ -4,7 +4,6 @@ import TSidebarUI from "./ui/TSideBarUI";
 import { teacherDashboard } from "../../redux/user/userSlice";
 import { useEffect } from "react";
 import TeacherDetailsPage from "./ui/TeacherSubjectList";
-// import TeacherMarkAttendance from "./ui/TeacherMarkAttendance";
 
 
 const TeacherDashboardSubjects = () => {
@@ -16,20 +15,17 @@ const TeacherDashboardSubjects = () => {
   };
 
   useEffect(() => {
-      if (!dashboardData) {
-        dispatch(teacherDashboard())
-      }
-    }, [dispatch, dashboardData])
+    if (!dashboardData) {
+      dispatch(teacherDashboard())
+    }
+  }, [dispatch, dashboardData])
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar component */}
       <TSidebarUI />
 
-      {/* Main content area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        {/* <Navbar /> */}
         <header className="sticky top-0 z-30 bg-white ">
           <div className="px-4 sm:px-6 lg:px-8 h-24 flex items-center gap-3">
 
@@ -41,7 +37,7 @@ const TeacherDashboardSubjects = () => {
             </div>
 
             <div className="ml-auto flex items-center gap-3">
-              {/* Notifications */}
+
               <div className="relative">
                 <button className="p-2 rounded-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-200">
                   <Bell className="h-5 w-5 text-slate-700" />
@@ -51,7 +47,6 @@ const TeacherDashboardSubjects = () => {
                 </span>
               </div>
 
-              {/* Search bar */}
               <div className="hidden sm:flex items-center gap-2 border border-gray-300 rounded-xl px-3 h-10 w-60">
                 <Search className="h-4 w-4 text-slate-400" />
                 <input

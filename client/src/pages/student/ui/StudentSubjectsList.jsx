@@ -34,8 +34,8 @@ export default function StudentSubjectsList() {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-6">
-        <h1 className="text-3xl font-semibold text-emerald-600">
+      <div className="mx-auto flex justify-center items-center max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-6">
+        <h1 className="text-3xl font-medium text-sky-600">
           Enrolled Subjects
         </h1>
       </div>
@@ -50,7 +50,7 @@ export default function StudentSubjectsList() {
             <li
               key={s._id}
               className="p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm 
-                         flex justify-between items-center hover:bg-emerald-50 
+                         flex justify-between items-center hover:bg-sky-100 
                          transition-colors duration-200"
             >
               <span className="text-gray-800 font-medium">

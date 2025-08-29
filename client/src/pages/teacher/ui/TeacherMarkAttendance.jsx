@@ -20,7 +20,7 @@ const TeacherMarkAttendance = () => {
         return () => dispatch(clearSubjectState())
     }, [dispatch, id])
 
-    const classId = subject?.className?._id;  //classId
+    const classId = subject?.className?._id;
 
     useEffect(() => {
         if (classId && id && date) {
@@ -39,7 +39,7 @@ const TeacherMarkAttendance = () => {
         }
     }, [students]);
 
-    // Batch mark attendance with per-student status
+    // mark attendance with per-student status
     const handleBatchAttendance = () => {
         const attendanceArray = students.map(s => ({
             studentId: s._id,
@@ -57,7 +57,6 @@ const TeacherMarkAttendance = () => {
 
     return (
         <div className="p-6 bg-white shadow-md rounded-2xl space-y-6">
-            {/* Subject Info */}
             <div className="text-center space-y-2 pt-10">
                 <p className="text-2xl font-bold text-indigo-700">{subject?.subjectName}</p>
                 <p className="text-sm text-gray-500">Course Code: {subject?.courseCode}</p>
@@ -66,8 +65,6 @@ const TeacherMarkAttendance = () => {
                 </p>
             </div>
 
-
-            {/* Attendance Section */}
             <div className="space-y-4">
                 <div className='flex justify-between'>
                     <h2 className="text-2xl font-bold text-indigo-600">
@@ -75,7 +72,7 @@ const TeacherMarkAttendance = () => {
                     </h2>
 
                     <div className='flex justify-between items-center gap-2'>
-                        {/* Date Input */}
+
                         <label className="block text-sm font-medium text-gray-700">
                             Date:
                             <input
@@ -86,7 +83,7 @@ const TeacherMarkAttendance = () => {
                             />
                         </label>
 
-                        {/* Button */}
+
                         <button
                             onClick={handleBatchAttendance}
                             disabled={loading}
@@ -104,7 +101,6 @@ const TeacherMarkAttendance = () => {
                     </div>
                 </div>
 
-                {/* Loading & Message */}
                 {loading && <p className="text-sm text-yellow-600">Loading...</p>}
                 {message && (
                     <p
@@ -117,7 +113,6 @@ const TeacherMarkAttendance = () => {
                     </p>
                 )}
 
-                {/* Students Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-gray-200 rounded-lg">
                         <thead className="bg-gray-100 text-gray-700 text-sm">
@@ -168,8 +163,6 @@ const TeacherMarkAttendance = () => {
                 </div>
             </div>
         </div>
-
-
     )
 }
 

@@ -28,13 +28,6 @@ const TeacherClassSubjects = () => {
 
 
     const teacherId = teacher?._id;
-    // try {
-    //     if (teacherId) {
-    //         console.log("TeacherId: ", teacherId);
-    //     }
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
 
     useEffect(() => {
         if (teacherId) {
@@ -55,6 +48,18 @@ const TeacherClassSubjects = () => {
             {!loading && (!classSubjects || classSubjects.length === 0) && (
                 <p className="text-sm text-gray-500">No subjects found for this class.</p>
             )}
+
+            <p className="font-medium flex justify-between items-center mt-10 mb-3">
+                <span className=" text-indigo-600 text-2xl ">Subjects</span>
+                <button
+                    onClick={() => navigate('/teacher/dashboard/subjects')}
+                    disabled={loading}
+                    className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                    Back to list
+                </button>
+            </p>
+
 
             {!loading && classSubjects?.length > 0 && (
                 <div className="bg-white rounded-xl shadow">

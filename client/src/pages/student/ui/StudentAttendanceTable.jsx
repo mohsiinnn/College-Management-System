@@ -64,10 +64,7 @@ export default function StudentAttendanceTable() {
       {/* Sidebar component */}
       <SidebarUI />
 
-      {/* Main content area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        {/* <Navbar /> */}
         <header className="sticky top-0 z-30 bg-white ">
           <div className="px-4 sm:px-6 lg:px-8 h-24 flex items-center gap-3">
 
@@ -79,7 +76,7 @@ export default function StudentAttendanceTable() {
             </div>
 
             <div className="ml-auto flex items-center gap-3">
-              {/* Notifications */}
+
               <div className="relative">
                 <button className="p-2 rounded-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-200">
                   <Bell className="h-5 w-5 text-slate-700" />
@@ -89,7 +86,6 @@ export default function StudentAttendanceTable() {
                 </span>
               </div>
 
-              {/* Search bar */}
               <div className="hidden sm:flex items-center gap-2 border border-gray-300 rounded-xl px-3 h-10 w-60">
                 <Search className="h-4 w-4 text-slate-400" />
                 <input
@@ -108,12 +104,10 @@ export default function StudentAttendanceTable() {
         </div> :
           <div>
 
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8  mt-5">
-              <h1 className="text-3xl font-semibold text-emerald-600">Attendance by Subject</h1>
+            <div className="mx-auto flex justify-center items-center max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 mt-5">
+              <h1 className="text-3xl font-medium text-sky-600">Attendance by Subject</h1>
             </div>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-8">
-
-
               {Object.keys(groupedAttendance).length === 0 ? (
                 <div className="text-center py-8 text-sm text-gray-500">
                   No attendance records yet.
@@ -121,7 +115,6 @@ export default function StudentAttendanceTable() {
               ) : (
                 Object.entries(groupedAttendance).map(([subjectName, records]) => (
                   <div key={subjectName} className="border-b py-3">
-                    {/* Subject header */}
                     <button
                       className="w-full flex justify-between items-center font-medium text-gray-700"
                       onClick={() =>
@@ -132,7 +125,6 @@ export default function StudentAttendanceTable() {
                       <span>{openSubject === subjectName ? "▲" : "▼"}</span>
                     </button>
 
-                    {/* Dropdown content */}
                     {openSubject === subjectName && (
                       <ul className="mt-2 pl-4 divide-y">
                         {records
