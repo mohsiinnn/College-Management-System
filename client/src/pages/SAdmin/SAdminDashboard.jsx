@@ -76,7 +76,7 @@ export default function SAdminDashboard() {
                     <div className="px-4 sm:px-6 lg:px-8 h-24 flex items-center gap-3">
 
                         <div className="flex flex-col pl-16">
-                            <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Super Admin Dashboard</h1>
+                            <h1 className="text-xl sm:text-3xl font-bold text-sky-600">Administrator Dashboard</h1>
                             <p className=" text-slate-500 -mt-0.5">
                                 Welcome back, manage your college efficiently
                             </p>
