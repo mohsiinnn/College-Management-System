@@ -1,4 +1,3 @@
-// src/pages/students/StudentDetailsPage.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,12 +9,13 @@ import {
   clearStudentState,
 } from "../../../redux/student/studentSlice";
 import { fetchClassSubjects } from "../../../redux/subject/subjectSlice";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const StudentDetailsPage = () => {
   const { id } = useParams(); // studentId
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const {
     student = null,
@@ -65,7 +65,7 @@ const StudentDetailsPage = () => {
           studentId: id,
           subjectId,
           status,
-          date, // yyyy-mm-dd
+          date,
         })
       ).unwrap();
       // refresh detail
@@ -131,12 +131,16 @@ const StudentDetailsPage = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-5xl mx-auto p-6 pt-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Student Details</h1>
-        <Link to="/admin/dashboard/students" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl text-sky-600 font-medium">Student Details</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/students')}
+          disabled={loading}
+          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       {loading && <p className="text-sm text-gray-500">Loading…</p>}
@@ -157,7 +161,7 @@ const StudentDetailsPage = () => {
 
           {/* Card: mark attendance */}
           <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Mark Attendance</h2>
+            <h2 className="text-lg font-medium mb-3 text-sky-600">Mark Attendance</h2>
             <div className="grid grid-cols-12 gap-2 items-end">
               <div className="col-span-5">
                 <label className="block text-sm mb-1">Subject</label>
@@ -212,7 +216,7 @@ const StudentDetailsPage = () => {
 
           {/* Card: clear attendance */}
           <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Clear Attendance</h2>
+            <h2 className="text-lg font-medium mb-3 text-sky-600">Clear Attendance</h2>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={onClearThisStudentAll}
@@ -242,9 +246,9 @@ const StudentDetailsPage = () => {
             </div>
           </div>
 
-          {/* Card: attendance log (basic) */}
+          {/* Card: attendance log */}
           <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="text-lg font-medium mb-3">Attendance Log</h2>
+            <h2 className="text-lg font-medium mb-3 text-sky-600">Attendance Log</h2>
             {Array.isArray(student.attendance) && student.attendance.length > 0 ? (
               <ul className="divide-y">
                 {student.attendance

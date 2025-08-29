@@ -1,4 +1,3 @@
-// src/pages/students/StudentsListPage.jsx
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -47,7 +46,7 @@ const ClassSection = ({
 
   return (
     <div className="mb-4 bg-white shadow rounded-xl overflow-hidden">
-      {/* Header */}
+
       <button
         onClick={onToggle}
         className="w-full flex justify-between items-center p-3 bg-gray-200 hover:bg-gray-300"
@@ -56,9 +55,8 @@ const ClassSection = ({
           {label} ({classStudents.length})
         </span>
         <svg
-          className={`w-5 h-5 transform transition-transform duration-300 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
+          className={`w-5 h-5 transform transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
+            }`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -68,7 +66,6 @@ const ClassSection = ({
         </svg>
       </button>
 
-      {/* Animated content */}
       <div
         ref={contentRef}
         style={{ maxHeight }}
@@ -169,7 +166,7 @@ const StudentsListPage = () => {
 
   const handleDetails = (id) => navigate(`/admin/dashboard/students/${id}`);
 
-  // Group once; stable across renders unless students changes
+  // useMemo never change unless students changes
   const grouped = useMemo(() => {
     return students.reduce((acc, st) => {
       const label = st?.sClass?.className || "No Class";
@@ -180,10 +177,10 @@ const StudentsListPage = () => {
   }, [students]);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Top Buttons (unchanged) */}
+    <div className="max-w-6xl mx-auto p-6 pt-8">
+
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Students</h1>
+        <h1 className="text-2xl text-blue-600 font-medium">Students</h1>
         <div className="flex gap-2">
           <button
             onClick={onClearAllAttendance}
@@ -213,7 +210,6 @@ const StudentsListPage = () => {
         <p className="text-sm text-gray-500">No students found.</p>
       )}
 
-      {/* Sections */}
       {!loading &&
         Object.entries(grouped).map(([label, classStudents]) => (
           <ClassSection
@@ -229,6 +225,14 @@ const StudentsListPage = () => {
             actingId={actingId}
           />
         ))}
+      <div className="flex justify-end">
+        <button
+          onClick={() => navigate('/admin/dashboard/students-page')}
+          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
+          Back to Dashboard
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,9 +1,8 @@
-// src/pages/students/StudentCreatePage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStudentProfile, clearStudentState } from "../../../redux/student/studentSlice";
 import { fetchClasses } from "../../../redux/class/classSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const StudentCreatePage = () => {
@@ -40,12 +39,15 @@ const StudentCreatePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-18">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Create Student Profile</h1>
-        <Link to="/admin/dashboard/students" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-indigo-600">Create Student Profile</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/students')}
+          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       <form onSubmit={onSubmit} className="bg-white rounded-xl shadow p-4 space-y-4">
@@ -67,7 +69,7 @@ const StudentCreatePage = () => {
             value={classId}
             onChange={(e) => setClassId(e.target.value)}
           >
-            <option value="">-- Select Class --</option>
+            <option value=""> Select Class </option>
             {classes.map((c) => (
               <option key={c._id} value={c._id}>
                 {c.className} ({c.department || "-"})
