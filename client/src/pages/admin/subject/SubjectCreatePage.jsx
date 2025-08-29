@@ -1,4 +1,3 @@
-// src/pages/subjects/SubjectCreatePage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubjects, clearSubjectState } from "../../../redux/subject/subjectSlice";
@@ -55,24 +54,27 @@ const SubjectCreatePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-10">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Add Subjects</h1>
-        <Link to="/admin/dashboard/subjects" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Add Subjects</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/subjects')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       <form onSubmit={onSubmit} className="bg-white rounded-xl shadow p-4 space-y-4">
         {/* Class select */}
         <div>
-          <label className="block text-sm mb-1">Class</label>
+          <label className="text-base font-medium">Class</label>
           <select
             className="w-full border rounded-lg px-3 py-2 outline-none"
             value={classId}
             onChange={(e) => setClassId(e.target.value)}
           >
-            <option value="">-- Select Class --</option>
+            <option value=""> Select Class </option>
             {classes.map((c) => (
               <option value={c._id} key={c._id}>
                 {c.className} ({c.department || "-"})
@@ -121,7 +123,7 @@ const SubjectCreatePage = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-medium disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg bg-sky-600 text-white font-medium disabled:opacity-50"
         >
           {submitting ? "Saving…" : "Save Subjects"}
         </button>

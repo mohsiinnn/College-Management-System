@@ -1,4 +1,3 @@
-// src/pages/subjects/SubjectsListPage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -73,10 +72,10 @@ const SubjectsListPage = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
+        <div className="max-w-6xl mx-auto p-6 pt-8">
             {/* Top bar */}
             <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-semibold">Subjects</h1>
+                <h1 className="text-2xl font-semibold text-sky-600">Subjects</h1>
                 <div className="flex gap-2">
                     <button
                         onClick={onDeleteAll}
@@ -87,9 +86,15 @@ const SubjectsListPage = () => {
                     </button>
                     <Link
                         to="/admin/dashboard/subjects/new"
-                        className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                        className="px-4 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
                     >
                         + New Subject
+                    </Link>
+                    <Link
+                        to="/admin/dashboard/subjects-page"
+                        className="px-4 py-2.5 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
+                    >
+                        Back to Dashboard
                     </Link>
                 </div>
             </div>
@@ -116,9 +121,8 @@ const SubjectsListPage = () => {
                                 Class: {classLabel} ({grouped[classLabel].length})
                             </span>
                             <span
-                                className={`text-sm text-gray-500 transform transition-transform duration-300 ${
-                                    expandedClasses[classLabel] ? "rotate-180" : "rotate-0"
-                                }`}
+                                className={`text-sm text-gray-500 transform transition-transform duration-300 ${expandedClasses[classLabel] ? "rotate-180" : "rotate-0"
+                                    }`}
                             >
                                 ▼
                             </span>
@@ -126,11 +130,10 @@ const SubjectsListPage = () => {
 
                         {/* Animated subject list */}
                         <div
-                            className={`transition-all duration-500 overflow-hidden ${
-                                expandedClasses[classLabel]
+                            className={`transition-all duration-500 overflow-hidden ${expandedClasses[classLabel]
                                     ? "max-h-96 opacity-100"
                                     : "max-h-0 opacity-0"
-                            }`}
+                                }`}
                         >
                             <ul className="divide-y">
                                 {grouped[classLabel].map((s) => {

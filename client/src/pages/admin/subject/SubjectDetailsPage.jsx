@@ -1,4 +1,3 @@
-// src/pages/subjects/SubjectDetailsPage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -43,12 +42,15 @@ const SubjectDetailsPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Subject Details</h1>
-        <Link to="/admin/dashboard/subjects" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Subject Details</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/subjects')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       {loading && <p className="text-sm text-gray-500">Loading…</p>}
