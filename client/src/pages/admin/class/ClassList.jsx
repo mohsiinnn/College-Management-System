@@ -1,4 +1,3 @@
-// src/pages/classes/ClassesListPage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -54,15 +53,25 @@ const ClassesListPage = () => {
     };
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
+        <div className="max-w-5xl mx-auto p-6 pt-8">
             <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-semibold">Classes</h1>
-                <Link
-                    to="/admin/dashboard/classes/new"
-                    className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
-                >
-                    + New Class
-                </Link>
+                <h1 className="text-2xl font-semibold text-sky-600">Classes</h1>
+                <div className="flex items-center justify-between gap-2">
+                    <div>
+                        <Link
+                            to="/admin/dashboard/classes/new"
+                            className="px-4 py-2.5 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
+                        >
+                            + New Class
+                        </Link>
+                    </div>
+                    <Link
+                        to="/admin/dashboard/classes-page"
+                        className="px-4 py-2.5 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
+                    >
+                        Back to Dashboard
+                    </Link>
+                </div>
             </div>
 
             {loading && <p className="text-sm text-gray-500">Loading…</p>}

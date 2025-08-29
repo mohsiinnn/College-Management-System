@@ -1,4 +1,3 @@
-// src/pages/classes/ClassDetailsPage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,7 +6,7 @@ import {
   deleteClass,
   clearClassState,
 } from "../../../redux/class/classSlice";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ClassDetailsPage = () => {
@@ -56,12 +55,15 @@ const ClassDetailsPage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Class Details</h1>
-        <Link to="/admin/dashboard/classes" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Class Details</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/classes')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       {loading && <p className="text-sm text-gray-500">Loading…</p>}
@@ -72,9 +74,6 @@ const ClassDetailsPage = () => {
 
       {!loading && currentClass && (
         <div className="bg-white rounded-xl shadow p-4 space-y-3">
-          <p>
-            <span className="font-medium">ID:</span> {currentClass._id}
-          </p>
           <p>
             <span className="font-medium">Class Name:</span> {currentClass.className}
           </p>

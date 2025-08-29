@@ -1,8 +1,7 @@
-// src/pages/classes/ClassCreatePage.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createClass, fetchClasses } from "../../../redux/class/classSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ClassCreatePage = () => {
@@ -23,7 +22,7 @@ const ClassCreatePage = () => {
     try {
       const res = await dispatch(createClass({ className, department })).unwrap();
       toast.success(res?.message || "Class created");
-      // optional: refresh list cache
+
       dispatch(fetchClasses());
       navigate("/admin/dashboard/classes");
     } catch (e) {
@@ -34,12 +33,15 @@ const ClassCreatePage = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className="max-w-xl mx-auto p-6 pt-10">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Create Class</h1>
-        <Link to="/admin/dashboard/classes" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Create Class</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/classes')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       <form onSubmit={onSubmit} className="bg-white rounded-xl shadow p-4 space-y-4">
@@ -68,7 +70,7 @@ const ClassCreatePage = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-medium disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg bg-sky-600 text-white font-medium disabled:opacity-50"
         >
           {submitting ? "Creating…" : "Create"}
         </button>
