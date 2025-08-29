@@ -180,7 +180,7 @@ const StudentsListPage = () => {
     <div className="max-w-6xl mx-auto p-6 pt-8">
 
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl text-blue-600 font-medium">Students</h1>
+        <h1 className="text-2xl text-sky-600 font-medium">Students</h1>
         <div className="flex gap-2">
           <button
             onClick={onClearAllAttendance}
@@ -198,7 +198,7 @@ const StudentsListPage = () => {
           </button>
           <Link
             to="/admin/dashboard/students/new"
-            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+            className="px-4 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
           >
             + New Student
           </Link>
@@ -228,7 +228,7 @@ const StudentsListPage = () => {
       <div className="flex justify-end">
         <button
           onClick={() => navigate('/admin/dashboard/students-page')}
-          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
           Back to Dashboard
         </button>

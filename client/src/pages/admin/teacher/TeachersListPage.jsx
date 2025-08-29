@@ -54,9 +54,9 @@ const TeachersListPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 pt-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Teachers</h1>
+        <h1 className="text-2xl font-semibold text-sky-600">Teachers</h1>
         <div className="flex gap-2">
           <button
             onClick={onDeleteAll}
@@ -67,10 +67,16 @@ const TeachersListPage = () => {
           </button>
           <Link
             to="/admin/dashboard/teachers/new"
-            className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+            className="px-4 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700"
           >
             + New Teacher Profile
           </Link>
+          <button
+            onClick={() => navigate('/admin/dashboard/teachers-page')}
+            className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            Back to Dashboard
+          </button>
         </div>
       </div>
 

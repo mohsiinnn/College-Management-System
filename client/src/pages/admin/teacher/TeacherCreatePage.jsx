@@ -56,12 +56,15 @@ const TeacherCreatePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-8">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Create Teacher Profile</h1>
-        <Link to="/admin/dashboard/teachers" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Create Teacher Profile</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/teachers')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       <form onSubmit={onSubmit} className="bg-white rounded-xl shadow p-4 space-y-4">
@@ -83,7 +86,7 @@ const TeacherCreatePage = () => {
             value={classId}
             onChange={(e) => setClassId(e.target.value)}
           >
-            <option value="">-- Select Class --</option>
+            <option value=""> Select Class </option>
             {classes.map((c) => (
               <option key={c._id} value={c._id}>
                 {c.className} ({c.department || "-"})
@@ -100,7 +103,7 @@ const TeacherCreatePage = () => {
             onChange={(e) => setSubjectId(e.target.value)}
             disabled={!classId || subjLoading}
           >
-            <option value="">{subjLoading ? "Loading…" : "-- Select Subject --"}</option>
+            <option value="">{subjLoading ? "Loading…" : " Select Subject "}</option>
             {freeSubjects.map((s) => (
               <option key={s._id} value={s._id}>
                 {s.subjectName} ({s.courseCode})
@@ -115,7 +118,7 @@ const TeacherCreatePage = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-medium disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg bg-sky-600 text-white font-medium disabled:opacity-50"
         >
           {submitting ? "Creating…" : "Create"}
         </button>

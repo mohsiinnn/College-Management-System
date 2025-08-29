@@ -88,10 +88,13 @@ const TeacherDetailsPage = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold">Teacher Details</h1>
-        <Link to="/admin/dashboard/teachers" className="text-indigo-600 hover:underline">
+        <h1 className="text-2xl font-semibold text-sky-600">Teacher Details</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard/teachers')}
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+        >
           Back to list
-        </Link>
+        </button>
       </div>
 
       {loading && <p className="text-sm text-gray-500">Loading…</p>}
@@ -166,7 +169,7 @@ const TeacherDetailsPage = () => {
 
           {/* Assign another subject */}
           <div className="border-t pt-4">
-            <h2 className="text-lg font-medium mb-2">Assign Subject</h2>
+            <h2 className="text-lg font-medium mb-2 text-sky-600">Assign Subject</h2>
 
             <div className="grid grid-cols-12 gap-2">
               <select
@@ -204,7 +207,7 @@ const TeacherDetailsPage = () => {
               <button
                 onClick={onAssignSubject}
                 disabled={busy}
-                className="col-span-2 px-3 py-2 rounded-md bg-indigo-600 text-white disabled:opacity-50"
+                className="col-span-2 px-3 py-2 rounded-md bg-sky-600 text-white disabled:opacity-50"
               >
                 {busy ? "Saving…" : "Assign"}
               </button>

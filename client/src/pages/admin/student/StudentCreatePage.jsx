@@ -39,12 +39,12 @@ const StudentCreatePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 pt-18">
+    <div className="max-w-3xl mx-auto p-6 pt-10">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-semibold text-indigo-600">Create Student Profile</h1>
+        <h1 className="text-2xl font-semibold text-sky-600">Create Student Profile</h1>
         <button
           onClick={() => navigate('/admin/dashboard/students')}
-          className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
           Back to list
         </button>
@@ -81,7 +81,7 @@ const StudentCreatePage = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-medium disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg bg-sky-600 text-white font-medium disabled:opacity-50"
         >
           {submitting ? "Creating…" : "Create"}
         </button>
