@@ -1,4 +1,3 @@
-// SidebarUIOnly.Fancy.jsx
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { clearAuthState, logoutUser } from '../redux/auth/authSlice'
@@ -16,10 +15,9 @@ import {
   CircleCheck,
   Settings,
 } from "lucide-react";
-import { useNavigate, useNavigation } from "react-router-dom"; // 👈 added
+import { useNavigate, useNavigation } from "react-router-dom"; // added
 import { useDispatch, useSelector } from "react-redux";
 
-/** Same items, same UI — display-only */
 const NAV = [
   { label: "Dashboard", icon: Home },
   { label: "Pending Approvals", icon: Clock4 },
@@ -30,7 +28,7 @@ const NAV = [
   { label: "Verify Email", icon: BookOpen },
 ];
 
-// Map labels to routes (kept separate so UI doesn’t change)
+// Redirect labels to routes (i written it separate so UI doesn’t change)
 const ROUTE_BY_LABEL = {
   Dashboard: "/admin/dashboard",
   "Pending Approvals": "/admin/dashboard/pending-approvals",
@@ -59,12 +57,12 @@ export default function SidebarUI({
 
   const { user } = useSelector((state) => state.auth)
 
-  // Persist open/close
+  // open/close at a time
   useEffect(() => {
     localStorage.setItem("cms_sidebar_open", isSidebarOpen ? "1" : "0");
   }, [isSidebarOpen]);
 
-  // Keyboard shortcuts: Esc to close, Ctrl/Cmd+B to toggle
+  // press Esc to close, Ctrl+B to toggle if you want to toggle from keyboard
   useEffect(() => {
     const onKey = (e) => {
       const isMeta = e.ctrlKey || e.metaKey;
@@ -78,7 +76,7 @@ export default function SidebarUI({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Click outside on mobile closes
+
   useEffect(() => {
     const handler = (e) => {
       if (!isSidebarOpen) return;
@@ -92,7 +90,7 @@ export default function SidebarUI({
     return () => document.removeEventListener("mousedown", handler);
   }, [isSidebarOpen]);
 
-  // Focus the close button when opening (accessibility)
+
   useEffect(() => {
     if (isSidebarOpen) {
       closeBtnRef.current?.focus({ preventScroll: true });
@@ -123,7 +121,7 @@ export default function SidebarUI({
     </button>
   );
 
-  // 🔗 Handle navigation without changing UI
+  // Handling navigation without changing UI
   const handleNav = (label) => {
     onItemClick(label); // keep your external callback
     const path = ROUTE_BY_LABEL[label];
@@ -143,7 +141,7 @@ export default function SidebarUI({
 
   return (
     <>
-      {/* Floating opener when hidden */}
+      {/* When sidebar opens then button becomes hidden */}
       {!isSidebarOpen && (
         <button
           onClick={() => setIsSidebarOpen(true)}
@@ -155,7 +153,7 @@ export default function SidebarUI({
         </button>
       )}
 
-      {/* Backdrop overlay (all viewports) */}
+      
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.button
@@ -171,7 +169,7 @@ export default function SidebarUI({
         )}
       </AnimatePresence>
 
-      {/* Sidebar itself */}
+      {/* Sidebar */}
       <AnimatePresence initial={false}>
         {isSidebarOpen && (
           <motion.aside
@@ -206,7 +204,7 @@ export default function SidebarUI({
             </div>
             <hr className="text-gray-300 mx-2" />
 
-            {/* Items (no links) */}
+        
             <nav className="mt-1 px-2 pb-4 overflow-y-auto pt-2">
               {NAV.map((item) => (
                 <motion.div
@@ -218,7 +216,7 @@ export default function SidebarUI({
                   <ItemButton
                     icon={item.icon}
                     label={item.label}
-                    onClick={() => handleNav(item.label)}  // 👈 navigate here
+                    onClick={() => handleNav(item.label)}  // navigate here
                   />
                 </motion.div>
               ))}

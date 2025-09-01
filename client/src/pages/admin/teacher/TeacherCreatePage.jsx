@@ -1,10 +1,9 @@
-// src/pages/teachers/TeacherCreatePage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeacherProfile, clearTeacherState } from "../../../redux/teacher/teacherSlice";
 import { fetchClasses } from "../../../redux/class/classSlice";
 import { fetchFreeSubjects, clearSubjectState } from "../../../redux/subject/subjectSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const TeacherCreatePage = () => {

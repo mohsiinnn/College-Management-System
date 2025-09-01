@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// Child component so Hooks aren't inside a loop
+// Child component so hooks are not inside a loop
 const ClassSection = ({
   label,
   classStudents,
@@ -28,7 +28,7 @@ const ClassSection = ({
     if (!el) return;
 
     const recalc = () => {
-      // set exact height when open, 0 when closed
+      // set exact height when open and 0 when closed
       setMaxHeight(isOpen ? `${el.scrollHeight}px` : "0px");
     };
 
@@ -166,7 +166,7 @@ const StudentsListPage = () => {
 
   const handleDetails = (id) => navigate(`/admin/dashboard/students/${id}`);
 
-  // useMemo never change unless students changes
+  // useMemo never change jabtak students change nhi hoty
   const grouped = useMemo(() => {
     return students.reduce((acc, st) => {
       const label = st?.sClass?.className || "No Class";

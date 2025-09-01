@@ -4,7 +4,7 @@ import Dashboard from "./ui/Dashboard";
 
 export default function AdminDashboard() {
 
-  // Function to toggle sidebar (triggers event the sidebar listens to)
+  // Toggle sidebar function (optional for me becouse we already calls Sidebar component)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };
@@ -14,7 +14,7 @@ export default function AdminDashboard() {
       {/* Sidebar component */}
       <SidebarUI />
 
-      {/* Main content area */}
+
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="sticky top-0 z-30 bg-white ">
@@ -27,6 +27,7 @@ export default function AdminDashboard() {
               </p>
             </div>
 
+            {/* This section is used for decoration  */}
             <div className="ml-auto flex items-center gap-3">
               {/* Notifications */}
               <div className="relative">

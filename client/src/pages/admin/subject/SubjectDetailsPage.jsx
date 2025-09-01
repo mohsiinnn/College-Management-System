@@ -86,6 +86,14 @@ const SubjectDetailsPage = () => {
             >
               {busy ? "Deleting…" : "Delete Subject"}
             </button>
+            {!subject?.teacher?.teacher &&
+              <button
+                onClick={() => navigate('/admin/dashboard/teachers')}
+                className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+              >
+                Assign Teacher
+              </button>
+            }
           </div>
         </div>
       )}

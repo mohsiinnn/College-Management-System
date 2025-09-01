@@ -103,6 +103,12 @@ const ClassDetailsPage = () => {
             >
               {busy ? "Deleting…" : "Delete Class"}
             </button>
+            <button
+              onClick={() => navigate('/admin/dashboard/students')}
+              className="px-4 py-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            >
+              View all students
+            </button>
           </div>
         </div>
       )}

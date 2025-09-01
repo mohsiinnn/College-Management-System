@@ -15,7 +15,7 @@ export default function SAdminDashboard() {
 
     const { users, loading, error, message } = useSelector((state) => state.sUsers);
 
-    // Function to toggle sidebar (triggers event the sidebar listens to)
+    // Toggle sidebar function (optional for me becouse we already calls Sidebar component)
     const toggleSidebar = () => {
         window.dispatchEvent(new Event("cms:toggle-sidebar"));
     };
@@ -24,16 +24,16 @@ export default function SAdminDashboard() {
 
     const [actingId, setActingId] = useState(null);
 
-    // initial fetch
+    
     useEffect(() => {
         dispatch(fetchPendingAdmin());
         return () => {
-            // cleanup: clear transient messages when leaving page
+            // It clears state when leaving page
             dispatch(clearAdminState());
         };
     }, [dispatch]);
 
-    // surface store messages via toast
+    // Toast Message
     useEffect(() => {
         if (error) toast.error(error);
         if (message) toast.success(message);
@@ -69,7 +69,7 @@ export default function SAdminDashboard() {
             {/* Sidebar component */}
             <SASidebarUI />
 
-            {/* Main content area */}
+            
             <div className="flex-1 flex flex-col">
                 {/* Header */}
                 <header className="sticky top-0 z-30 bg-white ">
@@ -82,6 +82,7 @@ export default function SAdminDashboard() {
                             </p>
                         </div>
 
+                        {/* This section is used for decoration  */}
                         <div className="ml-auto flex items-center gap-3">
                             {/* Notifications */}
                             <div className="relative">
@@ -107,7 +108,7 @@ export default function SAdminDashboard() {
                 </header>
 
                 <div className="min-h-screen bg-slate-50 p-6 md:p-10">
-                    {/* Page header */}
+                    {/* header */}
                     <div className="mx-auto max-w-6xl">
                         <div className="flex items-start justify-between gap-4">
                             <div>
@@ -121,7 +122,7 @@ export default function SAdminDashboard() {
                             </div>
                         </div>
 
-                        {/* Content card */}
+                        {/* Approvals section */}
                         <div className="mt-6 rounded-xl bg-white shadow-sm ring-1 ring-slate-200">
                             {(users.length === 0) ? (
                                 <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">

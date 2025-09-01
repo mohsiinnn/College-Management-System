@@ -151,7 +151,7 @@ const StudentDetailsPage = () => {
 
       {!loading && student && (
         <div className="space-y-6">
-          {/* Card: basic info */}
+          {/* basic information */}
           <div className="bg-white rounded-xl shadow p-4">
             <p><span className="font-medium">Name:</span> {student?.student?.name || "—"}</p>
             <p><span className="font-medium">Email:</span> {student?.student?.email || "—"}</p>
@@ -159,7 +159,7 @@ const StudentDetailsPage = () => {
             <p><span className="font-medium">Attendance entries:</span> {Array.isArray(student.attendance) ? student.attendance.length : 0}</p>
           </div>
 
-          {/* Card: mark attendance */}
+          {/* mark attendance */}
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="text-lg font-medium mb-3 text-sky-600">Mark Attendance</h2>
             <div className="grid grid-cols-12 gap-2 items-end">
@@ -214,7 +214,7 @@ const StudentDetailsPage = () => {
             </div>
           </div>
 
-          {/* Card: clear attendance */}
+          {/* clear attendance */}
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="text-lg font-medium mb-3 text-sky-600">Clear Attendance</h2>
             <div className="flex flex-wrap gap-2">
@@ -246,7 +246,7 @@ const StudentDetailsPage = () => {
             </div>
           </div>
 
-          {/* Card: attendance log */}
+          {/* attendance */}
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="text-lg font-medium mb-3 text-sky-600">Attendance Log</h2>
             {Array.isArray(student.attendance) && student.attendance.length > 0 ? (

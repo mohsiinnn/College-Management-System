@@ -99,7 +99,7 @@ const SubjectsListPage = () => {
                 </div>
             </div>
 
-            {/* Loading / Empty state */}
+            {/* Loading or Empty state */}
             {loading && <p className="text-sm text-gray-500">Loading…</p>}
             {!loading && (!subjects || subjects.length === 0) && (
                 <p className="text-sm text-gray-500">No subjects found.</p>
@@ -112,7 +112,7 @@ const SubjectsListPage = () => {
                         key={classLabel}
                         className="bg-white rounded-xl shadow mb-4 overflow-hidden"
                     >
-                        {/* Class dropdown header */}
+                        {/* Class dropdown */}
                         <button
                             onClick={() => toggleClassDropdown(classLabel)}
                             className="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 text-left"
@@ -128,7 +128,7 @@ const SubjectsListPage = () => {
                             </span>
                         </button>
 
-                        {/* Animated subject list */}
+                        {/* subject list */}
                         <div
                             className={`transition-all duration-500 overflow-hidden ${expandedClasses[classLabel]
                                     ? "max-h-96 opacity-100"

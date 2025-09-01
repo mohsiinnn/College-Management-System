@@ -57,6 +57,7 @@ const TeacherMarkAttendance = () => {
 
     return (
         <div className="p-6 bg-white shadow-md rounded-2xl space-y-6">
+            {/* Header  */}
             <div className="text-center space-y-2 pt-10">
                 <p className="text-2xl font-bold text-indigo-700">{subject?.subjectName}</p>
                 <p className="text-sm text-gray-500">Course Code: {subject?.courseCode}</p>
@@ -113,6 +114,7 @@ const TeacherMarkAttendance = () => {
                     </p>
                 )}
 
+                {/* List of Students shows here */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-gray-200 rounded-lg">
                         <thead className="bg-gray-100 text-gray-700 text-sm">

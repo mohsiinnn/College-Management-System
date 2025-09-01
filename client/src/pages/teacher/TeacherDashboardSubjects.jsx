@@ -9,7 +9,7 @@ import TeacherDetailsPage from "./ui/TeacherSubjectList";
 const TeacherDashboardSubjects = () => {
   const { dashboardData } = useSelector(state => state.user)
   const dispatch = useDispatch()
-  // Function to toggle sidebar (triggers event the sidebar listens to)
+  // Toggle sidebar function (optional for me becouse we already calls Sidebar component)
   const toggleSidebar = () => {
     window.dispatchEvent(new Event("cms:toggle-sidebar"));
   };

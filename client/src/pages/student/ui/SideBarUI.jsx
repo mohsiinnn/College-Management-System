@@ -52,7 +52,7 @@ export default function SidebarUI({
 
   const { user } = useSelector((state) => state.auth)
 
-  // Persist open/close
+  // open/close at a time
   useEffect(() => {
     localStorage.setItem("cms_sidebar_open", isSidebarOpen ? "1" : "0");
   }, [isSidebarOpen]);

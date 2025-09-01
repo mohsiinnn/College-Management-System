@@ -14,16 +14,16 @@ const PendingApprovals = () => {
 
     const [actingId, setActingId] = useState(null);
 
-    // initial fetch
+
     useEffect(() => {
         dispatch(fetchPendingApprovals());
         return () => {
-            // cleanup: clear transient messages when leaving page
+            // It clears state when leaving page
             dispatch(clearAdminState());
         };
     }, [dispatch]);
 
-    // surface store messages via toast
+    // Toast messages
     useEffect(() => {
         if (error) toast.error(error);
         if (message) toast.success(message);
