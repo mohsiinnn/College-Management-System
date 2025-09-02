@@ -143,7 +143,6 @@ export const deleteStudent = async (req, res) => {
 
 
 
-// GET /api/student/class/:classId/attendance?subjectId=...&date=...
 export const getClassAttendance = async (req, res) => {
     const { classId } = req.params;
     const { subjectId, date } = req.query;
@@ -175,7 +174,7 @@ export const getClassAttendance = async (req, res) => {
 
 
 export const addBatchAttendance = async (req, res) => {
-    const { classId } = req.params;
+    // const { classId } = req.params;
     const { subjectId, date, attendance } = req.body;
     try {
         if (!subjectId || !date || !Array.isArray(attendance)) {
@@ -200,40 +199,6 @@ export const addBatchAttendance = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 };
-
-
-// POST /api/student/class/:classId/attendance
-// body: { subjectId, status, date }
-// export const addBatchAttendance = async (req, res) => {
-//     const { classId } = req.params;
-//     const { subjectId, status, date } = req.body;
-//     try {
-//         if (!subjectId || !status || !date) {
-//             return res.json({ success: false, message: "Enter subjectId, status and date" });
-//         }
-
-//         // Find all students in the class
-//         const students = await studentModel.find({ sClass: classId });
-
-//         //We used Loop For each student, add or update attendance
-//         for (const stu of students) {
-//             const idx = stu.attendance.findIndex(a =>
-//                 String(a.subjectId) === String(subjectId) &&
-//                 new Date(a.date).toDateString() === new Date(date).toDateString()
-//             );
-//             if (idx >= 0) {
-//                 stu.attendance[idx].status = status;
-//             } else {
-//                 stu.attendance.push({ subjectId, status, date });
-//             }
-//             await stu.save();
-//         }
-
-//         return res.json({ success: true, message: "Attendance marked for all students" });
-//     } catch (error) {
-//         return res.json({ success: false, message: error.message });
-//     }
-// };
 
 
 export const deleteAllStudents = async (req, res) => {
@@ -311,31 +276,6 @@ export const addAttendance = async (req, res) => {
         }
         const newAttendance = await student.save();
         return res.json({ success: true, data: newAttendance });
-
-        //     const d = new Date(date);
-        // if (Number.isNaN(d.getTime())) {
-        //   return res.json({ success: false, message: "Invalid date" });
-        // }
-
-        // // ensure status is one of enum
-        // if (!["present", "absent"].includes(status)) {
-        //   return res.json({ success: false, message: "Invalid status" });
-        // }
-
-        // const idx = student.attendance.findIndex(
-        //   (a) =>
-        //     String(a.subjectId) === String(subjectId) &&
-        //     new Date(a.date).toDateString() === d.toDateString()
-        // );
-
-        // if (idx >= 0) {
-        //   student.attendance[idx].status = status; // update existing
-        // } else {
-        //   student.attendance.push({ date: d, status, subjectId }); // add new
-        // }
-
-        // const saved = await student.save();
-        // return res.json({ success: true, data: saved, message: "Attendance saved" });
 
     } catch (error) {
         return res.json({ success: false, message: error.message });

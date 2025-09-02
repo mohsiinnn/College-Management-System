@@ -17,7 +17,7 @@ export const fetchClasses = createAsyncThunk(
     try {
       const res = await classService.getAllClasses();
       if (!res?.success) throw new Error(res?.message || "Failed to load classes");
-      return res; // { success, userData: [...] } (your controller)
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -32,7 +32,7 @@ export const fetchClassById = createAsyncThunk(
     try {
       const res = await classService.getClassById(id);
       if (!res?.success) throw new Error(res?.message || "Failed to load class");
-      return res; // { success, userData: {...} } (your controller)
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -47,7 +47,7 @@ export const createClass = createAsyncThunk(
     try {
       const res = await classService.createClass(payload);
       if (!res?.success) throw new Error(res?.message || "Create failed");
-      return res; // { success, data: {...} } (your controller)
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -104,10 +104,10 @@ const classSlice = createSlice({
       })
       .addCase(fetchClasses.fulfilled, (s, action) => {
         s.loading = false; s.success = true;
-        // your controller uses userData for the array
+        // controller uses userData for the array
         const list = Array.isArray(action.payload?.userData)
           ? action.payload.userData
-          : Array.isArray(action.payload?.classes) // fallback if you rename later
+          : Array.isArray(action.payload?.classes) // fallback if rename later
           ? action.payload.classes
           : [];
         s.classes = list;
@@ -123,7 +123,7 @@ const classSlice = createSlice({
       })
       .addCase(fetchClassById.fulfilled, (s, action) => {
         s.loading = false; s.success = true;
-        // your controller uses userData for the single class
+        // controller uses userData for the single class
         s.currentClass = action.payload?.userData || action.payload?.class || null;
       })
       .addCase(fetchClassById.rejected, (s, action) => {
@@ -151,8 +151,6 @@ const classSlice = createSlice({
       })
       .addCase(removeClassStudents.fulfilled, (s, action) => {
         s.success = true;
-        // controller returns { success, data: <deleteManyResult> }
-        // Optimistic: wipe `student` array for that class locally (if we have it)
         const id = action.payload?.idArg || action.meta.arg;
         if (id) {
           s.classes = s.classes.map((c) =>
@@ -174,7 +172,6 @@ const classSlice = createSlice({
       })
       .addCase(deleteClass.fulfilled, (s, action) => {
         s.success = true;
-        // controller returns { success, data: deletedClass }
         const id =
           action.payload?.data?._id ||
           action.payload?.idArg ||

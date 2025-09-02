@@ -11,7 +11,7 @@ const initialState = {
   message: "",
 };
 
-// Add teacher profile (createTeacherProfile)
+// Add teacher profile 
 export const addTeacherProfile = createAsyncThunk(
   "teacher/addProfile",
   async (payload, thunkAPI) => {
@@ -33,9 +33,8 @@ export const fetchAllTeachers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await teacherService.getAllTeachers();
-      // Controller may return { success:true, message:"No teachers found" }
       if (!res?.success) throw new Error(res?.message || "Failed to load teachers");
-      return res; // { success, data? , message? }
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -50,9 +49,8 @@ export const fetchTeachers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await teacherService.getTeachers();
-      // Controller may return { success:true, message:"No teachers found" }
       if (!res?.success) throw new Error(res?.message || "Failed to load teachers");
-      return res; // { success, data? , message? }
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -61,14 +59,14 @@ export const fetchTeachers = createAsyncThunk(
 );
 
 
-// Get teacher detail
+// Get teacher detail with userId not TeacherId
 export const fetchOneTeacher = createAsyncThunk(
   "teacher/fetchOneTeacher",
   async (id, thunkAPI) => {
     try {
       const res = await teacherService.getOneTeacher(id);
       if (!res?.success) throw new Error(res?.message || "Failed to load teacher");
-      return res; // { success, data? , message? }
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -77,15 +75,14 @@ export const fetchOneTeacher = createAsyncThunk(
 );
 
 
-
-// Get teacher detail
+// Get teacher details
 export const fetchTeacherDetail = createAsyncThunk(
   "teacher/fetchOne",
   async (id, thunkAPI) => {
     try {
       const res = await teacherService.getTeacherDetail(id);
       if (!res?.success) throw new Error(res?.message || "Failed to load teacher");
-      return res; // { success, data? , message? }
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -93,11 +90,11 @@ export const fetchTeacherDetail = createAsyncThunk(
   }
 );
 
-// Update teacher's subject assignment
+// Update teacher's subject
 export const updateTeacherSubject = createAsyncThunk(
   "teacher/updateSubject",
   async (payload, thunkAPI) => {
-    // payload: { subjectId, teacherId, classId? }
+    // payload: { subjectId, teacherId, classId }
     try {
       const res = await teacherService.updateTeacherSubject(payload);
       if (!res?.success) throw new Error(res?.message || "Update failed");
@@ -131,7 +128,7 @@ export const removeAllTeachers = createAsyncThunk(
     try {
       const res = await teacherService.deleteAllTeachers();
       if (res?.success === false) throw new Error(res?.message || "Delete all failed");
-      return res; // { success:true, data } OR maybe only { message } if none
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);

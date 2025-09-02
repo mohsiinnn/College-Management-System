@@ -208,7 +208,7 @@ export const deleteAllTeachers = async (req, res) => {
         //deleted all referances of teachers in subjectsModel
         if (deleteTeachers) {
             await subjectModel.updateMany(
-                { teacher: { $in: ids } },      // match all subjects whose teacher is in that list
+                { teacher: { $in: ids } }, 
                 { $unset: { teacher: "" } }
             )
         }

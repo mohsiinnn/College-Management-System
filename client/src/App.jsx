@@ -5,7 +5,6 @@ import Home from './pages/Home'
 import Login from './pages/auth/Login'
 import EmailVerify from './pages/auth/EmailVerify'
 import ResetPassword from './pages/auth/ResetPassword'
-import { useSelector } from 'react-redux'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
 import StudentDashboard from './pages/student/StudentDashboard'
@@ -39,15 +38,13 @@ import StudentSubjectListDashboard from './pages/student/ui/StudentSubjectListDa
 import SAdminDashboard from './pages/SAdmin/SAdminDashboard.jsx'
 import LoginSAdmin from './pages/SAdmin/ui/LoginSAdmin.jsx'
 import SAdmins from './pages/SAdmin/ui/SAdmins.jsx'
-import TeacherSubjectList from './pages/teacher/ui/TeacherSubjectList.jsx'
+// import TeacherSubjectList from './pages/teacher/ui/TeacherSubjectList.jsx'
 import TeacherMarkAttendance from './pages/teacher/ui/TeacherMarkAttendance.jsx'
 import TeacherClassSubjects from './pages/teacher/ui/TeacherClassSubjects.jsx'
 import TeacherDashboardSubjects from './pages/teacher/TeacherDashboardSubjects.jsx'
 
 
 const App = () => {
-
-  const { user } = useSelector((state) => state.auth)
 
   return (
     <>
@@ -116,24 +113,6 @@ const App = () => {
 
           </Routes>
         </div>
-
-        {/* {user.role === "admin" &&
-          <>
-            <AdminDashboard />
-          </>
-        }
-        {user.role === 'student' &&
-          <>
-            <StudentDashboard />
-          </>
-        }
-        {user.role === 'teacher' &&
-          <>
-            <TeacherDashboard />
-          </>
-        } */}
-
-
       </Router>
     </>
   )

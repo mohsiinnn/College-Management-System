@@ -11,8 +11,6 @@ const initialState = {
   message: "",
 };
 
-// --- Thunks (Profiles / CRUD) ---
-
 export const addStudentProfile = createAsyncThunk(
   "student/addProfile",
   async (payload, thunkAPI) => {
@@ -125,8 +123,7 @@ export const removeStudentsFromClass = createAsyncThunk(
   }
 );
 
-// --- Thunks (Attendance) ---
-
+// Attendance 
 export const addStudentAttendance = createAsyncThunk(
   "student/addAttendance",
   async (payload, thunkAPI) => {
@@ -143,7 +140,7 @@ export const addStudentAttendance = createAsyncThunk(
 );
 
 
-// Thunk to fetch class attendance
+//Fetch class attendance
 export const fetchClassAttendance = createAsyncThunk(
   "student/fetchClassAttendance",
   async (payload, thunkAPI) => {
@@ -157,7 +154,7 @@ export const fetchClassAttendance = createAsyncThunk(
   }
 );
 
-// Thunk to batch add attendance
+// Batch add attendance
 export const batchAddAttendance = createAsyncThunk(
   "student/batchAddAttendance",
   async ({ classId, subjectId, date, attendance }, thunkAPI) => {
@@ -461,7 +458,7 @@ const studentSlice = createSlice({
       })
 
 
-      // attendance: clear one student
+      // clear one student's attendance
       .addCase(clearStudentAttendance.pending, (s) => {
         s.error = false;
         s.message = "";
@@ -480,14 +477,13 @@ const studentSlice = createSlice({
         s.message = action.payload || "Failed to clear attendance";
       })
 
-      // attendance: clear all students
+      // clear all students's attendance
       .addCase(clearAllStudentsAttendance.pending, (s) => {
         s.error = false;
         s.message = "";
       })
       .addCase(clearAllStudentsAttendance.fulfilled, (s, action) => {
         s.success = true;
-        // do not mutate local list heavily; backend didn't return individuals
         s.message = action.payload?.message || "All attendance cleared";
       })
       .addCase(clearAllStudentsAttendance.rejected, (s, action) => {
@@ -495,7 +491,7 @@ const studentSlice = createSlice({
         s.message = action.payload || "Failed to clear all attendance";
       })
 
-      // attendance: clear subject for one student
+      // clear subject for one student's attendance
       .addCase(clearStudentAttendanceFromSubject.pending, (s) => {
         s.error = false;
         s.message = "";
@@ -514,7 +510,7 @@ const studentSlice = createSlice({
         s.message = action.payload || "Failed to clear subject attendance";
       })
 
-      // attendance: clear subject for all students
+      // clear subject for all students's attendance
       .addCase(clearAllStudentAttendanceFromSubject.pending, (s) => {
         s.error = false;
         s.message = "";

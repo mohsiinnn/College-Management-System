@@ -4,7 +4,7 @@ import subjectService from "./subjectService";
 const initialState = {
   subjects: [],         // all subjects
   classSubjects: [],    // subjects of a specific class
-  freeSubjects: [],     // free subjects in a class (no teacher)
+  freeSubjects: [],     // free subjects in a class without teacher
   subject: null,        // subject details
   loading: false,
   success: false,
@@ -48,7 +48,6 @@ export const fetchClassSubjects = createAsyncThunk(
   async (classId, thunkAPI) => {
     try {
       const res = await subjectService.getClassSubjects(classId);
-      // Your controller sometimes returns { success:true, message:"No subjects..." }
       if (!res?.success) throw new Error(res?.message || "Failed to load class subjects");
       return { ...res, classIdArg: classId };
     } catch (err) {
@@ -64,7 +63,6 @@ export const fetchTeacherClassSubjects = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await subjectService.getTeacherClassSubjects(payload);
-      // Your controller sometimes returns { success:true, message:"No subjects..." }
       if (!res?.success) throw new Error(res?.message || "Failed to load class subjects");
       return { ...res, classIdArg: payload.classId };
     } catch (err) {
@@ -96,7 +94,7 @@ export const fetchSubjectDetails = createAsyncThunk(
     try {
       const res = await subjectService.getSubjectDetails(id);
       if (!res?.success) throw new Error(res?.message || "Failed to load subject");
-      return res; // { success, data:{...} } OR { success:true, message }
+      return res; 
     } catch (err) {
       const m = err.response?.data?.message || err.message || String(err);
       return thunkAPI.rejectWithValue(m);
@@ -172,7 +170,6 @@ const subjectSlice = createSlice({
         s.loading = false;
         s.success = true;
         const inserted = Array.isArray(action.payload?.data) ? action.payload.data : [];
-        // optimistic: append to `subjects`
         if (inserted.length) s.subjects = [...inserted, ...s.subjects];
         s.message = action.payload?.message || "Subjects added";
       })
@@ -208,7 +205,6 @@ const subjectSlice = createSlice({
       .addCase(fetchClassSubjects.fulfilled, (s, action) => {
         s.loading = false;
         s.success = true;
-        // controller may return { success:true, message:"No subjects..." }
         s.classSubjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
         if (!s.classSubjects.length && action.payload?.message) {
           s.message = action.payload.message;
@@ -230,7 +226,6 @@ const subjectSlice = createSlice({
       .addCase(fetchTeacherClassSubjects.fulfilled, (s, action) => {
         s.loading = false;
         s.success = true;
-        // controller may return { success:true, message:"No subjects..." }
         s.classSubjects = Array.isArray(action.payload?.data) ? action.payload.data : [];
         if (!s.classSubjects.length && action.payload?.message) {
           s.message = action.payload.message;
@@ -332,7 +327,7 @@ const subjectSlice = createSlice({
       .addCase(deleteSubjectsFromClass.fulfilled, (s, action) => {
         s.success = true;
         const classId = action.payload?.classId || action.payload?.classIdArg || action.meta.arg;
-        // wipe classSubjects view and any subjects in `subjects` that belong to this class if you want:
+
         s.classSubjects = [];
         if (Array.isArray(s.subjects) && classId) {
           s.subjects = s.subjects.filter((subj) => String(subj.className?._id || subj.className) !== String(classId));
