@@ -42,7 +42,7 @@ const Login = ({ role }) => {
         // console.log( `success is ${success}`,`user is: ${user.role}` );
       }
     } catch (error) {
-      toast.error(error.message)
+      console.log(error.message)
     } finally {
       dispatch(clearAuthState())
     }
