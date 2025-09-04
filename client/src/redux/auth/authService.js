@@ -80,6 +80,18 @@ const resetPassword = async (userData) => {
     return response.data
 }
 
+//student Dashboard
+const getUserData = async () => {
+    const response = await axios.get(`${API_URL}/api/auth/getUserData`)
+
+    if (response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+
+    return response.data
+}
+
+
 const authService = {
     register,
     login,
@@ -87,7 +99,8 @@ const authService = {
     sendVerifyOtp,
     verifyAccount,
     sendResetOtp,
-    resetPassword
+    resetPassword,
+    getUserData
 }
 
 export default authService

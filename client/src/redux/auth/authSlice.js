@@ -109,6 +109,21 @@ export const resetPassword = createAsyncThunk(
     }
 );
 
+export const getUserData = createAsyncThunk("user/getUserData",
+    async (_, thunkAPI) => {
+        try {
+            const response = await authService.getUserData()
+            if (!response.success) {
+                throw new Error(response.message || "Registration failed");
+            }
+            return response;
+        } catch (error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 
 //NOW MAKING SLICE
 const authSlice = createSlice({
@@ -179,6 +194,12 @@ const authSlice = createSlice({
             .addCase(resetPassword.pending, pendingCase)
             .addCase(resetPassword.fulfilled, fulfilledCase)
             .addCase(resetPassword.rejected, rejectedCase);
+
+        //getUserData
+        builder
+            .addCase(getUserData.pending, pendingCase)
+            .addCase(getUserData.fulfilled, fulfilledCase)
+            .addCase(getUserData.rejected, rejectedCase);
     }
 })
 

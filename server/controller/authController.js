@@ -100,16 +100,6 @@ export const login = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-
-        //     // Build a safe user payload (never return password)
-        // const safeUser = {
-        //   id: user._id,
-        //   name: user.name,
-        //   email: user.email,
-        //   role: user.role,
-        //   // include any other non-sensitive fields you need here
-        // };
-        // return res.json({ success: true, user: safeUser });
         
         return res.json({ success: true, user: user });
 
@@ -273,4 +263,12 @@ export const resetPassword = async (req, res) => {
         return res.json({ success: false, message: error.message })
     }
 
+}
+
+export const getUserData = async (req, res) => {
+  const userId = req.user.id;
+  const user = await userModel.findById(userId)
+  if (user) {
+    res.json({ success: true, user: user, message: "this is Student Dashboard" })
+  }
 }
