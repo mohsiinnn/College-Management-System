@@ -25,7 +25,6 @@ const NAV = [
   { label: "Teachers", icon: Monitor },
   { label: "Classes", icon: Layers },
   { label: "Subjects", icon: BookOpen },
-  { label: "Verify Email", icon: BookOpen },
 ];
 
 // Redirect labels to routes (i written it separate so UI doesn’t change)
@@ -36,7 +35,6 @@ const ROUTE_BY_LABEL = {
   Teachers: "/admin/dashboard/teachers-page",
   Classes: "/admin/dashboard/classes-page",
   Subjects: "/admin/dashboard/subjects-page",
-  "Verify Email": "/email-verify"
 };
 
 export default function SidebarUI({

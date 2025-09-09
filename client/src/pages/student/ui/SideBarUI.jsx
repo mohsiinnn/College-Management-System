@@ -24,14 +24,12 @@ const NAV = [
   { label: "Profile", icon: User },
   { label: "Subjects", icon: BookOpen },
   { label: "Attendance", icon: Calendar },
-  { label: "Verify Email", icon: Calendar },
 ];
 
 const ROUTE_BY_LABEL = {
   Profile: "/student/dashboard",
   Subjects: "/student/dashboard/subjects",
   Attendance: "/student/dashboard/attendance",
-  'Verify Email': "/email-verify",
 };
 
 export default function SidebarUI({

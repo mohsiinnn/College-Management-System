@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearAuthState, verifyAccount } from '../../redux/auth/authSlice';
-import { assets } from '../../assets/assets';
 import Spinner from '../../components/Spinner';
 
 const OTP_LENGTH = 6;
@@ -34,7 +33,7 @@ export default function EmailVerify() {
     }
 
     // console.log(`success is:${success} and user is: ${user}`);
-    
+
 
   }, [success, error, message, user, navigate, dispatch, submitted]);
 
@@ -84,9 +83,9 @@ export default function EmailVerify() {
     <div className='flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-400'>
       <img
         onClick={() => navigate('/')}
-        src={assets.logo}
+        src='/cms_logo.png'
         alt='logo'
-        className='absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer'
+      className='absolute left-5 sm:left-20 top-5 w-18 sm:w-24 cursor-pointer'
       />
 
       <form

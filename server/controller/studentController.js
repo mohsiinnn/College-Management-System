@@ -91,7 +91,7 @@ export const getStudentOnly = async (req, res) => {
         return res.json({ success: true, data: student })
     }
     else {
-        return res.status(404).json({ success: false, message: "Student not found with mohsin" });
+        return res.status(404).json({ success: false, message: "Student not found" });
     }
 }
 

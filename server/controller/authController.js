@@ -32,8 +32,8 @@ export const register = async (req, res) => {
         const mailOption = {
             from: process.env.SENDER_EMAIL,
             to: email,
-            subject: "Welcome to Customizers King",
-            text: `Welcome to Customizers King. your account has been created with email id: ${email}`
+            subject: "Welcome to College Management System",
+            text: `Welcome to College Management System. your account has been created with email id: ${email}`
         }
 
         // console.log("Mail options:", mailOption);
@@ -146,8 +146,8 @@ export const sendVerifyOtp = async (req, res) => {
         const mailOption = {
             from: process.env.SENDER_EMAIL,
             to: user.email,
-            subject: "Account Verification OTP",
-            text: `Your OTP is ${otp}. Verify your account using this OTP.`,
+            subject: "CMS Account Verification OTP",
+            text: `Thanks for using College Management System. Your OTP is ${otp}. Verify your account using this OTP.`,
             // html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
 

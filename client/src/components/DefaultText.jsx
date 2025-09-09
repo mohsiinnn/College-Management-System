@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { adminDashboard, studentDashboard, teacherDashboard } from "../redux/user/userSlice";
+import { adminDashboard, clearUserState, studentDashboard, teacherDashboard } from "../redux/user/userSlice";
 import { assets } from "../assets/assets";
 import Spinner from "./Spinner";
 import StudentDashboard from "../pages/student/StudentDashboard";
@@ -27,8 +27,6 @@ const DashboardLoader = () => {
         if (user && user?.role) {
             if (user?.role === 'admin') {
                 dispatch(adminDashboard())
-                console.log("running");
-
             }
             if (user?.role === 'teacher') {
                 dispatch(teacherDashboard())
@@ -37,6 +35,7 @@ const DashboardLoader = () => {
                 dispatch(studentDashboard())
             }
         }
+        return ()=> dispatch(clearUserState())
     }, [dispatch, user]);
     // console.log("ye dashboarddata hai: ", dashboardData);
 
@@ -48,8 +47,11 @@ const DashboardLoader = () => {
             "not approved by admin",
             "not approved by superAdmin",
             "Your account is not verified with your Email adress",
+            "your account is not approved by superadmin yet.",
         ].some((frag) => message?.toLowerCase().includes(frag));
     ;
+    console.log(isRestriction);
+    
 
     let doller;
     if (dashboardData?.data?.role) {
@@ -72,7 +74,7 @@ const DashboardLoader = () => {
             {isRestriction ? (
                 <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md flex flex-col items-center text-center border border-indigo-300">
                     <img
-                        src={assets.warning_icon}
+                        src={assets.header_img}
                         alt="warning"
                         className="w-14 mb-4"
                     />
