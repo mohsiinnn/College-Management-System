@@ -13,7 +13,7 @@ import { teacherRouter } from './routes/teacherRouter.js';
 import studentRouter from './routes/studentRouter.js';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 connectDB();
 
 const allowedOrigins = ['http://localhost:5173']
