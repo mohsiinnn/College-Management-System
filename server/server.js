@@ -13,7 +13,7 @@ import { teacherRouter } from './routes/teacherRouter.js';
 import studentRouter from './routes/studentRouter.js';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 connectDB();
 
 const allowedOrigins = ['http://localhost:5173']
@@ -35,6 +35,4 @@ app.use('/api/subject', subjectRouter);
 app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(Number(PORT), () => console.log(`Server running on port ${PORT}`));
