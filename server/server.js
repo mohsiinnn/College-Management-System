@@ -22,6 +22,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
+app.use("/api", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 app.get('/', (req, res) => {
     res.send('Welcome to the College Management System API');
 });
