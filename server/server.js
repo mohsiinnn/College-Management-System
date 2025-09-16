@@ -20,7 +20,12 @@ const allowedOrigins = ['https://college-management-system-iota-eight.vercel.app
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({ 
+  origin: allowedOrigins, 
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"], 
+  credentials: true 
+}));
 
 app.use("/api", (req, res, next) => {
   res.set("Cache-Control", "no-store");
