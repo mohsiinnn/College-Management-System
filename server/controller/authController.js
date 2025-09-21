@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import transporter from '../config/nodeMailer.js';
+import resend from '../config/nodeMailer.js';
 
 
 export const register = async (req, res) => {
@@ -40,6 +41,7 @@ export const register = async (req, res) => {
 
         // await transporter.sendMail(mailOption)
         try {
+            // await resend.emails.send(mailOption);
             await transporter.sendMail(mailOption);
             console.log('Email sent');
         } catch (err) {
@@ -151,6 +153,7 @@ export const sendVerifyOtp = async (req, res) => {
             // html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
 
+        // await resend.emails.send(mailOption)
         await transporter.sendMail(mailOption)
 
         res.json({ success: true, message: "Verification OTP sent on Email" })
@@ -221,6 +224,7 @@ export const sendResetOtp = async (req, res) => {
             text: `Your password reset OTP is ${otp}. Use this OTP to proceed with resetting your password.`,
             // html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
+        // await resend.emails.send(mailOption)
         await transporter.sendMail(mailOption)
 
         return res.json({ success: true, user: user, message: "OTP sent on your Email" })
