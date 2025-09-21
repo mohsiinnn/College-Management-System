@@ -41,8 +41,8 @@ export const register = async (req, res) => {
 
         // await transporter.sendMail(mailOption)
         try {
-            // await resend.emails.send(mailOption);
-            await transporter.sendMail(mailOption);
+            await resend.emails.send(mailOption);
+            // await transporter.sendMail(mailOption);
             console.log('Email sent');
         } catch (err) {
             console.error('Error sending email:', err);
@@ -153,8 +153,8 @@ export const sendVerifyOtp = async (req, res) => {
             // html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
 
-        // await resend.emails.send(mailOption)
-        await transporter.sendMail(mailOption)
+        await resend.emails.send(mailOption)
+        // await transporter.sendMail(mailOption)
 
         res.json({ success: true, message: "Verification OTP sent on Email" })
 
@@ -224,8 +224,8 @@ export const sendResetOtp = async (req, res) => {
             text: `Your password reset OTP is ${otp}. Use this OTP to proceed with resetting your password.`,
             // html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
         }
-        // await resend.emails.send(mailOption)
-        await transporter.sendMail(mailOption)
+        await resend.emails.send(mailOption)
+        // await transporter.sendMail(mailOption)
 
         return res.json({ success: true, user: user, message: "OTP sent on your Email" })
 

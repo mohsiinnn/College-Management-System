@@ -1,25 +1,24 @@
-import nodemailer from "nodemailer"
+import { Resend } from "resend";
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    // service: "gmail",
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-    }
-})
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default transporter;
+export default resend;
 
 
 
 
 
-// it is for second option of sending mail to user  
-// import { Resend } from "resend";
+// import nodemailer from "nodemailer"
 
-// const resend = new Resend(process.env.RESEND_API_KEY);
+// const transporter = nodemailer.createTransport({
+//     host: "smtp.gmail.com",
+//     port: 465,
+//     secure: true,
+//     // service: "gmail",
+//     auth: {
+//         user: process.env.SMTP_USER,
+//         pass: process.env.SMTP_PASS
+//     }
+// })
 
-// export default resend;
+// export default transporter;
